@@ -59,10 +59,11 @@ export default function CartProvider({ children }: { children: ReactNode }) {
             return;
         }
 
+        // Thêm lại thẻ đã có trong giỏ thì cập nhật luôn thông tin mới nhất (tên, giá, tồn kho, ảnh)
         setItems((prev) =>
             prev.some((item) => item.product.id === product.id)
                 ? prev.map((item) =>
-                    item.product.id === product.id ? { ...item, quantity: nextQuantity } : item,
+                    item.product.id === product.id ? { ...item, product, quantity: nextQuantity } : item,
                 )
                 : [...prev, { product, quantity: nextQuantity }],
         );
