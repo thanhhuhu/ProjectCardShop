@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode, Ref } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { ApiError } from "../services/authApi";
+import { useAuth } from "../context/useAuth.ts";
 import { Eye, EyeOff } from "lucide-react";
 import leftCover from "../images/cover_page.png"; // ảnh cover bên trái
 import rightCover from "../images/side_page.png"; // ảnh cover bên phải
@@ -9,6 +11,7 @@ type Errors = Record<string, string>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/* ---------- Đo chiều cao của một phần tử (tự cập nhật khi nội dung đổi) ---------- */
 
 function useHeight<T extends HTMLElement>() {
     const ref = useRef<T | null>(null);
@@ -81,12 +84,13 @@ function Field({ id, label, value, onChange, type = "text", autoComplete, error 
     );
 }
 
-function SubmitButton({ children }: { children: string }) {
+function SubmitButton({ children, disabled = false }: { children: string; disabled?: boolean }) {
     return (
         <div className="pt-3">
             <button
                 type="submit"
-                className="w-full rounded-lg bg-red-600 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700 active:scale-[0.99]"
+                disabled={disabled}
+                className="w-full rounded-lg bg-red-600 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400 disabled:active:scale-100"
             >
                 {children}
             </button>
@@ -97,22 +101,42 @@ function SubmitButton({ children }: { children: string }) {
 /* ---------- Form đăng nhập ---------- */
 
 function LoginForm() {
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const [account, setAccount] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
     const [errors, setErrors] = useState<Errors>({});
+    const [serverMessage, setServerMessage] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (submitting) return;
 
         const next: Errors = {};
         if (!account.trim()) next.account = "Vui lòng nhập tên tài khoản hoặc email";
         if (!password) next.password = "Vui lòng nhập mật khẩu";
         setErrors(next);
+        setServerMessage("");
         if (Object.keys(next).length > 0) return;
 
-        // TODO: gọi authService.login(account, password, remember) khi làm xong backend
-        console.log("Đăng nhập:", { account, remember });
+        setSubmitting(true);
+        try {
+            await login({ account: account.trim(), password, remember });
+
+            // Thành công: xóa form rồi về trang chủ (thông báo hiện do AuthProvider)
+            setAccount("");
+            setPassword("");
+            setRemember(false);
+            navigate("/");
+        } catch (error) {
+            setServerMessage(
+                error instanceof ApiError ? error.message : "Đã có lỗi xảy ra. Vui lòng thử lại.",
+            );
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -143,14 +167,19 @@ function LoginForm() {
                         onChange={(e) => setRemember(e.target.checked)}
                         className="h-4 w-4 accent-red-600"
                     />
-                    Ghi nhớ mật khẩu
+                    Ghi nhớ đăng nhập
                 </label>
                 <Link to="/forgot-password" className="text-gray-400 transition hover:text-red-400">
                     Quên mật khẩu?
                 </Link>
             </div>
 
-            <SubmitButton>Đăng nhập</SubmitButton>
+            {/* Chừa sẵn chỗ cho lỗi từ server (ví dụ sai mật khẩu) */}
+            <p role="alert" className="min-h-5 pt-2 text-center text-sm text-red-400">
+                {serverMessage}
+            </p>
+
+            <SubmitButton disabled={submitting}>{submitting ? "Đang đăng nhập..." : "Đăng nhập"}</SubmitButton>
 
             <p className="pt-3 text-center text-sm text-gray-400">
                 Chưa có tài khoản?{" "}
@@ -165,14 +194,19 @@ function LoginForm() {
 /* ---------- Form đăng ký ---------- */
 
 function RegisterForm() {
+    const navigate = useNavigate();
+    const { register } = useAuth();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [errors, setErrors] = useState<Errors>({});
+    const [serverMessage, setServerMessage] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (submitting) return;
 
         const next: Errors = {};
         if (username.trim().length < 3) next.username = "Tên tài khoản cần ít nhất 3 ký tự";
@@ -180,10 +214,30 @@ function RegisterForm() {
         if (password.length < 8) next.password = "Mật khẩu cần ít nhất 8 ký tự";
         if (confirm !== password) next.confirm = "Mật khẩu nhập lại không khớp";
         setErrors(next);
+        setServerMessage("");
         if (Object.keys(next).length > 0) return;
 
-        // TODO: gọi authService.register(username, email, password) khi làm xong backend
-        console.log("Đăng ký:", { username, email });
+        setSubmitting(true);
+        try {
+            await register({ username: username.trim(), email: email.trim(), password });
+
+            // Thành công: đã tự đăng nhập, xóa form rồi về trang chủ (thông báo hiện do AuthProvider)
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setConfirm("");
+            navigate("/");
+        } catch (error) {
+            if (error instanceof ApiError) {
+                // Lỗi theo từng ô (trùng email, trùng tên...) hiện ngay dưới ô đó
+                setErrors(error.fieldErrors);
+                if (Object.keys(error.fieldErrors).length === 0) setServerMessage(error.message);
+            } else {
+                setServerMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+            }
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -224,7 +278,12 @@ function RegisterForm() {
                 error={errors.confirm}
             />
 
-            <SubmitButton>Đăng ký</SubmitButton>
+            {/* Luôn chừa sẵn chỗ cho lỗi từ server để form không giãn ra */}
+            <p role="alert" className="min-h-5 pt-1 text-center text-sm text-red-400">
+                {serverMessage}
+            </p>
+
+            <SubmitButton disabled={submitting}>{submitting ? "Đang đăng ký..." : "Đăng ký"}</SubmitButton>
 
             <p className="pt-3 text-center text-sm text-gray-400">
                 Đã có tài khoản?{" "}
@@ -297,6 +356,7 @@ function FormPanel({ active, exit, contentRef, title, subtitle, children }: Form
 
 export default function AuthPage() {
     const { pathname } = useLocation();
+    const { user } = useAuth();
     const isLogin = !pathname.startsWith("/register");
 
     const [loginRef, loginHeight] = useHeight<HTMLDivElement>();
@@ -306,6 +366,8 @@ export default function AuthPage() {
         `relative z-10 rounded-md py-2 text-center transition-colors duration-300 ${
             active ? "text-white" : "text-gray-400 hover:text-white"
         }`;
+
+    if (user) return <Navigate to="/" replace />;
 
     return (
         <section className="grid min-h-[70vh] bg-black text-white lg:grid-cols-[1fr_minmax(0,30rem)_1fr]">

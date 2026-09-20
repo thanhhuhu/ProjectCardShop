@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { X } from "lucide-react";
 import { products } from "../data/products";
 import { games } from "../data/game";
 import type { Product } from "../types/product";
 import ProductGrid from "../components/ProductGrid";
 import Pagination from "../components/Pagination";
+import { matchesSearch } from "../utils/search";
 
 const PAGE_SIZE = 20; // 5 thẻ mỗi hàng x 4 hàng
 
@@ -52,14 +54,16 @@ export default function ProductList() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const game = searchParams.get("game");
+    const search = (searchParams.get("search") ?? "").trim();
     const sortParam = searchParams.get("sort");
     const sort: SortKey = sortOptions.find((o) => o.value === sortParam)?.value ?? "newest";
     const gameLabel = games.find((g) => g.slug === game)?.label;
 
     const sortedProducts = useMemo(() => {
-        const filtered = game ? products.filter((p) => p.game === game) : products;
+        let filtered = game ? products.filter((p) => p.game === game) : products;
+        if (search) filtered = filtered.filter((p) => matchesSearch(p, search));
         return sortProducts(filtered, sort);
-    }, [game, sort]);
+    }, [game, search, sort]);
 
     const total = sortedProducts.length;
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -96,7 +100,7 @@ export default function ProductList() {
                             Trang chủ
                         </Link>
                         <span className="mx-2">/</span>
-                        <span className="font-bold text-white">{gameLabel ?? "Shop"}</span>
+                        <span className="font-bold text-white">{search ? "Tìm kiếm" : (gameLabel ?? "Shop")}</span>
                     </nav>
 
                     <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300">
@@ -125,13 +129,35 @@ export default function ProductList() {
             </div>
 
             <section className="mx-auto max-w-6xl px-4 py-8 md:py-10">
-                <h1 className="mb-6 border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">
-                    {gameLabel ?? "Tất cả sản phẩm"}
-                </h1>
+                <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <h1 className="break-words border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">
+                        {search ? (
+                            <>
+                                Kết quả cho <span className="normal-case">“{search}”</span>
+                            </>
+                        ) : (
+                            (gameLabel ?? "Tất cả sản phẩm")
+                        )}
+                    </h1>
+                    {search && (
+                        <button
+                            type="button"
+                            onClick={() => updateParams({ search: null, page: null })}
+                            className="flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-xs font-semibold text-gray-300 transition hover:border-red-600 hover:text-white"
+                        >
+                            <X size={14} />
+                            Xóa tìm kiếm
+                        </button>
+                    )}
+                </div>
 
                 {total === 0 ? (
                     <div className="py-16 text-center text-gray-300">
-                        <p>Chưa có sản phẩm nào trong danh mục này.</p>
+                        <p>
+                            {search
+                                ? `Không tìm thấy thẻ nào khớp với “${search}”. Hãy thử từ khóa ngắn hơn hoặc kiểm tra lại chính tả.`
+                                : "Chưa có sản phẩm nào trong danh mục này."}
+                        </p>
                         <Link
                             to="/products"
                             className="mt-6 inline-block rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"

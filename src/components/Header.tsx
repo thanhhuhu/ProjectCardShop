@@ -1,7 +1,16 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
-import { ChevronDown, Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent, KeyboardEvent } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ChevronDown, LogOut, Menu, Search, ShoppingCart, User, Users, X } from "lucide-react";
 import { navItems } from "../data/navigation";
+import { products } from "../data/products";
+import type { Product } from "../types/product";
+import { formatPrice } from "../utils/cart";
+import { searchProducts } from "../utils/search";
+import { useAuth } from "../context/useAuth";
+import logo from "../images/logo.png"; // đổi thành file logo của bạn trong src/images
+
+const SUGGESTION_LIMIT = 6; // số thẻ gợi ý tối đa dưới ô tìm kiếm
 
 interface HeaderProps {
     cartCount?: number;
@@ -9,14 +18,117 @@ interface HeaderProps {
 }
 
 export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    /* ---------- Tài khoản (avatar khi đã đăng nhập) ---------- */
+    const { user, loading, logout } = useAuth();
+    const accountRef = useRef<HTMLDivElement>(null);
+    const [accountOpen, setAccountOpen] = useState(false);
+
+    // Bấm ra ngoài hoặc nhấn Esc thì đóng menu tài khoản
+    useEffect(() => {
+        const handlePointerDown = (event: PointerEvent) => {
+            if (!accountRef.current?.contains(event.target as Node)) setAccountOpen(false);
+        };
+        const handleEscape = (event: globalThis.KeyboardEvent) => {
+            if (event.key === "Escape") setAccountOpen(false);
+        };
+        document.addEventListener("pointerdown", handlePointerDown);
+        document.addEventListener("keydown", handleEscape);
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown);
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, []);
+
+    const handleLogout = async () => {
+        setAccountOpen(false);
+        await logout();
+        navigate("/");
+    };
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [openIndex, setOpenIndex] = useState<number | null>(null);
-    const [keyword, setKeyword] = useState("");
+
+    // Ô tìm kiếm hiện lại từ khóa đang tìm, và tự xóa khi bạn rời khỏi trang kết quả
+    const urlSearch = searchParams.get("search") ?? "";
+    const [keyword, setKeyword] = useState(urlSearch);
+    const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
+    if (urlSearch !== prevUrlSearch) {
+        setPrevUrlSearch(urlSearch);
+        setKeyword(urlSearch);
+    }
+
+    /* ---------- Gợi ý khi gõ ---------- */
+    const searchFormRef = useRef<HTMLFormElement>(null);
+    const [suggestOpen, setSuggestOpen] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1); // -1: chưa chọn dòng nào
+
+    const trimmedKeyword = keyword.trim();
+    const suggestions = useMemo(
+        // Khi có backend: đổi thành gọi API (nhớ debounce khoảng 250ms)
+        () => searchProducts(products, trimmedKeyword, SUGGESTION_LIMIT),
+        [trimmedKeyword],
+    );
+    const showDropdown = suggestOpen && trimmedKeyword.length > 0;
+    // Các dòng có thể chọn: các thẻ gợi ý + dòng "Xem tất cả kết quả"
+    const optionCount = suggestions.length > 0 ? suggestions.length + 1 : 0;
+
+    // Bấm ra ngoài ô tìm kiếm thì đóng gợi ý
+    useEffect(() => {
+        const handlePointerDown = (event: PointerEvent) => {
+            if (!searchFormRef.current?.contains(event.target as Node)) {
+                setSuggestOpen(false);
+            }
+        };
+        document.addEventListener("pointerdown", handlePointerDown);
+        return () => document.removeEventListener("pointerdown", handlePointerDown);
+    }, []);
+
+    const closeSuggestions = () => {
+        setSuggestOpen(false);
+        setActiveIndex(-1);
+    };
+
+    const goToProduct = (product: Product) => {
+        closeSuggestions();
+        setKeyword("");
+        setMenuOpen(false);
+        navigate(`/product/${product.id}`);
+    };
+
+    const goToSearch = () => {
+        closeSuggestions();
+        setMenuOpen(false);
+        navigate(
+            trimmedKeyword ? `/products?search=${encodeURIComponent(trimmedKeyword)}` : "/products",
+        );
+    };
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
-        // Sau này chuyển sang trang kết quả: /products?search=...
-        console.log("Tìm kiếm:", keyword);
+        // Đang chọn một thẻ gợi ý bằng phím mũi tên thì Enter sẽ mở thẻ đó
+        const active: Product | undefined = showDropdown ? suggestions[activeIndex] : undefined;
+        if (active) {
+            goToProduct(active);
+            return;
+        }
+        goToSearch();
+    };
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "ArrowDown" && optionCount > 0) {
+            e.preventDefault();
+            setSuggestOpen(true);
+            setActiveIndex((index) => (index + 1) % optionCount);
+        } else if (e.key === "ArrowUp" && optionCount > 0) {
+            e.preventDefault();
+            setSuggestOpen(true);
+            setActiveIndex((index) => (index <= 0 ? optionCount - 1 : index - 1));
+        } else if (e.key === "Escape" || e.key === "Tab") {
+            closeSuggestions();
+        }
     };
 
     return (
@@ -42,22 +154,40 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                         {menuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
 
-                    {/* Logo: thay bằng <img src={logo} /> khi có logo riêng */}
-                    <img src="./team_spirit.png" alt=""/>
-                    <a href="" className="text-2xl font-extrabold tracking-tight text-red-500">
-                        L1ZY CARD SHOP
-                    </a>
+                    {/* Logo + tên cửa hàng, bấm vào để về trang chủ */}
+                    <Link to="/" className="flex shrink-0 items-center gap-2">
+                        <img src={logo} alt="" aria-hidden="true" className="h-10 w-auto" />
+                        <span className="text-2xl font-extrabold tracking-tight text-red-500">
+                            L1ZY CARD SHOP
+                        </span>
+                    </Link>
 
                     {/* Tìm kiếm: mobile xuống hàng riêng, desktop nằm giữa */}
                     <form
+                        ref={searchFormRef}
                         onSubmit={handleSearch}
-                        className="order-last flex w-full md:order-none md:flex-1"
+                        role="search"
+                        className="relative order-last flex w-full md:order-none md:flex-1"
                     >
                         <input
                             type="text"
                             value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
+                            onChange={(e) => {
+                                setKeyword(e.target.value);
+                                setSuggestOpen(true);
+                                setActiveIndex(-1);
+                            }}
+                            onFocus={() => setSuggestOpen(true)}
+                            onKeyDown={handleKeyDown}
                             placeholder="Tìm kiếm..."
+                            autoComplete="off"
+                            role="combobox"
+                            aria-expanded={showDropdown && suggestions.length > 0}
+                            aria-controls="search-suggestions"
+                            aria-autocomplete="list"
+                            aria-activedescendant={
+                                showDropdown && activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined
+                            }
                             className="min-w-0 flex-1 bg-white px-3 py-2 text-sm text-black outline-none"
                         />
                         <button
@@ -67,21 +197,137 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                         >
                             <Search size={18} />
                         </button>
+
+                        {/* Danh sách gợi ý */}
+                        {showDropdown && (
+                            <div className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-lg border border-white/10 bg-[#141414] text-left shadow-2xl">
+                                {suggestions.length > 0 ? (
+                                    <ul id="search-suggestions" role="listbox" aria-label="Gợi ý thẻ bài">
+                                        {suggestions.map((product, index) => (
+                                            <li
+                                                key={product.id}
+                                                id={`suggestion-${index}`}
+                                                role="option"
+                                                aria-selected={index === activeIndex}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                onMouseEnter={() => setActiveIndex(index)}
+                                                onClick={() => goToProduct(product)}
+                                                className={`flex cursor-pointer items-center gap-3 px-3 py-2 transition-colors ${
+                                                    index === activeIndex ? "bg-white/10" : ""
+                                                }`}
+                                            >
+                                                <img
+                                                    src={product.imageUrl}
+                                                    alt=""
+                                                    className="h-14 w-10 shrink-0 rounded object-cover"
+                                                />
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-xs font-semibold text-red-400">
+                                                        {product.code}
+                                                    </p>
+                                                    <p className="truncate text-sm text-white">
+                                                        {product.name}
+                                                    </p>
+                                                    <p className="text-xs text-gray-400">{product.rarity}</p>
+                                                </div>
+                                                <span className="shrink-0 text-sm font-bold text-white">
+                                                    {formatPrice(product.price)}
+                                                </span>
+                                            </li>
+                                        ))}
+                                        <li
+                                            id={`suggestion-${suggestions.length}`}
+                                            role="option"
+                                            aria-selected={activeIndex === suggestions.length}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                            onMouseEnter={() => setActiveIndex(suggestions.length)}
+                                            onClick={goToSearch}
+                                            className={`cursor-pointer border-t border-white/10 px-3 py-3 text-sm font-semibold text-red-400 transition-colors ${
+                                                activeIndex === suggestions.length ? "bg-white/10" : ""
+                                            }`}
+                                        >
+                                            Xem tất cả kết quả cho “{trimmedKeyword}”
+                                        </li>
+                                    </ul>
+                                ) : (
+                                    <p role="status" className="px-4 py-3 text-sm text-gray-400">
+                                        Không tìm thấy thẻ nào khớp với “{trimmedKeyword}”
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </form>
 
                     {/* Tài khoản và giỏ hàng */}
                     <div className="ml-auto flex items-center gap-3 md:ml-0">
-                        <button
-                            type="button"
-                            onClick={onLoginClick}
-                            aria-label="Tài khoản"
-                            className="rounded bg-red-600 p-2 hover:bg-red-700"
-                        >
-                            <User size={18} />
-                        </button>
+                        {/* Nút quản lý người dùng: chỉ hiện với tài khoản admin */}
+                        {user?.role === "admin" && (
+                            <Link
+                                to="/admin/users"
+                                aria-label="Quản lý người dùng"
+                                className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                            >
+                                <Users size={18} />
+                                <span className="hidden lg:inline">Người dùng</span>
+                            </Link>
+                        )}
 
-                        <a
-                            href="/cart"
+                        {loading ? (
+                            <span aria-hidden="true" className="h-9 w-9 animate-pulse rounded-full bg-white/10" />
+                        ) : user ? (
+                            <div ref={accountRef} className="relative">
+                                <button
+                                    type="button"
+                                    onClick={() => setAccountOpen((open) => !open)}
+                                    aria-label={`Tài khoản ${user.username}`}
+                                    aria-haspopup="menu"
+                                    aria-expanded={accountOpen}
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold uppercase text-white ring-2 ring-transparent transition hover:ring-white/40 focus-visible:ring-white"
+                                >
+                                    {user.username.charAt(0)}
+                                </button>
+
+                                {accountOpen && (
+                                    <div
+                                        role="menu"
+                                        className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 bg-[#141414] text-left shadow-2xl"
+                                    >
+                                        <div className="border-b border-white/10 px-4 py-3">
+                                            <p className="truncate text-sm font-semibold text-white">
+                                                {user.username}
+                                            </p>
+                                            <p className="truncate text-xs text-gray-400">{user.email}</p>
+                                            {user.role === "admin" && (
+                                                <span className="mt-2 inline-block rounded bg-red-600/20 px-2 py-0.5 text-[11px] font-semibold text-red-400">
+                                                    Quản trị viên
+                                                </span>
+                                            )}
+                                        </div>
+                                        <button
+                                            type="button"
+                                            role="menuitem"
+                                            onClick={handleLogout}
+                                            className="flex w-full items-center gap-2 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                        >
+                                            <LogOut size={16} />
+                                            Đăng xuất
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={onLoginClick}
+                                aria-label="Đăng nhập"
+                                className="rounded bg-red-600 p-2 hover:bg-red-700"
+                            >
+                                <User size={18} />
+                            </button>
+                        )}
+
+                        <Link
+                            to="/cart"
                             className="relative flex items-center gap-2 rounded bg-red-600 px-3 py-2 text-sm font-bold uppercase hover:bg-red-700"
                         >
                             <span className="hidden sm:inline">Giỏ hàng</span>
@@ -91,7 +337,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     {cartCount}
                                 </span>
                             )}
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -101,8 +347,8 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                 <ul className="mx-auto flex max-w-6xl gap-8 px-4">
                     {navItems.map((item) => (
                         <li key={item.label} className="group relative">
-                            <a
-                                href={item.href}
+                            <Link
+                                to={item.href}
                                 className="flex items-center gap-1 py-4 text-sm font-bold uppercase text-gray-300 hover:text-white"
                             >
                                 {item.label}
@@ -112,18 +358,18 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                         className="transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
                                     />
                                 )}
-                            </a>
+                            </Link>
 
                             {item.children && (
                                 <ul className="invisible absolute left-0 top-full z-50 min-w-48 translate-y-2 rounded-b border-t-2 border-red-600 bg-white py-2 text-black opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none">
                                     {item.children.map((child) => (
                                         <li key={child.label}>
-                                            <a
-                                                href={child.href}
+                                            <Link
+                                                to={child.href}
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100"
                                             >
                                                 {child.label}
-                                            </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -143,12 +389,13 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                     {navItems.map((item, index) => (
                         <li key={item.label} className="border-t border-white/10">
                             <div className="flex items-center justify-between px-4">
-                                <a
-                                    href={item.href}
+                                <Link
+                                    to={item.href}
+                                    onClick={() => setMenuOpen(false)}
                                     className="flex-1 py-3 text-sm font-bold uppercase"
                                 >
                                     {item.label}
-                                </a>
+                                </Link>
                                 {item.children && (
                                     <button
                                         type="button"
@@ -180,12 +427,13 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     <ul className="overflow-hidden bg-black/40">
                                         {item.children.map((child) => (
                                             <li key={child.label}>
-                                                <a
-                                                    href={child.href}
+                                                <Link
+                                                    to={child.href}
+                                                    onClick={() => setMenuOpen(false)}
                                                     className="block py-2 pl-8 pr-4 text-sm text-gray-300"
                                                 >
                                                     {child.label}
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
