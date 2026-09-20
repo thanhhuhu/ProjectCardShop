@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "../context/useCart";
 import type { Product } from "../types/product";
 
 interface ProductCardProps {
@@ -18,6 +19,7 @@ function rarityClass(rarity: string) {
 }
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+    const { addItem } = useCart();
     const soldOut = product.stock <= 0;
     const detailPath = `/product/${product.id}`;
 
@@ -61,7 +63,10 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
                 <button
                     type="button"
                     disabled={soldOut}
-                    onClick={() => onAddToCart?.(product)}
+                    onClick={() => {
+                        addItem(product);
+                        onAddToCart?.(product);
+                    }}
                     className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-red-700 active:scale-95 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400 disabled:active:scale-100"
                 >
                     <ShoppingCart size={14} />

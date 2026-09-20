@@ -5,12 +5,14 @@ import { products } from "../data/products";
 import { games } from "../data/game";
 import type { Product } from "../types/product";
 import ProductGrid from "../components/ProductGrid";
+import { useCart } from "../context/useCart";
 
 const formatPrice = (price: number) => `${price.toLocaleString("vi-VN")} ₫`;
 
 // Khối giá, tồn kho, số lượng và nút thêm vào giỏ.
 // Được gắn key={product.id} ở bên dưới nên số lượng tự về 1 khi chuyển sang thẻ khác.
 function PurchaseBox({ product }: { product: Product }) {
+    const { addItem } = useCart();
     const [quantity, setQuantity] = useState(1);
     const soldOut = product.stock <= 0;
 
@@ -18,8 +20,7 @@ function PurchaseBox({ product }: { product: Product }) {
         setQuantity(Math.min(Math.max(next, 1), product.stock));
 
     const handleAddToCart = () => {
-        // Sau này nối với giỏ hàng (CartContext) hoặc API
-        console.log("Thêm vào giỏ:", product.code, "x", quantity);
+        addItem(product, quantity);
     };
 
     return (
