@@ -1,16 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ChevronDown, LogOut, Menu, Search, ShoppingCart, User, Users, X } from "lucide-react";
 import { navItems } from "../data/navigation";
-import { products } from "../data/products";
 import type { Product } from "../types/product";
 import { formatPrice } from "../utils/cart";
-import { searchProducts } from "../utils/search";
+import { suggestProducts } from "../services/productApi";
 import { useAuth } from "../context/useAuth";
 import logo from "../images/logo.png"; // đổi thành file logo của bạn trong src/images
-
-const SUGGESTION_LIMIT = 6; // số thẻ gợi ý tối đa dưới ô tìm kiếm
 
 interface HeaderProps {
     cartCount?: number;
@@ -66,11 +63,31 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
     const [activeIndex, setActiveIndex] = useState(-1); // -1: chưa chọn dòng nào
 
     const trimmedKeyword = keyword.trim();
-    const suggestions = useMemo(
-        // Khi có backend: đổi thành gọi API (nhớ debounce khoảng 250ms)
-        () => searchProducts(products, trimmedKeyword, SUGGESTION_LIMIT),
-        [trimmedKeyword],
-    );
+
+    // Gợi ý lấy từ server. Chờ 0,25 giây sau khi ngừng gõ mới hỏi, để không gửi yêu cầu sau mỗi ký tự.
+    const [suggestResult, setSuggestResult] = useState<{ query: string; products: Product[] } | null>(null);
+    useEffect(() => {
+        if (!trimmedKeyword) return;
+
+        let cancelled = false;
+        const timer = window.setTimeout(() => {
+            suggestProducts(trimmedKeyword)
+                .then((found) => {
+                    if (!cancelled) setSuggestResult({ query: trimmedKeyword, products: found });
+                })
+                .catch(() => {
+                    if (!cancelled) setSuggestResult({ query: trimmedKeyword, products: [] });
+                });
+        }, 250);
+
+        return () => {
+            cancelled = true;
+            window.clearTimeout(timer);
+        };
+    }, [trimmedKeyword]);
+
+    const suggestions = trimmedKeyword ? (suggestResult?.products ?? []) : [];
+    const suggesting = suggestResult?.query !== trimmedKeyword; // đang chờ kết quả cho từ khóa hiện tại
     const showDropdown = suggestOpen && trimmedKeyword.length > 0;
     // Các dòng có thể chọn: các thẻ gợi ý + dòng "Xem tất cả kết quả"
     const optionCount = suggestions.length > 0 ? suggestions.length + 1 : 0;
@@ -251,7 +268,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     </ul>
                                 ) : (
                                     <p role="status" className="px-4 py-3 text-sm text-gray-400">
-                                        Không tìm thấy thẻ nào khớp với “{trimmedKeyword}”
+                                        {suggesting ? "Đang tìm..." : `Không tìm thấy thẻ nào khớp với “${trimmedKeyword}”`}
                                     </p>
                                 )}
                             </div>

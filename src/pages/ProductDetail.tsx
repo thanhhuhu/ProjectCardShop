@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
-import { products } from "../data/products";
 import { games } from "../data/game";
 import type { Product } from "../types/product";
 import ProductGrid from "../components/ProductGrid";
 import { useCart } from "../context/useCart";
+import { useFetch } from "../hooks/useFetch";
+import { getProduct, listProducts } from "../services/productApi";
 
 const formatPrice = (price: number) => `${price.toLocaleString("vi-VN")} ₫`;
 
@@ -69,14 +70,82 @@ function PurchaseBox({ product }: { product: Product }) {
     );
 }
 
+// Khung xám giữ chỗ trong lúc tải thẻ
+function DetailSkeleton() {
+    return (
+        <div aria-hidden="true" className="grid animate-pulse gap-6 md:grid-cols-[minmax(0,340px)_1fr] md:gap-10">
+            <div className="mx-auto w-full max-w-sm md:max-w-none">
+                <div className="aspect-[63/88] w-full rounded-xl bg-white/10" />
+            </div>
+            <div className="space-y-4">
+                <div className="h-3 w-40 rounded bg-white/10" />
+                <div className="h-8 w-3/4 rounded bg-white/10" />
+                <div className="h-8 w-32 rounded bg-white/10" />
+                <div className="h-11 w-64 rounded-full bg-white/10" />
+            </div>
+        </div>
+    );
+}
+
+// Sản phẩm tương tự: cùng loại game, bỏ chính thẻ đang xem
+function SimilarProducts({ product }: { product: Product }) {
+    const { data } = useFetch(`similar-${product.id}`, () =>
+        listProducts({ game: product.game, exclude: product.id, pageSize: 5 }),
+    );
+    const similar = data?.products ?? [];
+
+    if (similar.length === 0) return null;
+
+    return (
+        <div className="mt-12 border-t border-white/10 pt-8">
+            <h2 className="mb-6 border-l-4 border-red-600 pl-3 text-lg font-extrabold uppercase md:text-xl">
+                Sản phẩm tương tự
+            </h2>
+            <ProductGrid
+                products={similar}
+                className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4"
+            />
+        </div>
+    );
+}
+
 export default function ProductDetail() {
     const { id } = useParams();
-    const product = products.find((p) => p.id === Number(id));
+    const productId = Number(id);
+
+    const { data: product, loading, error } = useFetch(`product-${id}`, () =>
+        Number.isInteger(productId) && productId > 0 ? getProduct(productId) : Promise.resolve(null),
+    );
 
     // Chuyển sang thẻ khác (ví dụ bấm vào sản phẩm tương tự) thì cuộn lên đầu trang
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, [id]);
+
+    if (loading) {
+        // Không hiện thẻ cũ trong lúc tải thẻ mới
+        return (
+            <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+                <DetailSkeleton />
+            </section>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className="mx-auto max-w-6xl px-4 py-20 text-center text-white">
+                <h1 className="text-2xl font-extrabold">Không tải được sản phẩm</h1>
+                <p className="mt-2 text-sm text-gray-400">{error}</p>
+                <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                >
+                    Thử lại
+                </button>
+            </section>
+        );
+    }
 
     if (!product) {
         return (
@@ -93,9 +162,6 @@ export default function ProductDetail() {
     }
 
     const gameLabel = games.find((g) => g.slug === product.game)?.label ?? product.game;
-    const similarProducts = products
-        .filter((p) => p.id !== product.id && p.game === product.game)
-        .slice(0, 5);
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
@@ -130,18 +196,7 @@ export default function ProductDetail() {
                 </div>
             </div>
 
-            {/* Sản phẩm tương tự */}
-            {similarProducts.length > 0 && (
-                <div className="mt-12 border-t border-white/10 pt-8">
-                    <h2 className="mb-6 border-l-4 border-red-600 pl-3 text-lg font-extrabold uppercase md:text-xl">
-                        Sản phẩm tương tự
-                    </h2>
-                    <ProductGrid
-                        products={similarProducts}
-                        className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4"
-                    />
-                </div>
-            )}
+            <SimilarProducts key={product.id} product={product} />
         </section>
     );
 }

@@ -1,75 +1,46 @@
-import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { X } from "lucide-react";
-import { products } from "../data/products";
 import { games } from "../data/game";
-import type { Product } from "../types/product";
-import ProductGrid from "../components/ProductGrid";
 import Pagination from "../components/Pagination";
-import { matchesSearch } from "../utils/search";
+import ProductGrid from "../components/ProductGrid";
+import ProductGridSkeleton from "../components/ProductGridSkeleton";
+import { useFetch } from "../hooks/useFetch";
+import { listProducts } from "../services/productApi";
+import type { SortKey } from "../services/productApi";
 
 const PAGE_SIZE = 20; // 5 thẻ mỗi hàng x 4 hàng
+const GRID_CLASS = "grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4";
 
-const sortOptions = [
+const sortOptions: { value: SortKey; label: string }[] = [
     { value: "newest", label: "Mới cập nhật" },
     { value: "price-asc", label: "Giá: thấp đến cao" },
     { value: "price-desc", label: "Giá: cao đến thấp" },
     { value: "rarity-desc", label: "Độ hiếm: cao đến thấp" },
     { value: "name-asc", label: "Tên: A đến Z" },
-] as const;
-
-type SortKey = (typeof sortOptions)[number]["value"];
-
-// Độ hiếm càng cao thì điểm càng lớn (dùng cho mục "giá trị card")
-function rarityRank(rarity: string) {
-    const r = rarity.toLowerCase();
-    if (r.includes("prismatic")) return 6;
-    if (r.includes("secret")) return 5;
-    if (r.includes("ultra")) return 4;
-    if (r.includes("super")) return 3;
-    if (r.includes("rare")) return 2;
-    return 1; // Common
-}
-
-function sortProducts(list: Product[], sort: SortKey): Product[] {
-    const sorted = [...list];
-    switch (sort) {
-        case "price-asc":
-            return sorted.sort((a, b) => a.price - b.price);
-        case "price-desc":
-            return sorted.sort((a, b) => b.price - a.price);
-        case "rarity-desc":
-            return sorted.sort(
-                (a, b) => rarityRank(b.rarity) - rarityRank(a.rarity) || b.price - a.price,
-            );
-        case "name-asc":
-            return sorted.sort((a, b) => a.name.localeCompare(b.name, "vi"));
-        default:
-            return sorted; // giữ nguyên thứ tự trong dữ liệu (mới nhất trước)
-    }
-}
+];
 
 export default function ProductList() {
-    // game, sort, page nằm trên URL: /products?game=ygo&sort=price-asc&page=2
+    // game, search, sort, page nằm trên URL: /products?game=ygo&search=angel&sort=price-asc&page=2
     const [searchParams, setSearchParams] = useSearchParams();
 
     const game = searchParams.get("game");
     const search = (searchParams.get("search") ?? "").trim();
     const sortParam = searchParams.get("sort");
     const sort: SortKey = sortOptions.find((o) => o.value === sortParam)?.value ?? "newest";
+    const requestedPage = Math.max(Number(searchParams.get("page")) || 1, 1);
     const gameLabel = games.find((g) => g.slug === game)?.label;
 
-    const sortedProducts = useMemo(() => {
-        let filtered = game ? products.filter((p) => p.game === game) : products;
-        if (search) filtered = filtered.filter((p) => matchesSearch(p, search));
-        return sortProducts(filtered, sort);
-    }, [game, search, sort]);
+    // Lọc, tìm, sắp xếp và phân trang đều do server làm trong SQL
+    const { data, loading, error } = useFetch(
+        `list|${game}|${search}|${sort}|${requestedPage}`,
+        () => listProducts({ game, search, sort, page: requestedPage, pageSize: PAGE_SIZE }),
+    );
 
-    const total = sortedProducts.length;
+    const total = data?.total ?? 0;
+    const items = data?.products ?? [];
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    const page = Math.min(Math.max(Number(searchParams.get("page")) || 1, 1), totalPages);
-    const start = (page - 1) * PAGE_SIZE;
-    const pageItems = sortedProducts.slice(start, start + PAGE_SIZE);
+    const activePage = Math.min(requestedPage, totalPages);
+    const first = data ? (data.page - 1) * PAGE_SIZE + 1 : 0;
 
     const updateParams = (changes: Record<string, string | null>) => {
         const next = new URLSearchParams(searchParams);
@@ -90,6 +61,14 @@ export default function ProductList() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const resultText = () => {
+        if (error) return "Không tải được dữ liệu";
+        if (!data) return "Đang tải...";
+        if (total === 0) return "Không có kết quả";
+        if (items.length === 0) return `${total} kết quả`;
+        return `Hiển thị ${first}–${first + items.length - 1} của ${total} kết quả`;
+    };
+
     return (
         <div className="text-white">
             {/* Thanh breadcrumb, số kết quả và sắp xếp */}
@@ -104,11 +83,7 @@ export default function ProductList() {
                     </nav>
 
                     <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300">
-                        <span aria-live="polite">
-                            {total === 0
-                                ? "Không có kết quả"
-                                : `Hiển thị ${start + 1}–${start + pageItems.length} của ${total} kết quả`}
-                        </span>
+                        <span aria-live="polite">{resultText()}</span>
                         <label htmlFor="sort" className="sr-only">
                             Sắp xếp sản phẩm
                         </label>
@@ -151,7 +126,21 @@ export default function ProductList() {
                     )}
                 </div>
 
-                {total === 0 ? (
+                {error && !data ? (
+                    <div role="alert" className="py-16 text-center text-gray-300">
+                        <p className="text-red-400">{error}</p>
+                        <p className="mt-1 text-sm text-gray-500">Hãy kiểm tra server đã chạy chưa.</p>
+                        <button
+                            type="button"
+                            onClick={() => window.location.reload()}
+                            className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                        >
+                            Thử lại
+                        </button>
+                    </div>
+                ) : !data ? (
+                    <ProductGridSkeleton count={PAGE_SIZE} className={GRID_CLASS} />
+                ) : total === 0 ? (
                     <div className="py-16 text-center text-gray-300">
                         <p>
                             {search
@@ -165,15 +154,22 @@ export default function ProductList() {
                             Xem tất cả sản phẩm
                         </Link>
                     </div>
+                ) : items.length === 0 ? (
+                    <div className="py-16 text-center text-gray-300">
+                        <p>Trang này không có sản phẩm nào.</p>
+                        <button
+                            type="button"
+                            onClick={() => handlePageChange(1)}
+                            className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                        >
+                            Về trang đầu
+                        </button>
+                    </div>
                 ) : (
-                    <>
-                        <ProductGrid
-                            products={pageItems}
-                            onAddToCart={(p) => console.log("Thêm vào giỏ:", p.code)}
-                            className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4"
-                        />
-                        <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
-                    </>
+                    <div className={`transition-opacity ${loading ? "opacity-60" : ""}`}>
+                        <ProductGrid products={items} className={GRID_CLASS} />
+                        <Pagination page={activePage} totalPages={totalPages} onChange={handlePageChange} />
+                    </div>
                 )}
             </section>
         </div>

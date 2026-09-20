@@ -48,7 +48,7 @@ export async function request<T>(url: string, options: { method?: string; body?:
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-        throw new ApiError(data.message ?? "Có lỗi xảy ra", response.status, data.errors ?? {});
+        throw new ApiError(data.message ?? `Có lỗi xảy ra (mã ${response.status})`, response.status, data.errors ?? {});
     }
 
     return data as T;
