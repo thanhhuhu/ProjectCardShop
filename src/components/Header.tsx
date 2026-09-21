@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ChevronDown, LogOut, Menu, Search, ShoppingCart, User, Users, X } from "lucide-react";
+import { ChevronDown, LogOut, Menu, Package, Search, ShoppingCart, User, Users, X } from "lucide-react";
 import { navItems } from "../data/navigation";
 import type { Product } from "../types/product";
 import { formatPrice } from "../utils/cart";
@@ -277,16 +277,26 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
                     {/* Tài khoản và giỏ hàng */}
                     <div className="ml-auto flex items-center gap-3 md:ml-0">
-                        {/* Nút quản lý người dùng: chỉ hiện với tài khoản admin */}
+                        {/* Nút quản lý sản phẩm và người dùng: chỉ hiện với tài khoản admin */}
                         {user?.role === "admin" && (
-                            <Link
-                                to="/admin/users"
-                                aria-label="Quản lý người dùng"
-                                className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
-                            >
-                                <Users size={18} />
-                                <span className="hidden lg:inline">Người dùng</span>
-                            </Link>
+                            <>
+                                <Link
+                                    to="/admin/products"
+                                    aria-label="Quản lý sản phẩm"
+                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                >
+                                    <Package size={18} />
+                                    <span className="hidden lg:inline">Sản phẩm</span>
+                                </Link>
+                                <Link
+                                    to="/admin/users"
+                                    aria-label="Quản lý người dùng"
+                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                >
+                                    <Users size={18} />
+                                    <span className="hidden lg:inline">Người dùng</span>
+                                </Link>
+                            </>
                         )}
 
                         {loading ? (

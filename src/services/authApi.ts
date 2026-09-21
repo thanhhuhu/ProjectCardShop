@@ -36,10 +36,12 @@ export async function request<T>(url: string, options: { method?: string; body?:
     let response: Response;
 
     try {
+        // FormData (tải file lên) để trình duyệt tự đặt Content-Type; còn lại gửi JSON
+        const isForm = options.body instanceof FormData;
         response = await fetch(url, {
             method: options.method ?? "GET",
-            headers: options.body ? { "Content-Type": "application/json" } : undefined,
-            body: options.body ? JSON.stringify(options.body) : undefined,
+            headers: options.body && !isForm ? { "Content-Type": "application/json" } : undefined,
+            body: options.body ? (isForm ? (options.body as FormData) : JSON.stringify(options.body)) : undefined,
         });
     } catch {
         throw new ApiError("Không kết nối được máy chủ. Hãy kiểm tra server đã chạy chưa.", 0);

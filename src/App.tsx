@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import RequireAdmin from "./components/RequireAdmin.tsx";
-import Preloader from "./components/PreLoader.tsx";
+import RequireAdmin from "./components/RequireAdmin";
+import Preloader from "./components/Preloader";
 import AuthProvider from "./context/AuthProvider";
 import CartProvider from "./context/CartProvider";
 import Home from "./pages/Home";
@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import AuthPage from "./pages/AuthPage";
 import AdminUsers from "./pages/AdminUsers";
+import AdminProducts from "./pages/AdminProducts";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -32,6 +33,14 @@ function App() {
                             element={
                                 <RequireAdmin>
                                     <AdminUsers />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="admin/products"
+                            element={
+                                <RequireAdmin>
+                                    <AdminProducts />
                                 </RequireAdmin>
                             }
                         />
