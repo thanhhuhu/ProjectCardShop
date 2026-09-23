@@ -34,7 +34,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
                     className="aspect-[63/88] w-full rounded-md object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
                 />
                 <span
-                    className={`absolute left-4 top-4 rounded px-2 py-0.5 text-[11px] font-bold shadow ${rarityClass(product.rarity)}`}
+                    className={`absolute left-4 bottom-4 rounded px-2 py-0.5 text-[11px] font-bold shadow ${rarityClass(product.rarity)}`}
                 >
                     {product.rarity}
                 </span>

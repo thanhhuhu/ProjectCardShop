@@ -13,7 +13,7 @@ import AuthPage from "./pages/AuthPage";
 import AdminUsers from "./pages/AdminUsers";
 import AdminProducts from "./pages/AdminProducts";
 import NotFound from "./pages/NotFound";
-
+import Blog from "./pages/Blog.tsx";
 function App() {
     return (
         <AuthProvider>
@@ -24,6 +24,7 @@ function App() {
                         <Route index element={<Home />} />
                         <Route path="products" element={<ProductList />} />
                         <Route path="product/:id" element={<ProductDetail />} />
+                        <Route path="blog" element={<Blog />} />
                         <Route path="cart" element={<Cart />} />
                         <Route path="checkout" element={<Checkout />} />
 

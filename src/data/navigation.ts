@@ -14,12 +14,13 @@ export const navItems: NavItem[] = [
         ],
     },
     {
-        label: "Phụ kiện",
-        href: "/accessories",
+        label: "Blog",
+        href: "/blog",
         children: [
-            { label: "Bọc bài (sleeve)", href: "/accessories?type=sleeve" },
-            { label: "Hộp đựng bài", href: "/accessories?type=deckbox" },
-            { label: "Thảm chơi bài", href: "/accessories?type=playmat" },
+            { label: "Tin tức Yu-Gi-Oh!", href: "/blog?category=yugioh" },
+            { label: "Hướng dẫn", href: "/blog?category=guide" },
+            { label: "Deck & Chiến thuật", href: "/blog?category=deck" },
+            { label: "Tin shop", href: "/blog?category=shop" },
         ],
     },
     {

@@ -14,8 +14,22 @@ import { formatPrice } from "../utils/cart";
 const PAGE_SIZE = 10;
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024; // khớp với giới hạn ở server
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const RARITIES = ["Common", "Rare", "Super Rare", "Ultra Rare", "Secret Rare", "Prismatic Secret Rare"];
-
+const RARITIES = [
+    "Common",
+    "Rare",
+    "Super Rare",
+    "Ultra Rare",
+    "Secret Rare",
+    "Prismatic Secret Rare",
+    "Quarter Century Secret Rare",
+    "Ultimate Rare",
+    "Collector's Rare",
+    "Starlight Rare",
+    "Ghost Rare",
+    "Premium Gold Rare",
+    "Gold Rare",
+    "Platinum Secret Rare",
+];
 // Bỏ mọi ký tự không phải số: "35.000" hay "35,000" đều thành 35000
 const toNumber = (text: string) => Number(text.replace(/\D/g, ""));
 
@@ -64,7 +78,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
     const [rarity, setRarity] = useState(product?.rarity ?? "Common");
     const [game, setGame] = useState(product?.game ?? games[0]?.slug ?? "");
     const [price, setPrice] = useState(product ? String(product.price) : "");
-    const [stock, setStock] = useState(product ? String(product.stock) : "0");
+    const [stock, setStock] = useState(product ? String(product.stock) : "1");
     const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? "");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [message, setMessage] = useState("");
@@ -215,19 +229,18 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                         />
                     </Field>
                     <Field id="product-rarity" label="Độ hiếm" error={errors.rarity}>
-                        <input
+                        <select
                             id="product-rarity"
                             value={rarity}
                             onChange={onChangeOf("rarity", setRarity)}
-                            list="rarity-options"
-                            autoComplete="off"
                             className={inputClass(errors.rarity)}
-                        />
-                        <datalist id="rarity-options">
+                        >
                             {RARITIES.map((r) => (
-                                <option key={r} value={r} />
+                                <option key={r} value={r}>
+                                    {r}
+                                </option>
                             ))}
-                        </datalist>
+                        </select>
                     </Field>
                 </div>
 
