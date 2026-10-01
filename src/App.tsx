@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import RequireAdmin from "./components/RequireAdmin";
-import Preloader from "./components/Preloader";
+import Preloader from "./components/PreLoader";
 import AuthProvider from "./context/AuthProvider";
 import CartProvider from "./context/CartProvider";
 import Home from "./pages/Home";
