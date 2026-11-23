@@ -46,22 +46,22 @@ interface FieldProps {
 function Field({ id, label, children, error, hint }: FieldProps) {
     return (
         <div>
-            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-gray-200">
+            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-[#2a2a2a]">
                 {label}
             </label>
             {children}
             {error ? (
-                <p className="mt-1 text-xs text-red-400">{error}</p>
+                <p className="mt-1 text-xs text-red-600">{error}</p>
             ) : (
-                hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>
+                hint && <p className="mt-1 text-xs text-[#8a8a8a]">{hint}</p>
             )}
         </div>
     );
 }
 
 const inputClass = (error?: string) =>
-    `w-full rounded-lg border bg-neutral-900 px-3 py-2.5 text-sm text-white outline-none transition focus:border-red-600 ${
-        error ? "border-red-500" : "border-white/15"
+    `w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
+        error ? "border-red-400" : "border-black/10"
     }`;
 
 /* ---------- Thêm / sửa thẻ (kèm tải ảnh) ---------- */
@@ -170,18 +170,18 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
                 {/* Ảnh */}
                 <div className="flex gap-4">
-                    <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg border border-white/15 bg-black">
+                    <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-[#f4f4f1]">
                         {imageUrl ? (
                             <img src={imageUrl} alt="Ảnh thẻ" className="h-full w-full object-cover" />
                         ) : (
-                            <div className="flex h-full items-center justify-center px-2 text-center text-xs text-gray-500">
+                            <div className="flex h-full items-center justify-center px-2 text-center text-xs text-[#8a8a8a]">
                                 Chưa có ảnh
                             </div>
                         )}
                         {uploading && (
                             <div
                                 role="status"
-                                className="absolute inset-0 flex items-center justify-center bg-black/70 text-xs text-white"
+                                className="absolute inset-0 flex items-center justify-center bg-black/70 text-xs text-[#1a1a1a]"
                             >
                                 Đang tải...
                             </div>
@@ -190,7 +190,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
 
                     <div className="flex-1 space-y-2">
                         <div className="flex flex-wrap items-center gap-3">
-                            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/20 px-3 py-2 text-sm font-semibold text-gray-200 transition focus-within:border-red-600 hover:border-white/40">
+                            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-black/15 px-3 py-2 text-sm font-semibold text-[#2a2a2a] transition focus-within:border-[#1a1a1a] hover:border-black/30">
                                 <ImagePlus size={16} />
                                 {imageUrl ? "Đổi ảnh" : "Chọn ảnh"}
                                 <input
@@ -206,16 +206,16 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                                 <button
                                     type="button"
                                     onClick={() => setImageUrl("")}
-                                    className="text-sm text-gray-400 transition hover:text-red-400"
+                                    className="text-sm text-[#6b6b6b] transition hover:text-red-700"
                                 >
                                     Bỏ ảnh
                                 </button>
                             )}
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-[#8a8a8a]">
                             JPG, PNG hoặc WebP, tối đa 3 MB. Nên dùng ảnh dọc, tỉ lệ khoảng 63:88.
                         </p>
-                        {errors.imageUrl && <p className="text-xs text-red-400">{errors.imageUrl}</p>}
+                        {errors.imageUrl && <p className="text-xs text-red-600">{errors.imageUrl}</p>}
                     </div>
                 </div>
 
@@ -309,7 +309,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                 </div>
 
                 {message && (
-                    <p role="alert" className="text-sm text-red-400">
+                    <p role="alert" className="text-sm text-red-600">
                         {message}
                     </p>
                 )}
@@ -318,14 +318,14 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                     <button
                         type="button"
                         onClick={onClose}
-                        className="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200 transition hover:border-white/40"
+                        className="rounded-lg border border-black/15 px-4 py-2 text-sm font-semibold text-[#2a2a2a] transition hover:border-black/30"
                     >
                         Hủy
                     </button>
                     <button
                         type="submit"
                         disabled={saving || uploading}
-                        className="rounded-lg bg-red-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400"
+                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                     >
                         {saving ? "Đang lưu..." : product ? "Lưu thay đổi" : "Thêm thẻ"}
                     </button>
@@ -361,16 +361,16 @@ function DeleteProductDialog({ product, onClose, onDeleted }: DeleteProductDialo
 
     return (
         <Modal title="Xóa thẻ" onClose={onClose}>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-[#3a3a3a]">
                 Bạn sắp xóa thẻ{" "}
-                <strong className="text-white">
+                <strong className="text-[#1a1a1a]">
                     {product.code} – {product.name}
                 </strong>{" "}
                 ({product.rarity}). Ảnh do bạn tải lên của thẻ này cũng bị xóa. Hành động này không thể hoàn tác.
             </p>
 
             {message && (
-                <p role="alert" className="mt-3 text-sm text-red-400">
+                <p role="alert" className="mt-3 text-sm text-red-600">
                     {message}
                 </p>
             )}
@@ -379,7 +379,7 @@ function DeleteProductDialog({ product, onClose, onDeleted }: DeleteProductDialo
                 <button
                     type="button"
                     onClick={onClose}
-                    className="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200 transition hover:border-white/40"
+                    className="rounded-lg border border-black/15 px-4 py-2 text-sm font-semibold text-[#2a2a2a] transition hover:border-black/30"
                 >
                     Hủy
                 </button>
@@ -387,7 +387,7 @@ function DeleteProductDialog({ product, onClose, onDeleted }: DeleteProductDialo
                     type="button"
                     onClick={handleDelete}
                     disabled={deleting}
-                    className="rounded-lg bg-red-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400"
+                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                 >
                     {deleting ? "Đang xóa..." : "Xóa"}
                 </button>
@@ -453,13 +453,13 @@ export default function AdminProducts() {
     };
 
     return (
-        <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">
+                    <h1 className="border-l-4 border-[#1a1a1a] pl-3 text-xl font-extrabold uppercase md:text-2xl">
                         Quản lý sản phẩm
                     </h1>
-                    <p className="mt-1 pl-4 text-sm text-gray-400">{data ? `${total} thẻ` : "Đang tải..."}</p>
+                    <p className="mt-1 pl-4 text-sm text-[#6b6b6b]">{data ? `${total} thẻ` : "Đang tải..."}</p>
                 </div>
 
                 <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
@@ -469,7 +469,7 @@ export default function AdminProducts() {
                         </label>
                         <Search
                             size={16}
-                            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6b6b6b]"
                         />
                         <input
                             id="product-search"
@@ -478,13 +478,13 @@ export default function AdminProducts() {
                             onChange={(e) => setSearchInput(e.target.value)}
                             placeholder="Tìm theo tên hoặc mã..."
                             autoComplete="off"
-                            className="w-full rounded-lg border border-white/15 bg-neutral-900 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-red-600"
+                            className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
                         />
                     </div>
                     <button
                         type="button"
                         onClick={() => setForm({ product: null })}
-                        className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-700"
+                        className="flex items-center gap-2 rounded-lg bg-[#1a1a1a] px-4 py-2.5 text-sm font-bold text-[#f4f4f1] transition hover:bg-black"
                     >
                         <Plus size={16} />
                         Thêm thẻ
@@ -497,18 +497,18 @@ export default function AdminProducts() {
                 {notice && (
                     <p
                         role="status"
-                        className="rounded-lg border border-green-600/40 bg-green-600/10 px-4 py-2 text-sm text-green-400"
+                        className="rounded-lg border border-green-600/40 bg-green-600/10 px-4 py-2 text-sm text-green-700"
                     >
                         {notice}
                     </p>
                 )}
                 {!notice && error && (
-                    <div role="alert" className="flex flex-wrap items-center gap-3 py-2 text-sm text-red-400">
+                    <div role="alert" className="flex flex-wrap items-center gap-3 py-2 text-sm text-red-600">
                         <span>{error}</span>
                         <button
                             type="button"
                             onClick={reload}
-                            className="rounded-full border border-red-600 px-3 py-1 font-semibold transition hover:bg-red-600 hover:text-white"
+                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                         >
                             Thử lại
                         </button>
@@ -518,7 +518,7 @@ export default function AdminProducts() {
 
             {/* Bảng luôn cao đúng 10 dòng, mỗi dòng cao cố định, nên chiều cao trang không đổi và footer đứng yên */}
             <div
-                className={`relative overflow-x-auto rounded-xl border border-white/10 bg-[#141414] transition-opacity ${
+                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-white transition-opacity ${
                     loading ? "opacity-60" : ""
                 }`}
             >
@@ -533,7 +533,7 @@ export default function AdminProducts() {
                         <col className="w-20" />
                         <col className="w-28" />
                     </colgroup>
-                    <thead className="border-b border-white/10 text-xs uppercase text-gray-400">
+                    <thead className="border-b border-black/10 text-xs uppercase text-[#6b6b6b]">
                     <tr className="h-11">
                         <th className="px-4 font-semibold">Ảnh</th>
                         <th className="px-4 font-semibold">Mã thẻ</th>
@@ -555,7 +555,7 @@ export default function AdminProducts() {
                                 <tr
                                     key={`empty-${index}`}
                                     aria-hidden="true"
-                                    className="h-16 border-b border-white/5 last:border-0"
+                                    className="h-16 border-b border-black/[0.06] last:border-0"
                                 >
                                     <td colSpan={8} />
                                 </tr>
@@ -563,9 +563,9 @@ export default function AdminProducts() {
                         }
 
                         return (
-                            <tr key={p.id} className="h-16 border-b border-white/5 last:border-0 hover:bg-white/5">
+                            <tr key={p.id} className="h-16 border-b border-black/[0.06] last:border-0 hover:bg-black/[0.04]">
                                 <td className="px-4">
-                                    <div className="relative h-12 w-9 overflow-hidden rounded bg-neutral-800">
+                                    <div className="relative h-12 w-9 overflow-hidden rounded bg-[#eceae5]">
                                         {p.imageUrl && (
                                             <img
                                                 src={p.imageUrl}
@@ -579,18 +579,18 @@ export default function AdminProducts() {
                                         )}
                                     </div>
                                 </td>
-                                <td className="truncate px-4 font-semibold text-red-400" title={p.code}>
+                                <td className="truncate px-4 font-semibold text-[#8a8a8a]" title={p.code}>
                                     {p.code}
                                 </td>
-                                <td className="truncate px-4 text-white" title={p.name}>
+                                <td className="truncate px-4 text-[#1a1a1a]" title={p.name}>
                                     {p.name}
                                 </td>
-                                <td className="truncate px-4 text-gray-300" title={p.rarity}>
+                                <td className="truncate px-4 text-[#3a3a3a]" title={p.rarity}>
                                     {p.rarity}
                                 </td>
-                                <td className="truncate px-4 text-gray-400">{p.game}</td>
-                                <td className="px-4 text-gray-200">{formatPrice(p.price)}</td>
-                                <td className={`px-4 ${p.stock === 0 ? "font-semibold text-red-400" : "text-gray-300"}`}>
+                                <td className="truncate px-4 text-[#6b6b6b]">{p.game}</td>
+                                <td className="px-4 text-[#2a2a2a]">{formatPrice(p.price)}</td>
+                                <td className={`px-4 ${p.stock === 0 ? "font-semibold text-red-600" : "text-[#3a3a3a]"}`}>
                                     {p.stock}
                                 </td>
                                 <td className="px-4">
@@ -599,7 +599,7 @@ export default function AdminProducts() {
                                             type="button"
                                             onClick={() => setForm({ product: p })}
                                             aria-label={`Sửa ${p.code} ${p.name}`}
-                                            className="rounded-lg border border-white/15 p-2 text-gray-300 transition hover:border-white/40 hover:text-white"
+                                            className="rounded-lg border border-black/10 p-2 text-[#3a3a3a] transition hover:border-black/30 hover:text-black"
                                         >
                                             <Pencil size={15} />
                                         </button>
@@ -607,7 +607,7 @@ export default function AdminProducts() {
                                             type="button"
                                             onClick={() => setDeleting(p)}
                                             aria-label={`Xóa ${p.code} ${p.name}`}
-                                            className="rounded-lg border border-white/15 p-2 text-gray-300 transition hover:border-red-600 hover:text-red-400"
+                                            className="rounded-lg border border-black/10 p-2 text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-red-700"
                                         >
                                             <Trash2 size={15} />
                                         </button>
@@ -621,12 +621,12 @@ export default function AdminProducts() {
 
                 {/* Thông báo nằm đè lên giữa phần thân bảng, không làm bảng đổi chiều cao */}
                 {!loading && data && items.length === 0 && (
-                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center px-4 text-center text-sm text-gray-400">
+                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center px-4 text-center text-sm text-[#6b6b6b]">
                         {query ? `Không tìm thấy thẻ nào khớp với “${query}”.` : "Chưa có sản phẩm nào. Bấm “Thêm thẻ” để tạo."}
                     </p>
                 )}
                 {!data && !error && (
-                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center text-sm text-gray-400">
+                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center text-sm text-[#6b6b6b]">
                         Đang tải danh sách...
                     </p>
                 )}

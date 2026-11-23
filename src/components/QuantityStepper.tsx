@@ -8,13 +8,13 @@ interface QuantityStepperProps {
 
 export default function QuantityStepper({ value, max, onChange }: QuantityStepperProps) {
     return (
-        <div className="flex items-center overflow-hidden rounded-full bg-neutral-800 text-white">
+        <div className="flex items-center overflow-hidden rounded-full bg-[#eceae5] text-[#1a1a1a]">
             <button
                 type="button"
                 aria-label="Giảm số lượng"
                 disabled={value <= 1}
                 onClick={() => onChange(value - 1)}
-                className="p-2.5 transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+                className="p-2.5 transition hover:bg-[#e4e2dc] disabled:cursor-not-allowed disabled:opacity-40"
             >
                 <Minus size={14} />
             </button>
@@ -26,7 +26,7 @@ export default function QuantityStepper({ value, max, onChange }: QuantitySteppe
                 aria-label="Tăng số lượng"
                 disabled={value >= max}
                 onClick={() => onChange(value + 1)}
-                className="p-2.5 transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+                className="p-2.5 transition hover:bg-[#e4e2dc] disabled:cursor-not-allowed disabled:opacity-40"
             >
                 <Plus size={14} />
             </button>

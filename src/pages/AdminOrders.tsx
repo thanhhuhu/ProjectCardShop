@@ -20,10 +20,10 @@ const TABS: { value: OrderStatus | ""; label: string }[] = [
 // Nút hành động ứng với trạng thái đích
 const ACTION: Record<OrderStatus, { text: string; className: string }> = {
     pending: { text: "", className: "" },
-    confirmed: { text: "Xác nhận đơn", className: "bg-red-600 hover:bg-red-700 text-white" },
-    shipping: { text: "Bắt đầu giao", className: "bg-purple-600 hover:bg-purple-700 text-white" },
-    completed: { text: "Đã giao xong", className: "bg-green-600 hover:bg-green-700 text-white" },
-    cancelled: { text: "Hủy đơn", className: "border border-white/15 text-gray-300 hover:border-red-500 hover:text-red-400" },
+    confirmed: { text: "Xác nhận đơn", className: "bg-[#1a1a1a] hover:bg-black text-[#f4f4f1]" },
+    shipping: { text: "Bắt đầu giao", className: "bg-purple-600 hover:bg-purple-700 text-[#1a1a1a]" },
+    completed: { text: "Đã giao xong", className: "bg-green-600 hover:bg-green-700 text-[#1a1a1a]" },
+    cancelled: { text: "Hủy đơn", className: "border border-black/10 text-[#3a3a3a] hover:border-red-400 hover:text-red-700" },
 };
 
 export default function AdminOrders() {
@@ -77,13 +77,13 @@ export default function AdminOrders() {
     const total = Object.values(data?.statusCounts ?? {}).reduce((sum, n) => sum + (n ?? 0), 0);
 
     return (
-        <section className="mx-auto max-w-5xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-5xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">Quản lý đơn hàng</h1>
-                    <p className="mt-1 pl-4 text-sm text-gray-400">Đơn hàng của tất cả khách</p>
+                    <h1 className="border-l-4 border-[#1a1a1a] pl-3 text-xl font-extrabold uppercase md:text-2xl">Quản lý đơn hàng</h1>
+                    <p className="mt-1 pl-4 text-sm text-[#6b6b6b]">Đơn hàng của tất cả khách</p>
                 </div>
-                <button type="button" onClick={() => setReloadKey((k) => k + 1)} className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-3 py-2 text-sm font-semibold text-gray-300 transition hover:border-red-600 hover:text-white">
+                <button type="button" onClick={() => setReloadKey((k) => k + 1)} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-semibold text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-black">
                     <RefreshCw size={15} className={loading ? "animate-spin" : ""} /> Tải lại
                 </button>
             </div>
@@ -101,10 +101,10 @@ export default function AdminOrders() {
                                 setStatus(tab.value);
                                 setPage(1);
                             }}
-                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-red-600 text-white" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}
+                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-[#1a1a1a] text-[#f4f4f1]" : "bg-black/[0.04] text-[#3a3a3a] hover:bg-black/[0.06]"}`}
                         >
                             {tab.label}
-                            {data && <span className={`ml-2 rounded-full px-1.5 text-xs ${active ? "bg-white/20" : "bg-white/10"}`}>{count}</span>}
+                            {data && <span className={`ml-2 rounded-full px-1.5 text-xs ${active ? "bg-black/10" : "bg-black/[0.06]"}`}>{count}</span>}
                         </button>
                     );
                 })}
@@ -112,27 +112,27 @@ export default function AdminOrders() {
 
             <div className="relative mb-6">
                 <label htmlFor="order-search" className="sr-only">Tìm đơn hàng</label>
-                <Search size={17} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                <Search size={17} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#8a8a8a]" />
                 <input
                     id="order-search"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Tìm theo mã đơn, tên, số điện thoại hoặc tài khoản..."
-                    className="w-full rounded-lg border border-white/15 bg-neutral-900 py-2.5 pl-10 pr-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-red-600"
+                    className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-10 pr-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a]"
                 />
             </div>
 
             {error ? (
-                <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center text-sm text-red-300">{error}</div>
+                <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-600">{error}</div>
             ) : !data ? (
                 <div className="flex min-h-[30vh] items-center justify-center">
-                    <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-white/20 border-t-red-600" />
+                    <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-black/15 border-t-red-600" />
                 </div>
             ) : data.orders.length === 0 ? (
-                <div className="rounded-xl border border-white/10 bg-[#141414] p-10 text-center">
-                    <PackageOpen size={48} className="mx-auto text-gray-500" />
-                    <p className="mt-3 text-sm text-gray-400">Không có đơn hàng nào.</p>
+                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                    <PackageOpen size={48} className="mx-auto text-[#8a8a8a]" />
+                    <p className="mt-3 text-sm text-[#6b6b6b]">Không có đơn hàng nào.</p>
                 </div>
             ) : (
                 <div className={loading ? "opacity-60 transition-opacity" : "transition-opacity"}>
@@ -174,16 +174,16 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
     };
 
     return (
-        <article className="overflow-hidden rounded-xl border border-white/10 bg-[#141414]">
-            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-5">
+        <article className="overflow-hidden rounded-xl border border-black/10 bg-white">
+            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-black/10 px-4 py-3 sm:px-5">
                 <div className="min-w-0">
                     <p>
-                        <span className="text-xs text-gray-500">Mã đơn </span>
-                        <strong className="font-mono tracking-wider text-red-400">{order.code}</strong>
+                        <span className="text-xs text-[#8a8a8a]">Mã đơn </span>
+                        <strong className="font-mono tracking-wider text-[#1a1a1a]">{order.code}</strong>
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#8a8a8a]">
                         {formatDateTime(order.createdAt)} ·{" "}
-                        {order.username ? <>Tài khoản <span className="text-gray-300">{order.username}</span></> : "Khách chưa đăng nhập"}
+                        {order.username ? <>Tài khoản <span className="text-[#3a3a3a]">{order.username}</span></> : "Khách chưa đăng nhập"}
                     </p>
                 </div>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}>{status.text}</span>
@@ -197,9 +197,9 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
                             <img src={item.imageUrl} alt="" className="aspect-[63/88] w-10 shrink-0 rounded object-cover" />
                             <div className="min-w-0 flex-1">
                                 <p className="line-clamp-1 text-sm">
-                                    <span className="font-semibold text-red-400">{item.code}</span> {item.name}
+                                    <span className="font-semibold text-[#8a8a8a]">{item.code}</span> {item.name}
                                 </p>
-                                <p className="text-xs text-gray-500">{formatPrice(item.price)} × {item.quantity}</p>
+                                <p className="text-xs text-[#8a8a8a]">{formatPrice(item.price)} × {item.quantity}</p>
                             </div>
                             <span className="text-sm font-semibold">{formatPrice(item.lineTotal)}</span>
                         </li>
@@ -209,36 +209,36 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
                 {/* Khách hàng */}
                 <div className="rounded-lg bg-black/30 p-3 text-sm">
                     <p className="font-semibold">{order.fullName}</p>
-                    <a href={`tel:${order.phone}`} className="text-red-400 hover:underline">{order.phone}</a>
-                    <p className="mt-1 text-xs text-gray-400">{order.address}, {order.city}</p>
+                    <a href={`tel:${order.phone}`} className="text-[#1a1a1a] hover:underline">{order.phone}</a>
+                    <p className="mt-1 text-xs text-[#6b6b6b]">{order.address}, {order.city}</p>
                     {order.note && <p className="mt-2 text-xs italic text-yellow-200/80">“{order.note}”</p>}
                 </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 px-4 py-3 sm:px-5">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-black/10 px-4 py-3 sm:px-5">
                 <div className="text-sm">
-                    <span className="text-gray-400">{order.payment === "cod" ? "COD" : "Chuyển khoản"}</span>
-                    <span className="mx-2 text-gray-600">·</span>
+                    <span className="text-[#6b6b6b]">{order.payment === "cod" ? "COD" : "Chuyển khoản"}</span>
+                    <span className="mx-2 text-[#8a8a8a]">·</span>
                     <span className={paymentStatus.className}>{paymentStatus.text}</span>
-                    <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="ml-3 inline-flex items-center gap-1 text-xs text-gray-400 hover:text-white">
+                    <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="ml-3 inline-flex items-center gap-1 text-xs text-[#6b6b6b] hover:text-black">
                         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} /> Chi tiết
                     </button>
                 </div>
-                <span className="text-lg font-extrabold text-red-400">{formatPrice(order.total)}</span>
+                <span className="text-lg font-extrabold text-[#1a1a1a]">{formatPrice(order.total)}</span>
             </div>
 
             {open && (
-                <dl className="grid grid-cols-2 gap-x-6 gap-y-2 border-t border-white/10 bg-black/20 px-4 py-3 text-sm sm:grid-cols-4 sm:px-5">
-                    <div><dt className="text-xs text-gray-500">Tạm tính</dt><dd>{formatPrice(order.subtotal)}</dd></div>
-                    <div><dt className="text-xs text-gray-500">Phí ship</dt><dd>{order.shippingFee === 0 ? "Miễn phí" : formatPrice(order.shippingFee)}</dd></div>
-                    <div><dt className="text-xs text-gray-500">Email</dt><dd className="truncate">{order.email || "—"}</dd></div>
-                    <div><dt className="text-xs text-gray-500">Thanh toán lúc</dt><dd>{order.paidAt ? formatDateTime(order.paidAt) : "—"}</dd></div>
+                <dl className="grid grid-cols-2 gap-x-6 gap-y-2 border-t border-black/10 bg-black/20 px-4 py-3 text-sm sm:grid-cols-4 sm:px-5">
+                    <div><dt className="text-xs text-[#8a8a8a]">Tạm tính</dt><dd>{formatPrice(order.subtotal)}</dd></div>
+                    <div><dt className="text-xs text-[#8a8a8a]">Phí ship</dt><dd>{order.shippingFee === 0 ? "Miễn phí" : formatPrice(order.shippingFee)}</dd></div>
+                    <div><dt className="text-xs text-[#8a8a8a]">Email</dt><dd className="truncate">{order.email || "—"}</dd></div>
+                    <div><dt className="text-xs text-[#8a8a8a]">Thanh toán lúc</dt><dd>{order.paidAt ? formatDateTime(order.paidAt) : "—"}</dd></div>
                 </dl>
             )}
 
             {order.nextStatuses.length > 0 && (
-                <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/10 px-4 py-3 sm:px-5">
-                    {error && <p className="mr-auto text-sm text-red-400">{error}</p>}
+                <div className="flex flex-wrap items-center justify-end gap-2 border-t border-black/10 px-4 py-3 sm:px-5">
+                    {error && <p className="mr-auto text-sm text-red-600">{error}</p>}
                     {order.nextStatuses.map((next) => (
                         <button
                             key={next}
@@ -255,12 +255,12 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
 
             {confirmCancel && (
                 <Modal title="Hủy đơn hàng" onClose={() => setConfirmCancel(false)}>
-                    <p className="text-sm text-gray-300">
-                        Hủy đơn <strong className="text-white">{order.code}</strong> của {order.fullName}? Số lượng sản phẩm trong đơn sẽ được trả lại vào kho. Không thể hoàn tác.
+                    <p className="text-sm text-[#3a3a3a]">
+                        Hủy đơn <strong className="text-[#1a1a1a]">{order.code}</strong> của {order.fullName}? Số lượng sản phẩm trong đơn sẽ được trả lại vào kho. Không thể hoàn tác.
                     </p>
                     <div className="mt-6 flex justify-end gap-2">
-                        <button type="button" onClick={() => setConfirmCancel(false)} className="rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white">Không</button>
-                        <button type="button" disabled={busy !== null} onClick={() => changeStatus("cancelled")} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-50">
+                        <button type="button" onClick={() => setConfirmCancel(false)} className="rounded-lg border border-black/10 px-4 py-2 text-sm font-semibold text-[#3a3a3a] hover:text-black">Không</button>
+                        <button type="button" disabled={busy !== null} onClick={() => changeStatus("cancelled")} className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#f4f4f1] hover:bg-black disabled:opacity-50">
                             {busy === "cancelled" ? "Đang hủy..." : "Hủy đơn"}
                         </button>
                     </div>

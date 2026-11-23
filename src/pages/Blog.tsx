@@ -44,16 +44,16 @@ export default function Blog() {
     };
 
     return (
-        <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="border-l-4 border-red-600 pl-3 text-2xl font-extrabold uppercase">
+                    <h1 className="border-l-4 border-[#1a1a1a] pl-3 text-2xl font-extrabold uppercase">
                         {category ? blogCategoryLabel(category) : "Blog"}
                     </h1>
-                    <p className="mt-2 pl-4 text-sm text-gray-400">Tin tức và bài viết từ L1ZY CARD SHOP</p>
+                    <p className="mt-2 pl-4 text-sm text-[#6b6b6b]">Tin tức và bài viết từ L1ZY CARD SHOP</p>
                 </div>
                 {user?.role === "admin" && (
-                    <Link to="/admin/blog" className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold transition hover:bg-red-700">
+                    <Link to="/admin/blog" className="inline-flex items-center gap-2 rounded-lg bg-[#1a1a1a] text-[#f4f4f1] px-4 py-2.5 text-sm font-bold transition hover:bg-black">
                         <PenSquare size={16} /> Viết bài
                     </Link>
                 )}
@@ -61,25 +61,25 @@ export default function Blog() {
 
             {loading ? (
                 <div className="flex min-h-[30vh] items-center justify-center">
-                    <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-white/20 border-t-red-600" />
+                    <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-black/15 border-t-red-600" />
                 </div>
             ) : error ? (
-                <p className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center text-sm text-red-300">{error}</p>
+                <p className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-600">{error}</p>
             ) : !data || data.posts.length === 0 ? (
-                <div className="rounded-xl border border-white/10 bg-[#141414] p-10 text-center">
-                    <Newspaper size={48} className="mx-auto text-gray-500" />
-                    <p className="mt-3 text-sm text-gray-400">Chưa có bài viết nào.</p>
+                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                    <Newspaper size={48} className="mx-auto text-[#8a8a8a]" />
+                    <p className="mt-3 text-sm text-[#6b6b6b]">Chưa có bài viết nào.</p>
                 </div>
             ) : (
                 <>
                     <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {data.posts.map((post) => (
                             <li key={post.id}>
-                                <Link to={`/blog/${post.id}`} className="group flex h-full flex-col rounded-xl border border-white/10 bg-[#141414] p-5 transition hover:border-red-600/60">
-                                    <span className="text-xs font-semibold uppercase tracking-wide text-red-400">{blogCategoryLabel(post.category)}</span>
-                                    <h2 className="mt-2 line-clamp-2 text-lg font-extrabold group-hover:text-red-400">{post.title}</h2>
-                                    <p className="mt-2 line-clamp-4 flex-1 whitespace-pre-line text-sm text-gray-400">{post.excerpt}</p>
-                                    <p className="mt-4 text-xs text-gray-500">{formatDateTime(post.createdAt)}{post.author && ` · ${post.author}`}</p>
+                                <Link to={`/blog/${post.id}`} className="group flex h-full flex-col rounded-xl border border-black/10 bg-white p-5 transition hover:border-black/50">
+                                    <span className="text-xs font-semibold uppercase tracking-wide text-[#8a8a8a]">{blogCategoryLabel(post.category)}</span>
+                                    <h2 className="mt-2 line-clamp-2 text-lg font-extrabold group-hover:text-[#1a1a1a]">{post.title}</h2>
+                                    <p className="mt-2 line-clamp-4 flex-1 whitespace-pre-line text-sm text-[#6b6b6b]">{post.excerpt}</p>
+                                    <p className="mt-4 text-xs text-[#8a8a8a]">{formatDateTime(post.createdAt)}{post.author && ` · ${post.author}`}</p>
                                 </Link>
                             </li>
                         ))}

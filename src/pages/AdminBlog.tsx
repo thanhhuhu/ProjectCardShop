@@ -8,7 +8,7 @@ import type { BlogCategory } from "../services/blogApi";
 type Field = "title" | "category" | "content";
 
 const inputClass = (error?: string) =>
-    `w-full rounded-lg border bg-neutral-900 px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-red-600 ${error ? "border-red-500" : "border-white/15"}`;
+    `w-full rounded-lg border bg-white px-4 py-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a] ${error ? "border-red-400" : "border-black/10"}`;
 
 // Trang viết blog: chỉ admin vào được (được bọc bởi <RequireAdmin> trong App.tsx)
 export default function AdminBlog() {
@@ -45,25 +45,25 @@ export default function AdminBlog() {
     };
 
     return (
-        <section className="mx-auto max-w-5xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-5xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="border-l-4 border-red-600 pl-3 text-2xl font-extrabold uppercase">Viết Blog</h1>
-                    <p className="mt-2 pl-4 text-sm text-gray-400">Tạo bài viết mới cho L1ZY CARD SHOP</p>
+                    <h1 className="border-l-4 border-[#1a1a1a] pl-3 text-2xl font-extrabold uppercase">Viết Blog</h1>
+                    <p className="mt-2 pl-4 text-sm text-[#6b6b6b]">Tạo bài viết mới cho L1ZY CARD SHOP</p>
                 </div>
-                <Link to="/blog" className="text-sm text-gray-400 transition hover:text-white">Xem trang blog →</Link>
+                <Link to="/blog" className="text-sm text-[#6b6b6b] transition hover:text-black">Xem trang blog →</Link>
             </div>
 
-            <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-white/10 bg-[#141414] p-6">
+            <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-black/10 bg-white p-6">
                 <div className="space-y-5">
                     <div>
-                        <label htmlFor="blog-title" className="mb-2 block text-sm font-semibold text-gray-200">Tiêu đề</label>
+                        <label htmlFor="blog-title" className="mb-2 block text-sm font-semibold text-[#2a2a2a]">Tiêu đề</label>
                         <input id="blog-title" type="text" value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} placeholder="Nhập tiêu đề bài viết..." aria-invalid={errors.title ? true : undefined} className={inputClass(errors.title)} />
-                        {errors.title && <p className="mt-1 text-xs text-red-400">{errors.title}</p>}
+                        {errors.title && <p className="mt-1 text-xs text-red-600">{errors.title}</p>}
                     </div>
 
                     <div>
-                        <label htmlFor="blog-category" className="mb-2 block text-sm font-semibold text-gray-200">Danh mục</label>
+                        <label htmlFor="blog-category" className="mb-2 block text-sm font-semibold text-[#2a2a2a]">Danh mục</label>
                         <select id="blog-category" value={category} onChange={(e) => setCategory(e.target.value as BlogCategory)} className={inputClass(errors.category)}>
                             {BLOG_CATEGORIES.map((item) => (
                                 <option key={item.value} value={item.value}>{item.label}</option>
@@ -72,15 +72,15 @@ export default function AdminBlog() {
                     </div>
 
                     <div>
-                        <label htmlFor="blog-content" className="mb-2 block text-sm font-semibold text-gray-200">Nội dung</label>
+                        <label htmlFor="blog-content" className="mb-2 block text-sm font-semibold text-[#2a2a2a]">Nội dung</label>
                         <textarea id="blog-content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Viết nội dung bài blog... (xuống dòng 2 lần để tách đoạn)" rows={15} aria-invalid={errors.content ? true : undefined} className={`${inputClass(errors.content)} resize-y leading-6`} />
-                        {errors.content && <p className="mt-1 text-xs text-red-400">{errors.content}</p>}
+                        {errors.content && <p className="mt-1 text-xs text-red-600">{errors.content}</p>}
                     </div>
 
-                    {submitError && <p className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">{submitError}</p>}
+                    {submitError && <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
 
                     <div className="flex justify-end">
-                        <button type="submit" disabled={submitting} className="rounded-lg bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60">
+                        <button type="submit" disabled={submitting} className="rounded-lg bg-[#1a1a1a] px-5 py-3 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60">
                             {submitting ? "Đang đăng..." : "Đăng bài"}
                         </button>
                     </div>

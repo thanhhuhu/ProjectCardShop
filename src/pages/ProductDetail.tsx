@@ -26,19 +26,19 @@ function PurchaseBox({ product }: { product: Product }) {
 
     return (
         <>
-            <p className="mt-4 text-3xl font-bold text-white">{formatPrice(product.price)}</p>
-            <p className={`mt-1 text-sm font-semibold ${soldOut ? "text-red-400" : "text-green-500"}`}>
+            <p className="mt-4 text-3xl font-bold text-[#1a1a1a]">{formatPrice(product.price)}</p>
+            <p className={`mt-1 text-sm font-semibold ${soldOut ? "text-red-600" : "text-green-700"}`}>
                 {soldOut ? "Hết hàng" : `Còn ${product.stock} trong kho`}
             </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
-                <div className="flex items-center overflow-hidden rounded-full bg-neutral-800 text-white">
+                <div className="flex items-center overflow-hidden rounded-full bg-[#eceae5] text-[#1a1a1a]">
                     <button
                         type="button"
                         aria-label="Giảm số lượng"
                         disabled={soldOut || quantity <= 1}
                         onClick={() => changeQuantity(quantity - 1)}
-                        className="p-3 transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="p-3 transition hover:bg-[#e4e2dc] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                         <Minus size={14} />
                     </button>
@@ -50,7 +50,7 @@ function PurchaseBox({ product }: { product: Product }) {
                         aria-label="Tăng số lượng"
                         disabled={soldOut || quantity >= product.stock}
                         onClick={() => changeQuantity(quantity + 1)}
-                        className="p-3 transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="p-3 transition hover:bg-[#e4e2dc] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                         <Plus size={14} />
                     </button>
@@ -60,7 +60,7 @@ function PurchaseBox({ product }: { product: Product }) {
                     type="button"
                     disabled={soldOut}
                     onClick={handleAddToCart}
-                    className="flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700 active:scale-95 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400 disabled:active:scale-100"
+                    className="flex items-center gap-2 rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black active:scale-95 disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b] disabled:active:scale-100"
                 >
                     <ShoppingCart size={16} />
                     {soldOut ? "Hết hàng" : "Thêm vào giỏ hàng"}
@@ -75,13 +75,13 @@ function DetailSkeleton() {
     return (
         <div aria-hidden="true" className="grid animate-pulse gap-6 md:grid-cols-[minmax(0,340px)_1fr] md:gap-10">
             <div className="mx-auto w-full max-w-sm md:max-w-none">
-                <div className="aspect-[63/88] w-full rounded-xl bg-white/10" />
+                <div className="aspect-[63/88] w-full rounded-xl bg-black/[0.06]" />
             </div>
             <div className="space-y-4">
-                <div className="h-3 w-40 rounded bg-white/10" />
-                <div className="h-8 w-3/4 rounded bg-white/10" />
-                <div className="h-8 w-32 rounded bg-white/10" />
-                <div className="h-11 w-64 rounded-full bg-white/10" />
+                <div className="h-3 w-40 rounded bg-black/[0.06]" />
+                <div className="h-8 w-3/4 rounded bg-black/[0.06]" />
+                <div className="h-8 w-32 rounded bg-black/[0.06]" />
+                <div className="h-11 w-64 rounded-full bg-black/[0.06]" />
             </div>
         </div>
     );
@@ -97,8 +97,8 @@ function SimilarProducts({ product }: { product: Product }) {
     if (similar.length === 0) return null;
 
     return (
-        <div className="mt-12 border-t border-white/10 pt-8">
-            <h2 className="mb-6 border-l-4 border-red-600 pl-3 text-lg font-extrabold uppercase md:text-xl">
+        <div className="mt-12 border-t border-black/10 pt-8">
+            <h2 className="mb-6 border-l-4 border-[#1a1a1a] pl-3 text-lg font-extrabold uppercase md:text-xl">
                 Sản phẩm tương tự
             </h2>
             <ProductGrid
@@ -125,7 +125,7 @@ export default function ProductDetail() {
     if (loading) {
         // Không hiện thẻ cũ trong lúc tải thẻ mới
         return (
-            <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+            <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
                 <DetailSkeleton />
             </section>
         );
@@ -133,13 +133,13 @@ export default function ProductDetail() {
 
     if (error) {
         return (
-            <section className="mx-auto max-w-6xl px-4 py-20 text-center text-white">
+            <section className="mx-auto max-w-6xl px-4 py-20 text-center text-[#1a1a1a]">
                 <h1 className="text-2xl font-extrabold">Không tải được sản phẩm</h1>
-                <p className="mt-2 text-sm text-gray-400">{error}</p>
+                <p className="mt-2 text-sm text-[#6b6b6b]">{error}</p>
                 <button
                     type="button"
                     onClick={() => window.location.reload()}
-                    className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                    className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                 >
                     Thử lại
                 </button>
@@ -149,11 +149,11 @@ export default function ProductDetail() {
 
     if (!product) {
         return (
-            <section className="mx-auto max-w-6xl px-4 py-20 text-center text-white">
+            <section className="mx-auto max-w-6xl px-4 py-20 text-center text-[#1a1a1a]">
                 <h1 className="text-2xl font-extrabold">Không tìm thấy sản phẩm</h1>
                 <Link
                     to="/"
-                    className="mt-6 inline-block rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                    className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                 >
                     Về trang chủ
                 </Link>
@@ -164,11 +164,11 @@ export default function ProductDetail() {
     const gameLabel = games.find((g) => g.slug === product.game)?.label ?? product.game;
 
     return (
-        <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="grid gap-6 md:grid-cols-[minmax(0,340px)_1fr] md:gap-10">
                 {/* Ảnh thẻ */}
                 <div className="mx-auto w-full max-w-sm md:max-w-none">
-                    <div className="rounded-xl border border-white/10 bg-[#141414] p-2">
+                    <div className="rounded-xl border border-black/10 bg-white p-2">
                         <img
                             src={product.imageUrl}
                             alt={`${product.code} ${product.name}`}
@@ -179,18 +179,18 @@ export default function ProductDetail() {
 
                 {/* Thông tin */}
                 <div>
-                    <nav aria-label="Breadcrumb" className="text-xs uppercase text-gray-400">
-                        <Link to="/" className="transition hover:text-white">
+                    <nav aria-label="Breadcrumb" className="text-xs uppercase text-[#6b6b6b]">
+                        <Link to="/" className="transition hover:text-black">
                             Trang chủ
                         </Link>
                         <span className="mx-2">/</span>
-                        <span className="text-gray-200">{gameLabel}</span>
+                        <span className="text-[#2a2a2a]">{gameLabel}</span>
                     </nav>
 
                     <h1 className="mt-3 text-2xl font-extrabold leading-tight md:text-3xl">
                         {product.code} – {product.name} – {product.rarity}
                     </h1>
-                    <div className="mt-3 h-0.5 w-10 bg-neutral-600" />
+                    <div className="mt-3 h-0.5 w-10 bg-[#e0ded8]" />
 
                     <PurchaseBox key={product.id} product={product} />
                 </div>

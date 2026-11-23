@@ -49,8 +49,8 @@ function Field({ id, label, value, onChange, type = "text", autoComplete, error 
 
     return (
         <div>
-            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-gray-200">
-                {label} <span className="text-red-500">*</span>
+            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-[#2a2a2a]">
+                {label} <span className="text-[#1a1a1a]">*</span>
             </label>
             <div className="relative">
                 <input
@@ -61,23 +61,23 @@ function Field({ id, label, value, onChange, type = "text", autoComplete, error 
                     autoComplete={autoComplete}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? `${id}-error` : undefined}
-                    className={`w-full rounded-lg border bg-neutral-900 px-3 py-2.5 text-sm text-white outline-none transition focus:border-red-600 ${
+                    className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
                         isPassword ? "pr-11" : ""
-                    } ${error ? "border-red-500" : "border-white/15"}`}
+                    } ${error ? "border-red-400" : "border-black/10"}`}
                 />
                 {isPassword && (
                     <button
                         type="button"
                         aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                         onClick={() => setShowPassword((show) => !show)}
-                        className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 transition hover:text-white"
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-[#6b6b6b] transition hover:text-black"
                     >
                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                 )}
             </div>
             {/* Luôn chừa sẵn chỗ cho dòng lỗi để form không giãn ra khi báo lỗi */}
-            <p id={`${id}-error`} className="min-h-5 pt-1 text-xs text-red-400">
+            <p id={`${id}-error`} className="min-h-5 pt-1 text-xs text-red-600">
                 {error}
             </p>
         </div>
@@ -90,7 +90,7 @@ function SubmitButton({ children, disabled = false }: { children: string; disabl
             <button
                 type="submit"
                 disabled={disabled}
-                className="w-full rounded-lg bg-red-600 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400 disabled:active:scale-100"
+                className="w-full rounded-lg bg-[#1a1a1a] py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b] disabled:active:scale-100"
             >
                 {children}
             </button>
@@ -160,7 +160,7 @@ function LoginForm() {
             />
 
             <div className="flex items-center justify-between gap-3 pt-1 text-sm">
-                <label className="flex cursor-pointer items-center gap-2 text-gray-300">
+                <label className="flex cursor-pointer items-center gap-2 text-[#3a3a3a]">
                     <input
                         type="checkbox"
                         checked={remember}
@@ -169,21 +169,21 @@ function LoginForm() {
                     />
                     Ghi nhớ đăng nhập
                 </label>
-                <Link to="/forgot-password" className="text-gray-400 transition hover:text-red-400">
+                <Link to="/forgot-password" className="text-[#6b6b6b] transition hover:text-[#1a1a1a]">
                     Quên mật khẩu?
                 </Link>
             </div>
 
             {/* Chừa sẵn chỗ cho lỗi từ server (ví dụ sai mật khẩu) */}
-            <p role="alert" className="min-h-5 pt-2 text-center text-sm text-red-400">
+            <p role="alert" className="min-h-5 pt-2 text-center text-sm text-red-600">
                 {serverMessage}
             </p>
 
             <SubmitButton disabled={submitting}>{submitting ? "Đang đăng nhập..." : "Đăng nhập"}</SubmitButton>
 
-            <p className="pt-3 text-center text-sm text-gray-400">
+            <p className="pt-3 text-center text-sm text-[#6b6b6b]">
                 Chưa có tài khoản?{" "}
-                <Link to="/register" className="font-semibold text-red-400 hover:text-red-300">
+                <Link to="/register" className="font-semibold text-[#1a1a1a] hover:text-black">
                     Đăng ký ngay
                 </Link>
             </p>
@@ -279,15 +279,15 @@ function RegisterForm() {
             />
 
             {/* Luôn chừa sẵn chỗ cho lỗi từ server để form không giãn ra */}
-            <p role="alert" className="min-h-5 pt-1 text-center text-sm text-red-400">
+            <p role="alert" className="min-h-5 pt-1 text-center text-sm text-red-600">
                 {serverMessage}
             </p>
 
             <SubmitButton disabled={submitting}>{submitting ? "Đang đăng ký..." : "Đăng ký"}</SubmitButton>
 
-            <p className="pt-3 text-center text-sm text-gray-400">
+            <p className="pt-3 text-center text-sm text-[#6b6b6b]">
                 Đã có tài khoản?{" "}
-                <Link to="/login" className="font-semibold text-red-400 hover:text-red-300">
+                <Link to="/login" className="font-semibold text-[#1a1a1a] hover:text-black">
                     Đăng nhập
                 </Link>
             </p>
@@ -343,7 +343,7 @@ function FormPanel({ active, exit, contentRef, title, subtitle, children }: Form
             {/* Đo chiều cao của phần nội dung thật, không phải khung đã bị kéo dài */}
             <div ref={contentRef} className="pb-1">
                 <h1 className="text-2xl font-extrabold">{title}</h1>
-                <p className="mb-6 mt-1 text-sm text-gray-400">{subtitle}</p>
+                <p className="mb-6 mt-1 text-sm text-[#6b6b6b]">{subtitle}</p>
                 {children}
             </div>
         </div>
@@ -364,23 +364,23 @@ export default function AuthPage() {
 
     const tabClass = (active: boolean) =>
         `relative z-10 rounded-md py-2 text-center transition-colors duration-300 ${
-            active ? "text-white" : "text-gray-400 hover:text-white"
+            active ? "text-[#f4f4f1]" : "text-[#6b6b6b] hover:text-black"
         }`;
 
     if (user) return <Navigate to="/" replace />;
 
     return (
-        <section className="grid min-h-[70vh] bg-black text-white lg:grid-cols-[1fr_minmax(0,30rem)_1fr]">
+        <section className="grid min-h-[70vh] bg-[#f4f4f1] text-[#1a1a1a] lg:grid-cols-[1fr_minmax(0,30rem)_1fr]">
             <SidePanel src={leftCover} side="left" />
 
             {/* Form ở giữa: căn sát phía trên để khung chỉ giãn xuống dưới, không nhảy hai đầu */}
             <div className="flex items-start justify-center px-4 py-10 sm:py-14">
-                <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#141414]/95 p-6 shadow-2xl sm:p-8">
+                <div className="w-full max-w-md rounded-2xl border border-black/10 bg-white/95 p-6 shadow-2xl sm:p-8">
                     {/* Thanh chuyển tab, có thanh đỏ trượt qua lại */}
-                    <div className="relative mb-6 grid grid-cols-2 rounded-lg bg-neutral-900 p-1 text-sm font-bold uppercase tracking-wide">
+                    <div className="relative mb-6 grid grid-cols-2 rounded-lg bg-white p-1 text-sm font-bold uppercase tracking-wide">
                         <span
                             aria-hidden="true"
-                            className={`absolute inset-y-1 left-1 w-[calc(50%_-_0.25rem)] rounded-md bg-red-600 transition-transform duration-300 ease-out motion-reduce:transition-none ${
+                            className={`absolute inset-y-1 left-1 w-[calc(50%_-_0.25rem)] rounded-md bg-[#1a1a1a] text-[#f4f4f1] transition-transform duration-300 ease-out motion-reduce:transition-none ${
                                 isLogin ? "translate-x-0" : "translate-x-full"
                             }`}
                         />
