@@ -17,7 +17,7 @@ import TrickstarLycoris from "../images/products/TrickstarLycoris.jpg";
 import TrickstarNobleAngel from "../images/products/TrickstarNobleAngel.jpg";
 import TrickstarReincarnation from "../images/products/TrickstarReincarnation.jpg";
 
-const items: Omit<Product, "id">[] = [
+const items: Omit<Product, "id" | "archetype">[] = [
     {
         code: "MAMO-EN093",
         name: "Trickstar Lilybell",
@@ -168,4 +168,6 @@ const items: Omit<Product, "id">[] = [
 export const products: Product[] = items.map((item, index) => ({
     ...item,
     id: index + 1,
+    // Tộc hệ lấy từ chữ đầu trong tên (vd "Trickstar Lilybell" -> "Trickstar")
+    archetype: item.name.trim().split(/\s+/)[0] ?? "",
 }));

@@ -6,6 +6,8 @@ export type SortKey = "newest" | "price-asc" | "price-desc" | "rarity-desc" | "n
 export interface ProductListParams {
     search?: string;
     game?: string | null;
+    archetype?: string | null;
+    rarity?: string | null;
     sort?: SortKey;
     page?: number;
     pageSize?: number;
@@ -23,6 +25,8 @@ export function listProducts(params: ProductListParams = {}): Promise<ProductLis
     const query = new URLSearchParams();
     if (params.search) query.set("search", params.search);
     if (params.game) query.set("game", params.game);
+    if (params.archetype) query.set("archetype", params.archetype);
+    if (params.rarity) query.set("rarity", params.rarity);
     if (params.sort && params.sort !== "newest") query.set("sort", params.sort);
     if (params.page && params.page > 1) query.set("page", String(params.page));
     if (params.pageSize) query.set("pageSize", String(params.pageSize));
@@ -45,4 +49,16 @@ export async function getProduct(id: number): Promise<Product | null> {
 export async function suggestProducts(query: string): Promise<Product[]> {
     const data = await request<{ products: Product[] }>(`/api/products/suggest?q=${encodeURIComponent(query)}`);
     return data.products;
+}
+
+export interface ProductFilters {
+    archetypes: string[];
+    rarities: string[];
+}
+
+// Danh sách tộc hệ & độ hiếm có thật trong kho (để đổ vào dropdown lọc)
+export function getProductFilters(game?: string | null): Promise<ProductFilters> {
+    const query = new URLSearchParams();
+    if (game) query.set("game", game);
+    return request<ProductFilters>(`/api/products/filters?${query.toString()}`);
 }

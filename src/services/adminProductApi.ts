@@ -4,6 +4,7 @@ import type { Product } from "../types/product";
 export interface ProductPayload {
     code: string;
     name: string;
+    archetype: string;
     rarity: string;
     game: string;
     price: number;
