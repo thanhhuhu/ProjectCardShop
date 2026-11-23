@@ -55,3 +55,57 @@ export async function getOrderPaymentStatus(code: string): Promise<{
 }> {
     return request("/api/orders/" + encodeURIComponent(code) + "/status");
 }
+
+/* ---------- Lịch sử đặt hàng ---------- */
+
+export type OrderStatus = "pending" | "confirmed" | "shipping" | "completed" | "cancelled";
+
+export interface MyOrderItem {
+    productId: number | null;
+    code: string;
+    name: string;
+    rarity: string;
+    price: number;
+    quantity: number;
+    lineTotal: number;
+    imageUrl: string;
+}
+
+export interface MyOrder {
+    id: number;
+    code: string;
+    fullName: string;
+    phone: string;
+    city: string;
+    address: string;
+    note: string;
+    subtotal: number;
+    shippingFee: number;
+    total: number;
+    payment: OrderPaymentMethod;
+    paymentStatus: OrderPaymentStatus;
+    status: OrderStatus;
+    paidAt: string | null;
+    createdAt: string;
+    // Chỉ có với đơn chuyển khoản chưa thanh toán
+    paymentInfo: {
+        bankName: string | null;
+        accountNumber: string | null;
+        accountName: string | null;
+        transferContent: string;
+        qrUrl: string | null;
+    } | null;
+    items: MyOrderItem[];
+}
+
+export interface MyOrdersResponse {
+    orders: MyOrder[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+}
+
+export async function getMyOrders(page = 1, pageSize = 10): Promise<MyOrdersResponse> {
+    return request(`/api/orders/mine?page=${page}&pageSize=${pageSize}`);
+}
