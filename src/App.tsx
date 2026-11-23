@@ -14,7 +14,10 @@ import AuthPage from "./pages/AuthPage";
 import AdminUsers from "./pages/AdminUsers";
 import AdminProducts from "./pages/AdminProducts";
 import NotFound from "./pages/NotFound";
-import Blog from "./pages/Blog.tsx";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
+import AdminOrders from "./pages/AdminOrders";
 function App() {
     return (
         <AuthProvider>
@@ -26,6 +29,7 @@ function App() {
                         <Route path="products" element={<ProductList />} />
                         <Route path="product/:id" element={<ProductDetail />} />
                         <Route path="blog" element={<Blog />} />
+                        <Route path="blog/:id" element={<BlogPost />} />
                         <Route path="cart" element={<Cart />} />
                         <Route path="checkout" element={<Checkout />} />
                         <Route path="orders" element={<OrderHistory />} />
@@ -44,6 +48,22 @@ function App() {
                             element={
                                 <RequireAdmin>
                                     <AdminProducts />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="admin/orders"
+                            element={
+                                <RequireAdmin>
+                                    <AdminOrders />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="admin/blog"
+                            element={
+                                <RequireAdmin>
+                                    <AdminBlog />
                                 </RequireAdmin>
                             }
                         />
