@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CheckCircle2, Copy, RefreshCw } from "lucide-react";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useCart } from "../context/useCart";
@@ -102,7 +102,7 @@ export default function Checkout() {
 
         const next: Errors = {};
         if (form.fullName.trim().length < 2) next.fullName = "Vui lòng nhập họ và tên";
-        if (!phonePattern.test(form.phone.replace(/\s/g, ""))) next.phone = "Số điện thoại không hợp lệ";
+        if (!phonePattern.test(form.phone.replace(/[\s.-]/g, ""))) next.phone = "Số điện thoại gồm 10 số, ví dụ 0905123456 hoặc +84905123456";
         if (form.email.trim() && !emailPattern.test(form.email.trim())) next.email = "Địa chỉ email không hợp lệ";
         if (!form.city.trim()) next.city = "Vui lòng nhập tỉnh / thành phố";
         if (form.address.trim().length < 5) next.address = "Vui lòng nhập địa chỉ giao hàng cụ thể";
@@ -115,21 +115,13 @@ export default function Checkout() {
         try {
             const order = await createOrder({
                 fullName: form.fullName.trim(),
-                phone: form.phone.replace(/\s/g, ""),
+                phone: form.phone.replace(/[\s.-]/g, ""),
                 email: form.email.trim(),
                 city: form.city.trim(),
                 address: form.address.trim(),
                 note: form.note.trim(),
                 paymentMethod: form.payment,
-                items: items.map(({ product, quantity }) => ({
-                    productId: product.id,
-                    code: product.code,
-                    name: product.name,
-                    rarity: product.rarity,
-                    price: product.price,
-                    quantity,
-                    imageUrl: product.imageUrl,
-                })),
+                items: items.map(({ product, quantity }) => ({ productId: product.id, quantity })),
             });
 
             setPlaced(order);
@@ -225,9 +217,25 @@ export default function Checkout() {
     );
 }
 
+// Đơn COD: sau bấy nhiêu giây thì tự đưa người dùng về trang chủ
+const COD_REDIRECT_SECONDS = 5;
+
 function OrderSuccess({ order }: { order: OrderCreated }) {
+    const navigate = useNavigate();
     const [paymentStatus, setPaymentStatus] = useState(order.paymentStatus);
     const [checking, setChecking] = useState(false);
+    const [secondsLeft, setSecondsLeft] = useState(COD_REDIRECT_SECONDS);
+
+    // Đếm ngược rồi chuyển về trang chủ (chỉ với đơn COD; đơn chuyển khoản cần ở lại để quét QR)
+    useEffect(() => {
+        if (order.payment !== "cod") return;
+        if (secondsLeft <= 0) {
+            navigate("/", { replace: true });
+            return;
+        }
+        const timer = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+        return () => window.clearTimeout(timer);
+    }, [order.payment, secondsLeft, navigate]);
 
     useEffect(() => {
         if (order.payment !== "bank" || paymentStatus === "paid") return;
@@ -305,9 +313,15 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
                 )}
 
                 {order.payment === "cod" && (
-                    <p className="mx-auto mt-5 max-w-md text-sm text-gray-400">
-                        Cửa hàng sẽ liên hệ qua số điện thoại bạn cung cấp để xác nhận đơn hàng và giao hàng.
-                    </p>
+                    <>
+                        <p className="mx-auto mt-5 max-w-md text-sm text-gray-400">
+                            Cửa hàng sẽ liên hệ qua số điện thoại bạn cung cấp để xác nhận đơn hàng và giao hàng.
+                            Vui lòng chuẩn bị <strong className="text-white">{formatPrice(order.total)}</strong> tiền mặt khi nhận hàng.
+                        </p>
+                        <p className="mt-4 text-sm text-gray-500" aria-live="polite">
+                            Tự động quay về trang chủ sau <strong className="text-white">{secondsLeft}</strong> giây…
+                        </p>
+                    </>
                 )}
 
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
