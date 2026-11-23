@@ -75,6 +75,7 @@ interface ProductFormDialogProps {
 function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps) {
     const [code, setCode] = useState(product?.code ?? "");
     const [name, setName] = useState(product?.name ?? "");
+    const [archetype, setArchetype] = useState(product?.archetype ?? "");
     const [rarity, setRarity] = useState(product?.rarity ?? "Common");
     const [game, setGame] = useState(product?.game ?? games[0]?.slug ?? "");
     const [price, setPrice] = useState(product ? String(product.price) : "");
@@ -142,6 +143,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             code: code.trim(),
             name: name.trim(),
             rarity: rarity.trim(),
+            archetype: archetype.trim(),
             game,
             price: toNumber(price),
             stock: toNumber(stock),
@@ -251,6 +253,16 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                         onChange={onChangeOf("name", setName)}
                         autoComplete="off"
                         className={inputClass(errors.name)}
+                    />
+                </Field>
+
+                <Field id="product-archetype" label="Tộc hệ" error={errors.archetype} hint="Ví dụ: Trickstar, Blue-Eyes. Để trống nếu thẻ không thuộc tộc nào.">
+                    <input
+                        id="product-archetype"
+                        value={archetype}
+                        onChange={onChangeOf("archetype", setArchetype)}
+                        autoComplete="off"
+                        className={inputClass(errors.archetype)}
                     />
                 </Field>
 

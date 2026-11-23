@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { X } from "lucide-react";
 import { games } from "../data/game";
@@ -5,8 +6,11 @@ import Pagination from "../components/Pagination";
 import ProductGrid from "../components/ProductGrid";
 import ProductGridSkeleton from "../components/ProductGridSkeleton";
 import { useFetch } from "../hooks/useFetch";
-import { listProducts } from "../services/productApi";
+import { getProductFilters, listProducts } from "../services/productApi";
 import type { SortKey } from "../services/productApi";
+
+const selectClass =
+    "rounded-md border border-white/20 bg-neutral-900 px-3 py-2 text-sm text-white outline-none transition hover:border-red-600 focus:border-red-600";
 
 const PAGE_SIZE = 20; // 5 thẻ mỗi hàng x 4 hàng
 const GRID_CLASS = "grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4";
@@ -25,16 +29,48 @@ export default function ProductList() {
 
     const game = searchParams.get("game");
     const search = (searchParams.get("search") ?? "").trim();
+    const archetype = (searchParams.get("archetype") ?? "").trim();
+    const rarity = (searchParams.get("rarity") ?? "").trim();
     const sortParam = searchParams.get("sort");
     const sort: SortKey = sortOptions.find((o) => o.value === sortParam)?.value ?? "newest";
     const requestedPage = Math.max(Number(searchParams.get("page")) || 1, 1);
     const gameLabel = games.find((g) => g.slug === game)?.label;
+    const hasFilters = Boolean(search || archetype || rarity);
 
     // Lọc, tìm, sắp xếp và phân trang đều do server làm trong SQL
     const { data, loading, error } = useFetch(
-        `list|${game}|${search}|${sort}|${requestedPage}`,
-        () => listProducts({ game, search, sort, page: requestedPage, pageSize: PAGE_SIZE }),
+        `list|${game}|${search}|${archetype}|${rarity}|${sort}|${requestedPage}`,
+        () => listProducts({ game, search, archetype, rarity, sort, page: requestedPage, pageSize: PAGE_SIZE }),
     );
+
+    // Danh sách tộc hệ & độ hiếm có thật trong kho (đổ vào dropdown), đổi theo game đang xem
+    const { data: filters } = useFetch(`filters|${game}`, () => getProductFilters(game));
+    const archetypeOptions = filters?.archetypes ?? [];
+    const rarityOptions = filters?.rarities ?? [];
+
+    // Ô "Tên / mã thẻ" gõ tới đâu lọc tới đó, nhưng chờ 350ms mới gọi server để đỡ gọi liên tục
+    const [nameInput, setNameInput] = useState(search);
+    // Khi search đổi từ nơi khác (ô tìm ở header, nút xóa lọc), đồng bộ lại ô nhập ngay khi render
+    const [lastSearch, setLastSearch] = useState(search);
+    if (search !== lastSearch) {
+        setLastSearch(search);
+        setNameInput(search);
+    }
+    useEffect(() => {
+        const value = nameInput.trim();
+        if (value === search) return;
+        const timer = setTimeout(() => {
+            setSearchParams((current) => {
+                const next = new URLSearchParams(current);
+                if (value) next.set("search", value);
+                else next.delete("search");
+                next.delete("page");
+                return next;
+            });
+        }, 350);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nameInput, search]);
 
     const total = data?.total ?? 0;
     const items = data?.products ?? [];
@@ -54,6 +90,15 @@ export default function ProductList() {
     const handleSortChange = (value: string) => {
         // Đổi cách sắp xếp thì quay về trang 1
         updateParams({ sort: value === "newest" ? null : value, page: null });
+    };
+
+    // Chọn một bộ lọc (tộc hệ / độ hiếm) thì quay về trang 1
+    const handleFilterChange = (key: "archetype" | "rarity", value: string) => {
+        updateParams({ [key]: value || null, page: null });
+    };
+
+    const clearFilters = () => {
+        updateParams({ search: null, archetype: null, rarity: null, page: null });
     };
 
     const handlePageChange = (nextPage: number) => {
@@ -91,7 +136,7 @@ export default function ProductList() {
                             id="sort"
                             value={sort}
                             onChange={(e) => handleSortChange(e.target.value)}
-                            className="rounded-md border border-white/20 bg-neutral-900 px-3 py-2 text-sm text-white outline-none transition hover:border-red-600 focus:border-red-600"
+                            className={selectClass}
                         >
                             {sortOptions.map((option) => (
                                 <option key={option.value} value={option.value}>
@@ -99,6 +144,79 @@ export default function ProductList() {
                                 </option>
                             ))}
                         </select>
+                    </div>
+                </div>
+
+                {/* Thanh lọc: tộc hệ, độ hiếm, tên/mã thẻ */}
+                <div className="mx-auto max-w-6xl border-t border-white/10 px-4 py-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="filter-archetype" className="text-xs font-semibold uppercase text-gray-400">
+                                Tộc hệ
+                            </label>
+                            <select
+                                id="filter-archetype"
+                                value={archetype}
+                                onChange={(e) => handleFilterChange("archetype", e.target.value)}
+                                className={`${selectClass} min-w-[11rem]`}
+                            >
+                                <option value="">Tất cả tộc hệ</option>
+                                {/* Giữ giá trị đang chọn kể cả khi danh sách chưa tải xong */}
+                                {archetype && !archetypeOptions.includes(archetype) && (
+                                    <option value={archetype}>{archetype}</option>
+                                )}
+                                {archetypeOptions.map((value) => (
+                                    <option key={value} value={value}>
+                                        {value}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="filter-rarity" className="text-xs font-semibold uppercase text-gray-400">
+                                Độ hiếm
+                            </label>
+                            <select
+                                id="filter-rarity"
+                                value={rarity}
+                                onChange={(e) => handleFilterChange("rarity", e.target.value)}
+                                className={`${selectClass} min-w-[11rem]`}
+                            >
+                                <option value="">Tất cả độ hiếm</option>
+                                {rarity && !rarityOptions.includes(rarity) && <option value={rarity}>{rarity}</option>}
+                                {rarityOptions.map((value) => (
+                                    <option key={value} value={value}>
+                                        {value}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label htmlFor="filter-name" className="text-xs font-semibold uppercase text-gray-400">
+                                Tên / mã thẻ
+                            </label>
+                            <input
+                                id="filter-name"
+                                type="search"
+                                value={nameInput}
+                                onChange={(e) => setNameInput(e.target.value)}
+                                placeholder="Nhập tên hoặc mã thẻ..."
+                                className={`${selectClass} w-full min-w-[12rem] placeholder:text-gray-500`}
+                            />
+                        </div>
+
+                        {hasFilters && (
+                            <button
+                                type="button"
+                                onClick={clearFilters}
+                                className="flex items-center gap-1 self-start rounded-md border border-white/20 px-3 py-2 text-sm font-semibold text-gray-300 transition hover:border-red-600 hover:text-white sm:self-auto"
+                            >
+                                <X size={14} />
+                                Xóa lọc
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
