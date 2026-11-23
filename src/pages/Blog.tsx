@@ -1,113 +1,92 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Newspaper, PenSquare } from "lucide-react";
+import Pagination from "../components/Pagination";
+import { useAuth } from "../context/useAuth";
+import { blogCategoryLabel, listPosts } from "../services/blogApi";
+import type { BlogListResponse } from "../services/blogApi";
+import { formatDateTime } from "../utils/orderStatus";
 
-const categories = [
-    { value: "yugioh", label: "Tin tức Yu-Gi-Oh!" },
-    { value: "guide", label: "Hướng dẫn" },
-    { value: "deck", label: "Deck & Chiến thuật" },
-    { value: "shop", label: "Tin shop" },
-];
-
+// Trang danh sách bài viết (ai cũng xem được). Admin thấy thêm nút "Viết bài".
 export default function Blog() {
-    const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("yugioh");
-    const [content, setContent] = useState("");
+    const { user } = useAuth();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Math.max(1, Number(searchParams.get("page")) || 1);
+    const category = searchParams.get("category") ?? "";
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const requestKey = `${category}|${page}`;
+    const [result, setResult] = useState<{ key: string; data: BlogListResponse | null; error: string } | null>(null);
 
-        console.log({
-            title,
-            category,
-            content,
-        });
+    useEffect(() => {
+        let ignore = false;
+        listPosts({ page, category: category || undefined })
+            .then((data) => {
+                if (!ignore) setResult({ key: requestKey, data, error: "" });
+            })
+            .catch((err: unknown) => {
+                if (!ignore) setResult({ key: requestKey, data: null, error: err instanceof Error ? err.message : "Không thể tải bài viết" });
+            });
+        return () => {
+            ignore = true;
+        };
+    }, [page, category, requestKey]);
 
-        // Sau này sẽ gửi dữ liệu lên backend
+    const loading = result?.key !== requestKey;
+    const data = loading ? null : (result?.data ?? null);
+    const error = loading ? "" : (result?.error ?? "");
+
+    const changePage = (next: number) => {
+        const params = new URLSearchParams(searchParams);
+        if (next > 1) params.set("page", String(next));
+        else params.delete("page");
+        setSearchParams(params);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
-        <section className="mx-auto max-w-5xl px-4 py-8 text-white md:py-10">
-            <div className="mb-8">
-                <h1 className="border-l-4 border-red-600 pl-3 text-2xl font-extrabold uppercase">
-                    Viết Blog
-                </h1>
-                <p className="mt-2 pl-4 text-sm text-gray-400">
-                    Tạo bài viết mới cho L1ZY CARD SHOP
-                </p>
+        <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <h1 className="border-l-4 border-red-600 pl-3 text-2xl font-extrabold uppercase">
+                        {category ? blogCategoryLabel(category) : "Blog"}
+                    </h1>
+                    <p className="mt-2 pl-4 text-sm text-gray-400">Tin tức và bài viết từ L1ZY CARD SHOP</p>
+                </div>
+                {user?.role === "admin" && (
+                    <Link to="/admin/blog" className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold transition hover:bg-red-700">
+                        <PenSquare size={16} /> Viết bài
+                    </Link>
+                )}
             </div>
 
-            <form
-                onSubmit={handleSubmit}
-                className="rounded-xl border border-white/10 bg-[#141414] p-6"
-            >
-                <div className="space-y-5">
-                    <div>
-                        <label
-                            htmlFor="blog-title"
-                            className="mb-2 block text-sm font-semibold text-gray-200"
-                        >
-                            Tiêu đề
-                        </label>
-
-                        <input
-                            id="blog-title"
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="Nhập tiêu đề bài viết..."
-                            className="w-full rounded-lg border border-white/15 bg-neutral-900 px-4 py-3 text-sm text-white outline-none focus:border-red-600"
-                        />
-                    </div>
-
-                    <div>
-                        <label
-                            htmlFor="blog-category"
-                            className="mb-2 block text-sm font-semibold text-gray-200"
-                        >
-                            Danh mục
-                        </label>
-
-                        <select
-                            id="blog-category"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className="w-full rounded-lg border border-white/15 bg-neutral-900 px-4 py-3 text-sm text-white outline-none focus:border-red-600"
-                        >
-                            {categories.map((item) => (
-                                <option key={item.value} value={item.value}>
-                                    {item.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label
-                            htmlFor="blog-content"
-                            className="mb-2 block text-sm font-semibold text-gray-200"
-                        >
-                            Nội dung
-                        </label>
-
-                        <textarea
-                            id="blog-content"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            placeholder="Viết nội dung bài blog..."
-                            rows={15}
-                            className="w-full resize-y rounded-lg border border-white/15 bg-neutral-900 px-4 py-3 text-sm leading-6 text-white outline-none focus:border-red-600"
-                        />
-                    </div>
-
-                    <div className="flex justify-end">
-                        <button
-                            type="submit"
-                            className="rounded-lg bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700"
-                        >
-                            Đăng bài
-                        </button>
-                    </div>
+            {loading ? (
+                <div className="flex min-h-[30vh] items-center justify-center">
+                    <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-white/20 border-t-red-600" />
                 </div>
-            </form>
+            ) : error ? (
+                <p className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center text-sm text-red-300">{error}</p>
+            ) : !data || data.posts.length === 0 ? (
+                <div className="rounded-xl border border-white/10 bg-[#141414] p-10 text-center">
+                    <Newspaper size={48} className="mx-auto text-gray-500" />
+                    <p className="mt-3 text-sm text-gray-400">Chưa có bài viết nào.</p>
+                </div>
+            ) : (
+                <>
+                    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {data.posts.map((post) => (
+                            <li key={post.id}>
+                                <Link to={`/blog/${post.id}`} className="group flex h-full flex-col rounded-xl border border-white/10 bg-[#141414] p-5 transition hover:border-red-600/60">
+                                    <span className="text-xs font-semibold uppercase tracking-wide text-red-400">{blogCategoryLabel(post.category)}</span>
+                                    <h2 className="mt-2 line-clamp-2 text-lg font-extrabold group-hover:text-red-400">{post.title}</h2>
+                                    <p className="mt-2 line-clamp-4 flex-1 whitespace-pre-line text-sm text-gray-400">{post.excerpt}</p>
+                                    <p className="mt-4 text-xs text-gray-500">{formatDateTime(post.createdAt)}{post.author && ` · ${post.author}`}</p>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <Pagination page={data.page} totalPages={data.totalPages} onChange={changePage} />
+                </>
+            )}
         </section>
     );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ChevronDown, LogOut, Menu, Package, ReceiptText, Search, ShoppingCart, User, Users, X } from "lucide-react";
+import { ChevronDown, ClipboardList, LogOut, Menu, Package, PenSquare, ReceiptText, Search, ShoppingCart, User, Users, X } from "lucide-react";
 import { navItems } from "../data/navigation";
 import type { Product } from "../types/product";
 import { formatPrice } from "../utils/cart";
@@ -283,18 +283,29 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                 <Link
                                     to="/admin/products"
                                     aria-label="Quản lý sản phẩm"
+                                    title="Quản lý sản phẩm"
                                     className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
                                 >
                                     <Package size={18} />
-                                    <span className="hidden lg:inline">Sản phẩm</span>
+                                    <span className="hidden whitespace-nowrap 2xl:inline">Sản phẩm</span>
                                 </Link>
                                 <Link
                                     to="/admin/users"
                                     aria-label="Quản lý người dùng"
+                                    title="Quản lý người dùng"
                                     className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
                                 >
                                     <Users size={18} />
-                                    <span className="hidden lg:inline">Người dùng</span>
+                                    <span className="hidden whitespace-nowrap 2xl:inline">Người dùng</span>
+                                </Link>
+                                <Link
+                                    to="/admin/orders"
+                                    aria-label="Quản lý đơn hàng"
+                                    title="Quản lý đơn hàng"
+                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                >
+                                    <ClipboardList size={18} />
+                                    <span className="hidden whitespace-nowrap 2xl:inline">Đơn hàng</span>
                                 </Link>
                             </>
                         )}
@@ -330,15 +341,39 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                 </span>
                                             )}
                                         </div>
-                                        <Link
-                                            to="/orders"
-                                            role="menuitem"
-                                            onClick={() => setAccountOpen(false)}
-                                            className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
-                                        >
-                                            <ReceiptText size={16} />
-                                            Lịch sử đặt hàng
-                                        </Link>
+                                        {user.role === "admin" ? (
+                                            <>
+                                                {/* Admin: xem đơn hàng của mọi khách */}
+                                                <Link
+                                                    to="/admin/orders"
+                                                    role="menuitem"
+                                                    onClick={() => setAccountOpen(false)}
+                                                    className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                                >
+                                                    <ReceiptText size={16} />
+                                                    Quản lý đơn hàng
+                                                </Link>
+                                                <Link
+                                                    to="/admin/blog"
+                                                    role="menuitem"
+                                                    onClick={() => setAccountOpen(false)}
+                                                    className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                                >
+                                                    <PenSquare size={16} />
+                                                    Viết blog
+                                                </Link>
+                                            </>
+                                        ) : (
+                                            <Link
+                                                to="/orders"
+                                                role="menuitem"
+                                                onClick={() => setAccountOpen(false)}
+                                                className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                            >
+                                                <ReceiptText size={16} />
+                                                Lịch sử đặt hàng
+                                            </Link>
+                                        )}
                                         <button
                                             type="button"
                                             role="menuitem"
@@ -364,7 +399,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
                         <Link
                             to="/cart"
-                            className="relative flex items-center gap-2 rounded bg-red-600 px-3 py-2 text-sm font-bold uppercase hover:bg-red-700"
+                            className="relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded bg-red-600 px-3 py-2 text-sm font-bold uppercase hover:bg-red-700"
                         >
                             <span className="hidden sm:inline">Giỏ hàng</span>
                             <ShoppingCart size={18} />

@@ -18,9 +18,6 @@ export const navItems: NavItem[] = [
         href: "/blog",
         children: [
             { label: "Tin tức Yu-Gi-Oh!", href: "/blog?category=yugioh" },
-            { label: "Hướng dẫn", href: "/blog?category=guide" },
-            { label: "Deck & Chiến thuật", href: "/blog?category=deck" },
-            { label: "Tin shop", href: "/blog?category=shop" },
         ],
     },
     {
