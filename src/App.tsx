@@ -9,6 +9,7 @@ import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import OrderHistory from "./pages/OrderHistory";
 import AuthPage from "./pages/AuthPage";
 import AdminUsers from "./pages/AdminUsers";
 import AdminProducts from "./pages/AdminProducts";
@@ -27,6 +28,7 @@ function App() {
                         <Route path="blog" element={<Blog />} />
                         <Route path="cart" element={<Cart />} />
                         <Route path="checkout" element={<Checkout />} />
+                        <Route path="orders" element={<OrderHistory />} />
 
                         {/* Trang quản trị: chỉ admin mới thấy, người khác nhận trang 404 */}
                         <Route

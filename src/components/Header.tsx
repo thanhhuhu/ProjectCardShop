@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ChevronDown, LogOut, Menu, Package, Search, ShoppingCart, User, Users, X } from "lucide-react";
+import { ChevronDown, LogOut, Menu, Package, ReceiptText, Search, ShoppingCart, User, Users, X } from "lucide-react";
 import { navItems } from "../data/navigation";
 import type { Product } from "../types/product";
 import { formatPrice } from "../utils/cart";
@@ -330,6 +330,15 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                 </span>
                                             )}
                                         </div>
+                                        <Link
+                                            to="/orders"
+                                            role="menuitem"
+                                            onClick={() => setAccountOpen(false)}
+                                            className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                        >
+                                            <ReceiptText size={16} />
+                                            Lịch sử đặt hàng
+                                        </Link>
                                         <button
                                             type="button"
                                             role="menuitem"
