@@ -149,16 +149,16 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
     };
 
     return (
-        <header className="text-white">
+        <header className="text-[#1a1a1a]">
             {/* Thanh trên cùng */}
-            <div className="bg-[#333] px-4 py-2 text-xs">
+            <div className="bg-[#e0ded8] px-4 py-2 text-xs">
                 <div className="mx-auto max-w-6xl">
                     Chuyên các loại Card Game &amp; Phụ kiện Card Game
                 </div>
             </div>
 
             {/* Logo, tìm kiếm, tài khoản, giỏ hàng */}
-            <div className="bg-[#1a1a1a]">
+            <div className="bg-white">
                 <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4 md:flex-nowrap md:gap-6 md:py-6">
                     {/* Nút mở menu: chỉ hiện trên mobile */}
                     <button
@@ -174,7 +174,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                     {/* Logo + tên cửa hàng, bấm vào để về trang chủ */}
                     <Link to="/" className="flex shrink-0 items-center gap-2">
                         <img src={logo} alt="" aria-hidden="true" className="h-10 w-auto" />
-                        <span className="text-2xl font-extrabold tracking-tight text-red-500">
+                        <span className="text-2xl font-extrabold tracking-tight text-[#1a1a1a]">
                             L1ZY CARD SHOP
                         </span>
                     </Link>
@@ -184,7 +184,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                         ref={searchFormRef}
                         onSubmit={handleSearch}
                         role="search"
-                        className="relative order-last flex w-full md:order-none md:flex-1"
+                        className="relative order-last flex w-full overflow-hidden rounded-lg border border-black/15 md:order-none md:flex-1"
                     >
                         <input
                             type="text"
@@ -210,14 +210,14 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                         <button
                             type="submit"
                             aria-label="Tìm kiếm"
-                            className="bg-red-600 px-3 hover:bg-red-700"
+                            className="bg-[#1a1a1a] text-[#f4f4f1] px-3 hover:bg-black"
                         >
                             <Search size={18} />
                         </button>
 
                         {/* Danh sách gợi ý */}
                         {showDropdown && (
-                            <div className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-lg border border-white/10 bg-[#141414] text-left shadow-2xl">
+                            <div className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-lg border border-black/10 bg-white text-left shadow-2xl">
                                 {suggestions.length > 0 ? (
                                     <ul id="search-suggestions" role="listbox" aria-label="Gợi ý thẻ bài">
                                         {suggestions.map((product, index) => (
@@ -230,7 +230,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                 onMouseEnter={() => setActiveIndex(index)}
                                                 onClick={() => goToProduct(product)}
                                                 className={`flex cursor-pointer items-center gap-3 px-3 py-2 transition-colors ${
-                                                    index === activeIndex ? "bg-white/10" : ""
+                                                    index === activeIndex ? "bg-black/[0.06]" : ""
                                                 }`}
                                             >
                                                 <img
@@ -239,15 +239,15 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                     className="h-14 w-10 shrink-0 rounded object-cover"
                                                 />
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="text-xs font-semibold text-red-400">
+                                                    <p className="text-xs font-semibold text-[#8a8a8a]">
                                                         {product.code}
                                                     </p>
-                                                    <p className="truncate text-sm text-white">
+                                                    <p className="truncate text-sm text-[#1a1a1a]">
                                                         {product.name}
                                                     </p>
-                                                    <p className="text-xs text-gray-400">{product.rarity}</p>
+                                                    <p className="text-xs text-[#6b6b6b]">{product.rarity}</p>
                                                 </div>
-                                                <span className="shrink-0 text-sm font-bold text-white">
+                                                <span className="shrink-0 text-sm font-bold text-[#1a1a1a]">
                                                     {formatPrice(product.price)}
                                                 </span>
                                             </li>
@@ -259,15 +259,15 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                             onMouseDown={(e) => e.preventDefault()}
                                             onMouseEnter={() => setActiveIndex(suggestions.length)}
                                             onClick={goToSearch}
-                                            className={`cursor-pointer border-t border-white/10 px-3 py-3 text-sm font-semibold text-red-400 transition-colors ${
-                                                activeIndex === suggestions.length ? "bg-white/10" : ""
+                                            className={`cursor-pointer border-t border-black/10 px-3 py-3 text-sm font-semibold text-[#1a1a1a] transition-colors ${
+                                                activeIndex === suggestions.length ? "bg-black/[0.06]" : ""
                                             }`}
                                         >
                                             Xem tất cả kết quả cho “{trimmedKeyword}”
                                         </li>
                                     </ul>
                                 ) : (
-                                    <p role="status" className="px-4 py-3 text-sm text-gray-400">
+                                    <p role="status" className="px-4 py-3 text-sm text-[#6b6b6b]">
                                         {suggesting ? "Đang tìm..." : `Không tìm thấy thẻ nào khớp với “${trimmedKeyword}”`}
                                     </p>
                                 )}
@@ -284,7 +284,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     to="/admin/products"
                                     aria-label="Quản lý sản phẩm"
                                     title="Quản lý sản phẩm"
-                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                    className="flex items-center gap-2 rounded bg-[#eceae5] px-3 py-2 text-sm font-bold uppercase transition hover:bg-[#dcdad3]"
                                 >
                                     <Package size={18} />
                                     <span className="hidden whitespace-nowrap 2xl:inline">Sản phẩm</span>
@@ -293,7 +293,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     to="/admin/users"
                                     aria-label="Quản lý người dùng"
                                     title="Quản lý người dùng"
-                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                    className="flex items-center gap-2 rounded bg-[#eceae5] px-3 py-2 text-sm font-bold uppercase transition hover:bg-[#dcdad3]"
                                 >
                                     <Users size={18} />
                                     <span className="hidden whitespace-nowrap 2xl:inline">Người dùng</span>
@@ -302,7 +302,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     to="/admin/orders"
                                     aria-label="Quản lý đơn hàng"
                                     title="Quản lý đơn hàng"
-                                    className="flex items-center gap-2 rounded bg-neutral-700 px-3 py-2 text-sm font-bold uppercase transition hover:bg-neutral-600"
+                                    className="flex items-center gap-2 rounded bg-[#eceae5] px-3 py-2 text-sm font-bold uppercase transition hover:bg-[#dcdad3]"
                                 >
                                     <ClipboardList size={18} />
                                     <span className="hidden whitespace-nowrap 2xl:inline">Đơn hàng</span>
@@ -311,7 +311,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                         )}
 
                         {loading ? (
-                            <span aria-hidden="true" className="h-9 w-9 animate-pulse rounded-full bg-white/10" />
+                            <span aria-hidden="true" className="h-9 w-9 animate-pulse rounded-full bg-black/[0.06]" />
                         ) : user ? (
                             <div ref={accountRef} className="relative">
                                 <button
@@ -320,7 +320,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     aria-label={`Tài khoản ${user.username}`}
                                     aria-haspopup="menu"
                                     aria-expanded={accountOpen}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold uppercase text-white ring-2 ring-transparent transition hover:ring-white/40 focus-visible:ring-white"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1a1a1a] text-sm font-bold uppercase text-[#f4f4f1] ring-2 ring-transparent transition hover:ring-black/20 focus-visible:ring-black/30"
                                 >
                                     {user.username.charAt(0)}
                                 </button>
@@ -328,15 +328,15 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                 {accountOpen && (
                                     <div
                                         role="menu"
-                                        className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 bg-[#141414] text-left shadow-2xl"
+                                        className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-black/10 bg-white text-left shadow-2xl"
                                     >
-                                        <div className="border-b border-white/10 px-4 py-3">
-                                            <p className="truncate text-sm font-semibold text-white">
+                                        <div className="border-b border-black/10 px-4 py-3">
+                                            <p className="truncate text-sm font-semibold text-[#1a1a1a]">
                                                 {user.username}
                                             </p>
-                                            <p className="truncate text-xs text-gray-400">{user.email}</p>
+                                            <p className="truncate text-xs text-[#6b6b6b]">{user.email}</p>
                                             {user.role === "admin" && (
-                                                <span className="mt-2 inline-block rounded bg-red-600/20 px-2 py-0.5 text-[11px] font-semibold text-red-400">
+                                                <span className="mt-2 inline-block rounded bg-black/10 px-2 py-0.5 text-[11px] font-semibold text-[#8a8a8a]">
                                                     Quản trị viên
                                                 </span>
                                             )}
@@ -348,7 +348,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                     to="/admin/orders"
                                                     role="menuitem"
                                                     onClick={() => setAccountOpen(false)}
-                                                    className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                                    className="flex w-full items-center gap-2 border-b border-black/10 px-4 py-3 text-sm text-[#2a2a2a] transition hover:bg-black/[0.06]"
                                                 >
                                                     <ReceiptText size={16} />
                                                     Quản lý đơn hàng
@@ -357,7 +357,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                     to="/admin/blog"
                                                     role="menuitem"
                                                     onClick={() => setAccountOpen(false)}
-                                                    className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                                    className="flex w-full items-center gap-2 border-b border-black/10 px-4 py-3 text-sm text-[#2a2a2a] transition hover:bg-black/[0.06]"
                                                 >
                                                     <PenSquare size={16} />
                                                     Viết blog
@@ -368,7 +368,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                 to="/orders"
                                                 role="menuitem"
                                                 onClick={() => setAccountOpen(false)}
-                                                className="flex w-full items-center gap-2 border-b border-white/10 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                                className="flex w-full items-center gap-2 border-b border-black/10 px-4 py-3 text-sm text-[#2a2a2a] transition hover:bg-black/[0.06]"
                                             >
                                                 <ReceiptText size={16} />
                                                 Lịch sử đặt hàng
@@ -378,7 +378,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                             type="button"
                                             role="menuitem"
                                             onClick={handleLogout}
-                                            className="flex w-full items-center gap-2 px-4 py-3 text-sm text-gray-200 transition hover:bg-white/10"
+                                            className="flex w-full items-center gap-2 px-4 py-3 text-sm text-[#2a2a2a] transition hover:bg-black/[0.06]"
                                         >
                                             <LogOut size={16} />
                                             Đăng xuất
@@ -391,7 +391,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                 type="button"
                                 onClick={onLoginClick}
                                 aria-label="Đăng nhập"
-                                className="rounded bg-red-600 p-2 hover:bg-red-700"
+                                className="rounded bg-[#1a1a1a] text-[#f4f4f1] p-2 hover:bg-black"
                             >
                                 <User size={18} />
                             </button>
@@ -399,12 +399,12 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
                         <Link
                             to="/cart"
-                            className="relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded bg-red-600 px-3 py-2 text-sm font-bold uppercase hover:bg-red-700"
+                            className="relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded bg-[#1a1a1a] text-[#f4f4f1] px-3 py-2 text-sm font-bold uppercase hover:bg-black"
                         >
                             <span className="hidden sm:inline">Giỏ hàng</span>
                             <ShoppingCart size={18} />
                             {cartCount > 0 && (
-                                <span className="absolute -right-2 -top-2 rounded-full bg-white px-1.5 text-xs font-bold text-red-600">
+                                <span className="absolute -right-2 -top-2 rounded-full bg-white px-1.5 text-xs font-bold text-[#1a1a1a]">
                                     {cartCount}
                                 </span>
                             )}
@@ -414,13 +414,13 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
             </div>
 
             {/* Menu desktop */}
-            <nav className="hidden bg-[#0a0a0a] md:block">
+            <nav className="hidden bg-[#f4f4f1] md:block">
                 <ul className="mx-auto flex max-w-6xl gap-8 px-4">
                     {navItems.map((item) => (
                         <li key={item.label} className="group relative">
                             <Link
                                 to={item.href}
-                                className="flex items-center gap-1 py-4 text-sm font-bold uppercase text-gray-300 hover:text-white"
+                                className="flex items-center gap-1 py-4 text-sm font-bold uppercase text-[#3a3a3a] hover:text-black"
                             >
                                 {item.label}
                                 {item.children && (
@@ -432,7 +432,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                             </Link>
 
                             {item.children && (
-                                <ul className="invisible absolute left-0 top-full z-50 min-w-48 translate-y-2 rounded-b border-t-2 border-red-600 bg-white py-2 text-black opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none">
+                                <ul className="invisible absolute left-0 top-full z-50 min-w-48 translate-y-2 rounded-b border-t-2 border-[#1a1a1a] bg-white py-2 text-black opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none">
                                     {item.children.map((child) => (
                                         <li key={child.label}>
                                             <Link
@@ -452,13 +452,13 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
             {/* Menu mobile: luôn được render, xổ xuống bằng cách animate chiều cao */}
             <nav
-                className={`grid bg-[#0a0a0a] transition-[grid-template-rows,visibility] duration-300 motion-reduce:transition-none md:hidden ${
+                className={`grid bg-[#f4f4f1] transition-[grid-template-rows,visibility] duration-300 motion-reduce:transition-none md:hidden ${
                     menuOpen ? "visible grid-rows-[1fr]" : "invisible grid-rows-[0fr]"
                 }`}
             >
                 <ul className="overflow-hidden">
                     {navItems.map((item, index) => (
-                        <li key={item.label} className="border-t border-white/10">
+                        <li key={item.label} className="border-t border-black/10">
                             <div className="flex items-center justify-between px-4">
                                 <Link
                                     to={item.href}
@@ -501,7 +501,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                                 <Link
                                                     to={child.href}
                                                     onClick={() => setMenuOpen(false)}
-                                                    className="block py-2 pl-8 pr-4 text-sm text-gray-300"
+                                                    className="block py-2 pl-8 pr-4 text-sm text-[#3a3a3a]"
                                                 >
                                                     {child.label}
                                                 </Link>

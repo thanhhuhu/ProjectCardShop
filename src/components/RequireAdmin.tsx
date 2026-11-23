@@ -11,7 +11,7 @@ export default function RequireAdmin({ children }: { children: ReactNode }) {
                 <div
                     role="status"
                     aria-label="Đang tải"
-                    className="h-9 w-9 animate-spin rounded-full border-4 border-white/20 border-t-red-600"
+                    className="h-9 w-9 animate-spin rounded-full border-4 border-black/15 border-t-red-600"
                 />
             </div>
         );

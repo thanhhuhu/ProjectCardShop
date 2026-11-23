@@ -21,7 +21,7 @@ function RoleBadge({ role }: { role: UserRole }) {
     return (
         <span
             className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                role === "admin" ? "bg-red-600/20 text-red-400" : "bg-white/10 text-gray-300"
+                role === "admin" ? "bg-black/10 text-[#1a1a1a]" : "bg-black/[0.06] text-[#3a3a3a]"
             }`}
         >
             {roleLabel[role]}
@@ -53,15 +53,15 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className="w-full max-w-md rounded-2xl border border-white/10 bg-[#141414] p-6 shadow-2xl"
+                className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 shadow-2xl"
             >
                 <div className="mb-4 flex items-center justify-between gap-3">
-                    <h2 className="text-lg font-extrabold text-white">{title}</h2>
+                    <h2 className="text-lg font-extrabold text-[#1a1a1a]">{title}</h2>
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label="Đóng"
-                        className="text-gray-400 transition hover:text-white"
+                        className="text-[#6b6b6b] transition hover:text-black"
                     >
                         <X size={20} />
                     </button>
@@ -87,7 +87,7 @@ interface DialogFieldProps {
 function DialogField({ id, label, value, onChange, type = "text", error, hint, autoFocus, autoComplete }: DialogFieldProps) {
     return (
         <div>
-            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-gray-200">
+            <label htmlFor={id} className="mb-1 block text-sm font-semibold text-[#2a2a2a]">
                 {label}
             </label>
             <input
@@ -98,14 +98,14 @@ function DialogField({ id, label, value, onChange, type = "text", error, hint, a
                 autoFocus={autoFocus}
                 autoComplete={autoComplete}
                 aria-invalid={error ? true : undefined}
-                className={`w-full rounded-lg border bg-neutral-900 px-3 py-2.5 text-sm text-white outline-none transition focus:border-red-600 ${
-                    error ? "border-red-500" : "border-white/15"
+                className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
+                    error ? "border-red-400" : "border-black/10"
                 }`}
             />
             {error ? (
-                <p className="mt-1 text-xs text-red-400">{error}</p>
+                <p className="mt-1 text-xs text-red-600">{error}</p>
             ) : (
-                hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>
+                hint && <p className="mt-1 text-xs text-[#8a8a8a]">{hint}</p>
             )}
         </div>
     );
@@ -184,7 +184,7 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                 />
 
                 <div>
-                    <label htmlFor="edit-role" className="mb-1 block text-sm font-semibold text-gray-200">
+                    <label htmlFor="edit-role" className="mb-1 block text-sm font-semibold text-[#2a2a2a]">
                         Vai trò
                     </label>
                     <select
@@ -192,15 +192,15 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                         value={role}
                         onChange={(e) => setRole(e.target.value as UserRole)}
                         disabled={isSelf}
-                        className="w-full rounded-lg border border-white/15 bg-neutral-900 px-3 py-2.5 text-sm text-white outline-none transition focus:border-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded-lg border border-black/10 bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         <option value="user">{roleLabel.user}</option>
                         <option value="admin">{roleLabel.admin}</option>
                     </select>
                     {isSelf && (
-                        <p className="mt-1 text-xs text-gray-500">Bạn không thể tự đổi vai trò của chính mình.</p>
+                        <p className="mt-1 text-xs text-[#8a8a8a]">Bạn không thể tự đổi vai trò của chính mình.</p>
                     )}
-                    {errors.role && <p className="mt-1 text-xs text-red-400">{errors.role}</p>}
+                    {errors.role && <p className="mt-1 text-xs text-red-600">{errors.role}</p>}
                 </div>
 
                 <DialogField
@@ -215,7 +215,7 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                 />
 
                 {message && (
-                    <p role="alert" className="text-sm text-red-400">
+                    <p role="alert" className="text-sm text-red-600">
                         {message}
                     </p>
                 )}
@@ -224,14 +224,14 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                     <button
                         type="button"
                         onClick={onClose}
-                        className="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200 transition hover:border-white/40"
+                        className="rounded-lg border border-black/15 px-4 py-2 text-sm font-semibold text-[#2a2a2a] transition hover:border-black/30"
                     >
                         Hủy
                     </button>
                     <button
                         type="submit"
                         disabled={saving}
-                        className="rounded-lg bg-red-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400"
+                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                     >
                         {saving ? "Đang lưu..." : "Lưu thay đổi"}
                     </button>
@@ -267,13 +267,13 @@ function DeleteUserDialog({ user, onClose, onDeleted }: DeleteUserDialogProps) {
 
     return (
         <Modal title="Xóa tài khoản" onClose={onClose}>
-            <p className="text-sm text-gray-300">
-                Bạn sắp xóa tài khoản <strong className="text-white">{user.username}</strong> ({user.email}). Hành
+            <p className="text-sm text-[#3a3a3a]">
+                Bạn sắp xóa tài khoản <strong className="text-[#1a1a1a]">{user.username}</strong> ({user.email}). Hành
                 động này không thể hoàn tác.
             </p>
 
             {message && (
-                <p role="alert" className="mt-3 text-sm text-red-400">
+                <p role="alert" className="mt-3 text-sm text-red-600">
                     {message}
                 </p>
             )}
@@ -282,7 +282,7 @@ function DeleteUserDialog({ user, onClose, onDeleted }: DeleteUserDialogProps) {
                 <button
                     type="button"
                     onClick={onClose}
-                    className="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200 transition hover:border-white/40"
+                    className="rounded-lg border border-black/15 px-4 py-2 text-sm font-semibold text-[#2a2a2a] transition hover:border-black/30"
                 >
                     Hủy
                 </button>
@@ -290,7 +290,7 @@ function DeleteUserDialog({ user, onClose, onDeleted }: DeleteUserDialogProps) {
                     type="button"
                     onClick={handleDelete}
                     disabled={deleting}
-                    className="rounded-lg bg-red-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-400"
+                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                 >
                     {deleting ? "Đang xóa..." : "Xóa"}
                 </button>
@@ -373,13 +373,13 @@ export default function AdminUsers() {
     };
 
     return (
-        <section className="mx-auto max-w-6xl px-4 py-8 text-white md:py-10">
+        <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 className="border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">
+                    <h1 className="border-l-4 border-[#1a1a1a] pl-3 text-xl font-extrabold uppercase md:text-2xl">
                         Quản lý người dùng
                     </h1>
-                    <p className="mt-1 pl-4 text-sm text-gray-400">
+                    <p className="mt-1 pl-4 text-sm text-[#6b6b6b]">
                         {data ? `${data.total} tài khoản` : "Đang tải..."}
                     </p>
                 </div>
@@ -390,7 +390,7 @@ export default function AdminUsers() {
                     </label>
                     <Search
                         size={16}
-                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6b6b6b]"
                     />
                     <input
                         id="user-search"
@@ -399,7 +399,7 @@ export default function AdminUsers() {
                         onChange={(e) => setSearchInput(e.target.value)}
                         placeholder="Tìm theo tên hoặc email..."
                         autoComplete="off"
-                        className="w-full rounded-lg border border-white/15 bg-neutral-900 py-2.5 pl-9 pr-3 text-sm text-white outline-none transition focus:border-red-600"
+                        className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
                     />
                 </div>
             </div>
@@ -409,18 +409,18 @@ export default function AdminUsers() {
                 {notice && (
                     <p
                         role="status"
-                        className="rounded-lg border border-green-600/40 bg-green-600/10 px-4 py-2 text-sm text-green-400"
+                        className="rounded-lg border border-green-600/40 bg-green-600/10 px-4 py-2 text-sm text-green-700"
                     >
                         {notice}
                     </p>
                 )}
                 {!notice && result?.error && (
-                    <div role="alert" className="flex flex-wrap items-center gap-3 py-2 text-sm text-red-400">
+                    <div role="alert" className="flex flex-wrap items-center gap-3 py-2 text-sm text-red-600">
                         <span>{result.error}</span>
                         <button
                             type="button"
                             onClick={() => setReloadKey((key) => key + 1)}
-                            className="rounded-full border border-red-600 px-3 py-1 font-semibold transition hover:bg-red-600 hover:text-white"
+                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                         >
                             Thử lại
                         </button>
@@ -431,7 +431,7 @@ export default function AdminUsers() {
             {/* Bảng luôn cao đúng chừng ấy dòng (dòng còn thiếu được thêm dòng trống cho đủ),
                 mỗi dòng cao cố định, nên chiều cao trang không đổi và footer đứng yên */}
             <div
-                className={`relative overflow-x-auto rounded-xl border border-white/10 bg-[#141414] transition-opacity ${
+                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-white transition-opacity ${
                     loading ? "opacity-60" : ""
                 }`}
             >
@@ -444,7 +444,7 @@ export default function AdminUsers() {
                         <col className="w-32" />
                         <col className="w-28" />
                     </colgroup>
-                    <thead className="border-b border-white/10 text-xs uppercase text-gray-400">
+                    <thead className="border-b border-black/10 text-xs uppercase text-[#6b6b6b]">
                     <tr className="h-11">
                         <th className="px-4 font-semibold">ID</th>
                         <th className="px-4 font-semibold">Tên tài khoản</th>
@@ -461,7 +461,7 @@ export default function AdminUsers() {
                         // Dòng trống giữ chỗ khi trang có ít hơn 10 người
                         if (!u) {
                             return (
-                                <tr key={`empty-${index}`} aria-hidden="true" className="h-14 border-b border-white/5 last:border-0">
+                                <tr key={`empty-${index}`} aria-hidden="true" className="h-14 border-b border-black/[0.06] last:border-0">
                                     <td colSpan={6} />
                                 </tr>
                             );
@@ -469,30 +469,30 @@ export default function AdminUsers() {
 
                         const isSelf = u.id === me?.id;
                         return (
-                            <tr key={u.id} className="h-14 border-b border-white/5 last:border-0 hover:bg-white/5">
-                                <td className="px-4 text-gray-400">{u.id}</td>
-                                <td className="truncate px-4 font-semibold text-white" title={u.username}>
+                            <tr key={u.id} className="h-14 border-b border-black/[0.06] last:border-0 hover:bg-black/[0.04]">
+                                <td className="px-4 text-[#6b6b6b]">{u.id}</td>
+                                <td className="truncate px-4 font-semibold text-[#1a1a1a]" title={u.username}>
                                     {u.username}
                                     {isSelf && (
-                                        <span className="ml-2 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-normal text-gray-300">
+                                        <span className="ml-2 rounded bg-black/[0.06] px-1.5 py-0.5 text-[10px] font-normal text-[#3a3a3a]">
                                                 Bạn
                                             </span>
                                     )}
                                 </td>
-                                <td className="truncate px-4 text-gray-300" title={u.email}>
+                                <td className="truncate px-4 text-[#3a3a3a]" title={u.email}>
                                     {u.email}
                                 </td>
                                 <td className="px-4">
                                     <RoleBadge role={u.role} />
                                 </td>
-                                <td className="px-4 text-gray-400">{formatDate(u.createdAt)}</td>
+                                <td className="px-4 text-[#6b6b6b]">{formatDate(u.createdAt)}</td>
                                 <td className="px-4">
                                     <div className="flex justify-end gap-2">
                                         <button
                                             type="button"
                                             onClick={() => setEditing(u)}
                                             aria-label={`Sửa ${u.username}`}
-                                            className="rounded-lg border border-white/15 p-2 text-gray-300 transition hover:border-white/40 hover:text-white"
+                                            className="rounded-lg border border-black/10 p-2 text-[#3a3a3a] transition hover:border-black/30 hover:text-black"
                                         >
                                             <Pencil size={15} />
                                         </button>
@@ -502,7 +502,7 @@ export default function AdminUsers() {
                                             disabled={isSelf}
                                             aria-label={`Xóa ${u.username}`}
                                             title={isSelf ? "Bạn không thể xóa chính mình" : undefined}
-                                            className="rounded-lg border border-white/15 p-2 text-gray-300 transition hover:border-red-600 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/15 disabled:hover:text-gray-300"
+                                            className="rounded-lg border border-black/10 p-2 text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-black/15 disabled:hover:text-[#2a2a2a]"
                                         >
                                             <Trash2 size={15} />
                                         </button>
@@ -516,12 +516,12 @@ export default function AdminUsers() {
 
                 {/* Thông báo nằm đè lên giữa phần thân bảng, không làm bảng đổi chiều cao */}
                 {!loading && data && users.length === 0 && (
-                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center px-4 text-center text-sm text-gray-400">
+                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center px-4 text-center text-sm text-[#6b6b6b]">
                         {query ? `Không tìm thấy người dùng nào khớp với “${query}”.` : "Chưa có người dùng nào."}
                     </p>
                 )}
                 {loading && !data && (
-                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center text-sm text-gray-400">
+                    <p className="pointer-events-none absolute inset-x-0 bottom-0 top-11 flex items-center justify-center text-sm text-[#6b6b6b]">
                         Đang tải danh sách...
                     </p>
                 )}

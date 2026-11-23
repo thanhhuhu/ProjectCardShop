@@ -30,7 +30,7 @@ export default function Preloader() {
         <div
             role="status"
             aria-live="polite"
-            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-black transition-opacity ${
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-[#f4f4f1] transition-opacity ${
                 phase === "fade" ? "pointer-events-none opacity-0" : "opacity-100"
             }`}
             style={{ transitionDuration: `${FADE_MS}ms` }}
@@ -40,7 +40,7 @@ export default function Preloader() {
                 alt="Card Shop"
                 className="h-20 w-auto max-w-[70vw] object-contain md:h-28"
             />
-            <div className="h-9 w-9 animate-spin rounded-full border-4 border-white/20 border-t-red-600" />
+            <div className="h-9 w-9 animate-spin rounded-full border-4 border-black/15 border-t-red-600" />
             <span className="sr-only">Đang tải...</span>
         </div>
     );

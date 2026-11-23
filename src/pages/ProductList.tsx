@@ -10,7 +10,7 @@ import { getProductFilters, listProducts } from "../services/productApi";
 import type { SortKey } from "../services/productApi";
 
 const selectClass =
-    "rounded-md border border-white/20 bg-neutral-900 px-3 py-2 text-sm text-white outline-none transition hover:border-red-600 focus:border-red-600";
+    "rounded-md border border-black/15 bg-white px-3 py-2 text-sm text-[#1a1a1a] outline-none transition hover:border-[#1a1a1a] focus:border-[#1a1a1a]";
 
 const PAGE_SIZE = 20; // 5 thẻ mỗi hàng x 4 hàng
 const GRID_CLASS = "grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4";
@@ -115,19 +115,19 @@ export default function ProductList() {
     };
 
     return (
-        <div className="text-white">
+        <div className="text-[#1a1a1a]">
             {/* Thanh breadcrumb, số kết quả và sắp xếp */}
-            <div className="bg-[#1a1a1a]">
+            <div className="bg-white">
                 <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 md:flex-row md:items-center md:justify-between">
-                    <nav aria-label="Breadcrumb" className="text-sm uppercase text-gray-400">
-                        <Link to="/" className="transition hover:text-white">
+                    <nav aria-label="Breadcrumb" className="text-sm uppercase text-[#6b6b6b]">
+                        <Link to="/" className="transition hover:text-black">
                             Trang chủ
                         </Link>
                         <span className="mx-2">/</span>
-                        <span className="font-bold text-white">{search ? "Tìm kiếm" : (gameLabel ?? "Shop")}</span>
+                        <span className="font-bold text-[#1a1a1a]">{search ? "Tìm kiếm" : (gameLabel ?? "Shop")}</span>
                     </nav>
 
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300">
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-[#3a3a3a]">
                         <span aria-live="polite">{resultText()}</span>
                         <label htmlFor="sort" className="sr-only">
                             Sắp xếp sản phẩm
@@ -148,10 +148,10 @@ export default function ProductList() {
                 </div>
 
                 {/* Thanh lọc: tộc hệ, độ hiếm, tên/mã thẻ */}
-                <div className="mx-auto max-w-6xl border-t border-white/10 px-4 py-3">
+                <div className="mx-auto max-w-6xl border-t border-black/10 px-4 py-3">
                     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="filter-archetype" className="text-xs font-semibold uppercase text-gray-400">
+                            <label htmlFor="filter-archetype" className="text-xs font-semibold uppercase text-[#6b6b6b]">
                                 Tộc hệ
                             </label>
                             <select
@@ -174,7 +174,7 @@ export default function ProductList() {
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="filter-rarity" className="text-xs font-semibold uppercase text-gray-400">
+                            <label htmlFor="filter-rarity" className="text-xs font-semibold uppercase text-[#6b6b6b]">
                                 Độ hiếm
                             </label>
                             <select
@@ -194,7 +194,7 @@ export default function ProductList() {
                         </div>
 
                         <div className="flex flex-1 flex-col gap-1">
-                            <label htmlFor="filter-name" className="text-xs font-semibold uppercase text-gray-400">
+                            <label htmlFor="filter-name" className="text-xs font-semibold uppercase text-[#6b6b6b]">
                                 Tên / mã thẻ
                             </label>
                             <input
@@ -203,7 +203,7 @@ export default function ProductList() {
                                 value={nameInput}
                                 onChange={(e) => setNameInput(e.target.value)}
                                 placeholder="Nhập tên hoặc mã thẻ..."
-                                className={`${selectClass} w-full min-w-[12rem] placeholder:text-gray-500`}
+                                className={`${selectClass} w-full min-w-[12rem] placeholder:text-[#8a8a8a]`}
                             />
                         </div>
 
@@ -211,7 +211,7 @@ export default function ProductList() {
                             <button
                                 type="button"
                                 onClick={clearFilters}
-                                className="flex items-center gap-1 self-start rounded-md border border-white/20 px-3 py-2 text-sm font-semibold text-gray-300 transition hover:border-red-600 hover:text-white sm:self-auto"
+                                className="flex items-center gap-1 self-start rounded-md border border-black/15 px-3 py-2 text-sm font-semibold text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-black sm:self-auto"
                             >
                                 <X size={14} />
                                 Xóa lọc
@@ -223,7 +223,7 @@ export default function ProductList() {
 
             <section className="mx-auto max-w-6xl px-4 py-8 md:py-10">
                 <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-                    <h1 className="break-words border-l-4 border-red-600 pl-3 text-xl font-extrabold uppercase md:text-2xl">
+                    <h1 className="break-words border-l-4 border-[#1a1a1a] pl-3 text-xl font-extrabold uppercase md:text-2xl">
                         {search ? (
                             <>
                                 Kết quả cho <span className="normal-case">“{search}”</span>
@@ -236,7 +236,7 @@ export default function ProductList() {
                         <button
                             type="button"
                             onClick={() => updateParams({ search: null, page: null })}
-                            className="flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-xs font-semibold text-gray-300 transition hover:border-red-600 hover:text-white"
+                            className="flex items-center gap-1 rounded-full border border-black/15 px-3 py-1 text-xs font-semibold text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-black"
                         >
                             <X size={14} />
                             Xóa tìm kiếm
@@ -245,13 +245,13 @@ export default function ProductList() {
                 </div>
 
                 {error && !data ? (
-                    <div role="alert" className="py-16 text-center text-gray-300">
-                        <p className="text-red-400">{error}</p>
-                        <p className="mt-1 text-sm text-gray-500">Hãy kiểm tra server đã chạy chưa.</p>
+                    <div role="alert" className="py-16 text-center text-[#3a3a3a]">
+                        <p className="text-red-600">{error}</p>
+                        <p className="mt-1 text-sm text-[#8a8a8a]">Hãy kiểm tra server đã chạy chưa.</p>
                         <button
                             type="button"
                             onClick={() => window.location.reload()}
-                            className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                         >
                             Thử lại
                         </button>
@@ -259,7 +259,7 @@ export default function ProductList() {
                 ) : !data ? (
                     <ProductGridSkeleton count={PAGE_SIZE} className={GRID_CLASS} />
                 ) : total === 0 ? (
-                    <div className="py-16 text-center text-gray-300">
+                    <div className="py-16 text-center text-[#3a3a3a]">
                         <p>
                             {search
                                 ? `Không tìm thấy thẻ nào khớp với “${search}”. Hãy thử từ khóa ngắn hơn hoặc kiểm tra lại chính tả.`
@@ -267,18 +267,18 @@ export default function ProductList() {
                         </p>
                         <Link
                             to="/products"
-                            className="mt-6 inline-block rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                            className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                         >
                             Xem tất cả sản phẩm
                         </Link>
                     </div>
                 ) : items.length === 0 ? (
-                    <div className="py-16 text-center text-gray-300">
+                    <div className="py-16 text-center text-[#3a3a3a]">
                         <p>Trang này không có sản phẩm nào.</p>
                         <button
                             type="button"
                             onClick={() => handlePageChange(1)}
-                            className="mt-6 rounded-full border border-red-600 px-6 py-2 text-sm font-bold uppercase text-red-500 transition hover:bg-red-600 hover:text-white"
+                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
                         >
                             Về trang đầu
                         </button>

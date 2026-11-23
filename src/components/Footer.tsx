@@ -17,7 +17,7 @@ const contacts = [
 
 export default function Footer() {
     return (
-        <footer className="relative isolate text-gray-200">
+        <footer className="relative isolate text-[#d8d8d4]">
             <img
                 src={footerCover}
                 alt=""
@@ -31,7 +31,7 @@ export default function Footer() {
                 <h2 className="text-2xl font-extrabold uppercase tracking-wide text-white drop-shadow md:text-4xl">
                     Lizy Card Shop
                 </h2>
-                <p className="max-w-xl text-sm text-gray-300 md:text-base">
+                <p className="max-w-xl text-sm text-[#c8c8c4] md:text-base">
                     Chuyên các loại card game và phụ kiện card game.
                 </p>
 
@@ -41,7 +41,7 @@ export default function Footer() {
                             <li key={link.label}>
                                 <a
                                     href={link.href}
-                                    className="text-xs font-semibold uppercase tracking-wider text-gray-300 transition hover:text-red-400 focus-visible:text-red-400"
+                                    className="text-xs font-semibold uppercase tracking-wider text-[#c8c8c4] transition hover:text-white focus-visible:text-white"
                                 >
                                     {link.label}
                                 </a>
@@ -50,10 +50,10 @@ export default function Footer() {
                     </ul>
                 </nav>
 
-                <ul className="flex flex-col items-center gap-2 text-sm text-gray-300 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-8">
+                <ul className="flex flex-col items-center gap-2 text-sm text-[#c8c8c4] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-8">
                     {contacts.map(({ icon: Icon, text, href }) => (
                         <li key={text} className="flex items-center gap-2">
-                            <Icon size={16} className="shrink-0 text-red-500" />
+                            <Icon size={16} className="shrink-0 text-white" />
                             {href ? (
                                 <a href={href} className="transition hover:text-white">
                                     {text}
@@ -67,8 +67,8 @@ export default function Footer() {
             </div>
 
             {/* Dòng bản quyền */}
-            <div className="border-t border-white/10 bg-black/60 px-4 py-4 text-center text-xs text-gray-400">
-                Copyright {new Date().getFullYear()} © <strong className="text-gray-200">Lizy Card Shop</strong>
+            <div className="border-t border-white/10 bg-black/60 px-4 py-4 text-center text-xs text-[#aaaaa6]">
+                Copyright {new Date().getFullYear()} © <strong className="text-white">Lizy Card Shop</strong>
             </div>
         </footer>
     );

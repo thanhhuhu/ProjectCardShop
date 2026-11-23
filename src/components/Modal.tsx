@@ -31,17 +31,17 @@ export default function Modal({ title, onClose, children, wide = false }: ModalP
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className={`m-auto w-full rounded-2xl border border-white/10 bg-[#141414] p-6 shadow-2xl ${
+                className={`m-auto w-full rounded-2xl border border-black/10 bg-white p-6 shadow-2xl ${
                     wide ? "max-w-xl" : "max-w-md"
                 }`}
             >
                 <div className="mb-4 flex items-center justify-between gap-3">
-                    <h2 className="text-lg font-extrabold text-white">{title}</h2>
+                    <h2 className="text-lg font-extrabold text-[#1a1a1a]">{title}</h2>
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label="Đóng"
-                        className="text-gray-400 transition hover:text-white"
+                        className="text-[#6b6b6b] transition hover:text-black"
                     >
                         <X size={20} />
                     </button>

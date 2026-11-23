@@ -15,16 +15,16 @@ export default function CheckoutSteps({ current }: { current: number }) {
                         <span
                             aria-current={active ? "step" : undefined}
                             className={`flex items-center gap-2 ${
-                                active ? "text-white" : done ? "text-red-400" : "text-gray-500"
+                                active ? "text-[#1a1a1a]" : done ? "text-[#1a1a1a]" : "text-[#8a8a8a]"
                             }`}
                         >
                             <span
                                 className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs ${
                                     active
-                                        ? "border-red-600 bg-red-600 text-white"
+                                        ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#f4f4f1]"
                                         : done
-                                            ? "border-red-600 text-red-400"
-                                            : "border-white/20"
+                                            ? "border-[#1a1a1a] text-[#1a1a1a]"
+                                            : "border-black/15"
                                 }`}
                             >
                                 {done ? <Check size={14} /> : index + 1}
@@ -34,7 +34,7 @@ export default function CheckoutSteps({ current }: { current: number }) {
                         {index < steps.length - 1 && (
                             <span
                                 aria-hidden="true"
-                                className={`h-px w-6 sm:w-12 ${done ? "bg-red-600" : "bg-white/15"}`}
+                                className={`h-px w-6 sm:w-12 ${done ? "bg-[#1a1a1a] text-[#f4f4f1]" : "bg-black/[0.08]"}`}
                             />
                         )}
                     </li>

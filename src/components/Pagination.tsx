@@ -32,14 +32,14 @@ export default function Pagination({ page, totalPages, onChange }: PaginationPro
                 aria-label="Trang trước"
                 disabled={page <= 1}
                 onClick={() => onChange(page - 1)}
-                className={`${baseButton} border-white/15 text-gray-300 hover:border-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/15 disabled:hover:text-gray-300`}
+                className={`${baseButton} border-black/10 text-[#3a3a3a] hover:border-[#1a1a1a] hover:text-black disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-black/15 disabled:hover:text-[#2a2a2a]`}
             >
                 <ChevronLeft size={16} />
             </button>
 
             {getPageItems(page, totalPages).map((item, index) =>
                 item === "…" ? (
-                    <span key={`gap-${index}`} className="px-1 text-gray-500" aria-hidden="true">
+                    <span key={`gap-${index}`} className="px-1 text-[#8a8a8a]" aria-hidden="true">
                         …
                     </span>
                 ) : (
@@ -51,8 +51,8 @@ export default function Pagination({ page, totalPages, onChange }: PaginationPro
                         onClick={() => onChange(item)}
                         className={`${baseButton} ${
                             item === page
-                                ? "border-red-600 bg-red-600 text-white"
-                                : "border-white/15 text-gray-300 hover:border-red-600 hover:text-white"
+                                ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#f4f4f1]"
+                                : "border-black/10 text-[#3a3a3a] hover:border-[#1a1a1a] hover:text-black"
                         }`}
                     >
                         {item}
@@ -65,7 +65,7 @@ export default function Pagination({ page, totalPages, onChange }: PaginationPro
                 aria-label="Trang sau"
                 disabled={page >= totalPages}
                 onClick={() => onChange(page + 1)}
-                className={`${baseButton} border-white/15 text-gray-300 hover:border-red-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/15 disabled:hover:text-gray-300`}
+                className={`${baseButton} border-black/10 text-[#3a3a3a] hover:border-[#1a1a1a] hover:text-black disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-black/15 disabled:hover:text-[#2a2a2a]`}
             >
                 <ChevronRight size={16} />
             </button>
