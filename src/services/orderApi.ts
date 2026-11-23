@@ -3,14 +3,10 @@ import { request } from "./authApi";
 export type OrderPaymentMethod = "cod" | "bank";
 export type OrderPaymentStatus = "unpaid" | "paid" | "failed";
 
+// Chỉ gửi id sản phẩm và số lượng. Giá, tên, ảnh... server tự đọc từ database.
 export interface CreateOrderItem {
     productId: number;
-    code: string;
-    name: string;
-    rarity: string;
-    price: number;
     quantity: number;
-    imageUrl: string;
 }
 
 export interface CreateOrderPayload {
