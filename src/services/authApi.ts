@@ -74,3 +74,32 @@ export async function fetchCurrentUser(): Promise<AuthUser | null> {
 export async function logout(): Promise<void> {
     await request("/api/auth/logout", { method: "POST" });
 }
+
+export interface Profile {
+    id: number;
+    username: string;
+    email: string;
+    role: "user" | "admin";
+    fullName: string;
+    phone: string;
+    city: string;
+    address: string;
+}
+
+export async function getProfile(): Promise<Profile> {
+    const data = await request<{ profile: Profile }>("/api/auth/profile");
+    return data.profile;
+}
+
+export async function updateProfile(payload: {
+    fullName: string;
+    phone: string;
+    city: string;
+    address: string;
+}): Promise<void> {
+    await request("/api/auth/profile", { method: "PATCH", body: payload });
+}
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    await request("/api/auth/change-password", { method: "POST", body: { currentPassword, newPassword } });
+}

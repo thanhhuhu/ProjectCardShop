@@ -62,3 +62,9 @@ export function getProductFilters(game?: string | null): Promise<ProductFilters>
     if (game) query.set("game", game);
     return request<ProductFilters>(`/api/products/filters?${query.toString()}`);
 }
+
+// Sản phẩm liên quan (cùng tộc hệ)
+export async function getRelatedProducts(id: number): Promise<Product[]> {
+    const data = await request<{ products: Product[] }>(`/api/products/${id}/related`);
+    return data.products;
+}

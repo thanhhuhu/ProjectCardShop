@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { useCart } from "../context/useCart";
+import { useWishlist } from "../context/useWishlist";
 import type { Product } from "../types/product";
 
 interface ProductCardProps {
@@ -20,7 +21,9 @@ function rarityClass(rarity: string) {
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
     const { addItem } = useCart();
+    const { isWished, toggle } = useWishlist();
     const soldOut = product.stock <= 0;
+    const wished = isWished(product.id);
     const detailPath = `/product/${product.id}`;
 
     return (
@@ -38,6 +41,19 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
                 >
                     {product.rarity}
                 </span>
+                {/* Nút tim: thêm/bỏ yêu thích */}
+                <button
+                    type="button"
+                    aria-label={wished ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
+                    aria-pressed={wished}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        void toggle(product.id);
+                    }}
+                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#1a1a1a] shadow transition hover:bg-white"
+                >
+                    <Heart size={16} className={wished ? "fill-red-600 text-red-600" : ""} />
+                </button>
             </Link>
 
             {/* Thông tin */}

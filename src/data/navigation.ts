@@ -24,7 +24,7 @@ export const navItems: NavItem[] = [
         label: "Khác",
         href: "/other",
         children: [
-            { label: "Tin tức", href: "/news" },
+            { label: "Tra cứu đơn hàng", href: "/order-lookup" },
             { label: "Liên hệ", href: "/contact" },
         ],
     },

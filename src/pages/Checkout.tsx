@@ -4,9 +4,12 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CheckCircle2, Copy, RefreshCw } from "lucide-react";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useCart } from "../context/useCart";
+import { useAuth } from "../context/useAuth";
 import { formatPrice, getShippingFee } from "../utils/cart";
 import { createOrder, getOrderPaymentStatus } from "../services/orderApi";
 import type { OrderCreated } from "../services/orderApi";
+import { getProfile } from "../services/authApi";
+import { validateDiscount } from "../services/discountApi";
 
 type PaymentMethod = "cod" | "bank";
 
@@ -85,17 +88,82 @@ const paymentOptions: { value: PaymentMethod; title: string; description: string
 
 export default function Checkout() {
     const { items, subtotal, clearCart } = useCart();
+    const { user } = useAuth();
     const [form, setForm] = useState<FormState>(initialForm);
     const [errors, setErrors] = useState<Errors>({});
     const [placed, setPlaced] = useState<OrderCreated | null>(null);
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState("");
 
+    // Mã giảm giá
+    const [discountInput, setDiscountInput] = useState("");
+    const [applied, setApplied] = useState<{ code: string; amount: number } | null>(null);
+    const [discountMsg, setDiscountMsg] = useState<{ ok: boolean; text: string } | null>(null);
+    const [checkingDiscount, setCheckingDiscount] = useState(false);
+
+    // Đổi giỏ hàng thì bỏ mã đã áp (số tiền giảm có thể không còn đúng)
+    const [lastSubtotal, setLastSubtotal] = useState(subtotal);
+    if (subtotal !== lastSubtotal) {
+        setLastSubtotal(subtotal);
+        setApplied(null);
+        setDiscountMsg(null);
+    }
+
+    // Tự điền thông tin giao hàng từ hồ sơ (nếu đã đăng nhập)
+    useEffect(() => {
+        if (!user) return;
+        let ignore = false;
+        getProfile()
+            .then((p) => {
+                if (ignore) return;
+                setForm((prev) => ({
+                    ...prev,
+                    fullName: prev.fullName || p.fullName,
+                    phone: prev.phone || p.phone,
+                    email: prev.email || p.email,
+                    city: prev.city || p.city,
+                    address: prev.address || p.address,
+                }));
+            })
+            .catch(() => undefined);
+        return () => {
+            ignore = true;
+        };
+    }, [user]);
+
     const shippingFee = getShippingFee(subtotal);
-    const total = subtotal + shippingFee;
+    const discountAmount = applied ? Math.min(applied.amount, subtotal) : 0;
+    const total = subtotal - discountAmount + shippingFee;
 
     const setField = <K extends keyof FormState>(key: K, value: FormState[K]) =>
         setForm((prev) => ({ ...prev, [key]: value }));
+
+    const applyDiscount = async () => {
+        const code = discountInput.trim();
+        if (!code) return;
+        setCheckingDiscount(true);
+        setDiscountMsg(null);
+        try {
+            const res = await validateDiscount(code, subtotal);
+            if (res.ok && res.discount) {
+                setApplied({ code: res.discount.code, amount: res.discount.amount });
+                setDiscountMsg({ ok: true, text: res.message });
+            } else {
+                setApplied(null);
+                setDiscountMsg({ ok: false, text: res.message });
+            }
+        } catch (err) {
+            setDiscountMsg({ ok: false, text: err instanceof Error ? err.message : "Không kiểm tra được mã" });
+        } finally {
+            setCheckingDiscount(false);
+        }
+    };
+
+    const removeDiscount = () => {
+        setApplied(null);
+        setDiscountInput("");
+        setDiscountMsg(null);
+    };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -121,6 +189,7 @@ export default function Checkout() {
                 address: form.address.trim(),
                 note: form.note.trim(),
                 paymentMethod: form.payment,
+                discountCode: applied?.code,
                 items: items.map(({ product, quantity }) => ({ productId: product.id, quantity })),
             });
 
@@ -201,6 +270,41 @@ export default function Checkout() {
 
                     <dl className="mt-5 space-y-2 border-t border-black/10 pt-4 text-sm">
                         <div className="flex justify-between"><dt className="text-[#6b6b6b]">Tạm tính</dt><dd>{formatPrice(subtotal)}</dd></div>
+
+                        {/* Mã giảm giá */}
+                        <div className="border-t border-black/10 pt-3">
+                            {applied ? (
+                                <div className="flex items-center justify-between gap-2">
+                                    <dt className="text-[#6b6b6b]">Giảm giá (<span className="font-mono">{applied.code}</span>)</dt>
+                                    <dd className="flex items-center gap-2">
+                                        <span className="text-[#1a1a1a]">−{formatPrice(discountAmount)}</span>
+                                        <button type="button" onClick={removeDiscount} className="text-xs text-[#8a8a8a] underline hover:text-[#1a1a1a]">Bỏ</button>
+                                    </dd>
+                                </div>
+                            ) : (
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={discountInput}
+                                        onChange={(e) => setDiscountInput(e.target.value.toUpperCase())}
+                                        placeholder="Mã giảm giá"
+                                        className="min-w-0 flex-1 rounded-lg border border-black/15 bg-white px-3 py-2 text-sm uppercase outline-none focus:border-[#1a1a1a]"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={applyDiscount}
+                                        disabled={checkingDiscount || !discountInput.trim()}
+                                        className="rounded-lg border border-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1] disabled:opacity-50"
+                                    >
+                                        {checkingDiscount ? "..." : "Áp dụng"}
+                                    </button>
+                                </div>
+                            )}
+                            {discountMsg && (
+                                <p className={`mt-1.5 text-xs ${discountMsg.ok ? "text-green-700" : "text-red-600"}`}>{discountMsg.text}</p>
+                            )}
+                        </div>
+
                         <div className="flex justify-between"><dt className="text-[#6b6b6b]">Phí vận chuyển</dt><dd>{shippingFee === 0 ? "Miễn phí" : formatPrice(shippingFee)}</dd></div>
                         <div className="flex items-baseline justify-between border-t border-black/10 pt-3"><dt className="font-bold">Tổng cộng</dt><dd className="text-2xl font-extrabold text-[#1a1a1a]">{formatPrice(total)}</dd></div>
                     </dl>
