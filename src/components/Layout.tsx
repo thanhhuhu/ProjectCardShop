@@ -8,7 +8,7 @@ export default function Layout() {
     const { totalCount } = useCart();
 
     return (
-        <div className="flex min-h-screen flex-col bg-[#f4f4f1]">
+        <div className="flex min-h-screen flex-col bg-[#e9e6de]">
             <Header cartCount={totalCount} onLoginClick={() => navigate("/login")} />
             <main className="flex-1">
                 <Outlet />

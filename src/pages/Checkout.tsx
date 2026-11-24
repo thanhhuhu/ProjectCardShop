@@ -39,11 +39,11 @@ const phonePattern = /^(0|\+84)\d{9}$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const inputClass = (error?: string) =>
-    `w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${error ? "border-red-400" : "border-black/10"}`;
+    `w-full rounded-lg border bg-[#f6f4ef] px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${error ? "border-red-400" : "border-black/10"}`;
 
 function Card({ title, children }: { title: string; children: ReactNode }) {
     return (
-        <section className="rounded-xl border border-black/10 bg-white p-4 sm:p-6">
+        <section className="rounded-xl border border-black/10 bg-[#f6f4ef] p-4 sm:p-6">
             <h2 className="mb-4 text-lg font-extrabold uppercase">{title}</h2>
             {children}
         </section>
@@ -250,14 +250,14 @@ export default function Checkout() {
                     </Card>
                 </form>
 
-                <aside className="h-fit rounded-xl border border-black/10 bg-white p-5 lg:sticky lg:top-4">
+                <aside className="h-fit rounded-xl border border-black/10 bg-[#f6f4ef] p-5 lg:sticky lg:top-4">
                     <h2 className="mb-4 text-lg font-extrabold uppercase">Đơn hàng của bạn</h2>
                     <ul className="max-h-72 space-y-3 overflow-y-auto pr-1">
                         {items.map(({ product, quantity }) => (
                             <li key={product.id} className="flex items-center gap-3">
                                 <div className="relative w-12 shrink-0">
                                     <img src={product.imageUrl} alt="" className="aspect-[63/88] w-full rounded object-cover" />
-                                    <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#1a1a1a] text-[#f4f4f1] px-1 text-[11px] font-bold">{quantity}</span>
+                                    <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#1a1a1a] text-[#e9e6de] px-1 text-[11px] font-bold">{quantity}</span>
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     <p className="text-xs font-semibold text-[#8a8a8a]">{product.code}</p>
@@ -288,13 +288,13 @@ export default function Checkout() {
                                         value={discountInput}
                                         onChange={(e) => setDiscountInput(e.target.value.toUpperCase())}
                                         placeholder="Mã giảm giá"
-                                        className="min-w-0 flex-1 rounded-lg border border-black/15 bg-white px-3 py-2 text-sm uppercase outline-none focus:border-[#1a1a1a]"
+                                        className="min-w-0 flex-1 rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm uppercase outline-none focus:border-[#1a1a1a]"
                                     />
                                     <button
                                         type="button"
                                         onClick={applyDiscount}
                                         disabled={checkingDiscount || !discountInput.trim()}
-                                        className="rounded-lg border border-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1] disabled:opacity-50"
+                                        className="rounded-lg border border-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de] disabled:opacity-50"
                                     >
                                         {checkingDiscount ? "..." : "Áp dụng"}
                                     </button>
@@ -311,7 +311,7 @@ export default function Checkout() {
 
                     {submitError && <p className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
 
-                    <button disabled={submitting} type="submit" form="checkout-form" className="mt-5 w-full rounded-lg bg-[#1a1a1a] text-[#f4f4f1] py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60">
+                    <button disabled={submitting} type="submit" form="checkout-form" className="mt-5 w-full rounded-lg bg-[#1a1a1a] text-[#e9e6de] py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60">
                         {submitting ? "Đang tạo đơn..." : "Đặt hàng"}
                     </button>
                     <Link to="/cart" className="mt-3 block text-center text-sm text-[#6b6b6b] transition hover:text-black">← Quay lại giỏ hàng</Link>
@@ -377,7 +377,7 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
     return (
         <section className="mx-auto max-w-2xl px-4 py-10 text-[#1a1a1a] md:py-14">
             <CheckoutSteps current={2} />
-            <div className="rounded-2xl border border-black/10 bg-white p-6 text-center sm:p-8">
+            <div className="rounded-2xl border border-black/10 bg-[#f6f4ef] p-6 text-center sm:p-8">
                 <CheckCircle2 size={56} className="mx-auto text-green-700" />
                 <h1 className="mt-4 text-2xl font-extrabold">Đặt hàng thành công</h1>
                 <p className="mt-2 text-sm text-[#6b6b6b]">Mã đơn hàng</p>
@@ -385,7 +385,7 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
                 <p className="mt-4 text-sm text-[#6b6b6b]">Tổng thanh toán: <strong className="text-[#1a1a1a]">{formatPrice(order.total)}</strong></p>
 
                 {order.payment === "bank" && (
-                    <div className="mt-6 rounded-xl border border-black/10 bg-[#f4f4f1] p-5 text-left">
+                    <div className="mt-6 rounded-xl border border-black/10 bg-[#e9e6de] p-5 text-left">
                         <h2 className="text-lg font-extrabold text-center">Thanh toán bằng QR</h2>
                         {order.qrUrl ? (
                             <img src={order.qrUrl} alt="Mã QR thanh toán" className="mx-auto mt-4 h-64 w-64 rounded-lg bg-white object-contain p-2" />
@@ -397,7 +397,7 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
                             <p><span className="text-[#6b6b6b]">Ngân hàng:</span> {order.bankName ?? "—"}</p>
                             <p><span className="text-[#6b6b6b]">Số tài khoản:</span> {order.accountNumber ?? "—"}</p>
                             <p><span className="text-[#6b6b6b]">Chủ tài khoản:</span> {order.accountName ?? "—"}</p>
-                            <div className="flex items-center justify-between gap-2 rounded-lg border border-black/10 bg-white p-3">
+                            <div className="flex items-center justify-between gap-2 rounded-lg border border-black/10 bg-[#f6f4ef] p-3">
                                 <span><span className="block text-xs text-[#8a8a8a]">Nội dung chuyển khoản</span><strong className="text-[#1a1a1a]">{order.transferContent}</strong></span>
                                 <button type="button" onClick={() => copy(order.transferContent)} className="rounded-lg p-2 text-[#3a3a3a] hover:bg-black/[0.06]" aria-label="Sao chép nội dung"><Copy size={17} /></button>
                             </div>
@@ -407,7 +407,7 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
                             Chuyển đúng số tiền và giữ nguyên nội dung <strong>{order.transferContent}</strong>. Hệ thống sẽ tự cập nhật trạng thái khi webhook thanh toán được cấu hình.
                         </div>
 
-                        <div className="mt-4 flex items-center justify-between rounded-lg bg-white p-3">
+                        <div className="mt-4 flex items-center justify-between rounded-lg bg-[#f6f4ef] p-3">
                             <span className="text-sm">Trạng thái: <strong className={paymentStatus === "paid" ? "text-green-700" : "text-yellow-400"}>{paymentStatus === "paid" ? "Đã thanh toán" : "Chờ thanh toán"}</strong></span>
                             <button type="button" onClick={checkNow} disabled={checking} className="inline-flex items-center gap-2 text-xs font-semibold text-[#3a3a3a] hover:text-black disabled:opacity-50">
                                 <RefreshCw size={14} className={checking ? "animate-spin" : ""} /> Kiểm tra
@@ -429,7 +429,7 @@ function OrderSuccess({ order }: { order: OrderCreated }) {
                 )}
 
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                    <Link to="/products" className="rounded-lg bg-[#1a1a1a] text-[#f4f4f1] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">Tiếp tục mua sắm</Link>
+                    <Link to="/products" className="rounded-lg bg-[#1a1a1a] text-[#e9e6de] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">Tiếp tục mua sắm</Link>
                     <Link to="/" className="rounded-lg border border-black/10 px-6 py-3 text-sm font-semibold text-[#3a3a3a] transition hover:border-[#1a1a1a] hover:text-black">Về trang chủ</Link>
                 </div>
             </div>

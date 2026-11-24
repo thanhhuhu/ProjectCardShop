@@ -158,7 +158,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
             </div>
 
             {/* Logo, tìm kiếm, tài khoản, giỏ hàng */}
-            <div className="bg-white">
+            <div className="bg-[#f6f4ef]">
                 <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4 md:flex-nowrap md:gap-6 md:py-6">
                     {/* Nút mở menu: chỉ hiện trên mobile */}
                     <button
@@ -205,19 +205,19 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                             aria-activedescendant={
                                 showDropdown && activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined
                             }
-                            className="min-w-0 flex-1 bg-white px-3 py-2 text-sm text-black outline-none"
+                            className="min-w-0 flex-1 bg-[#f6f4ef] px-3 py-2 text-sm text-black outline-none"
                         />
                         <button
                             type="submit"
                             aria-label="Tìm kiếm"
-                            className="bg-[#1a1a1a] text-[#f4f4f1] px-3 hover:bg-black"
+                            className="bg-[#1a1a1a] text-[#e9e6de] px-3 hover:bg-black"
                         >
                             <Search size={18} />
                         </button>
 
                         {/* Danh sách gợi ý */}
                         {showDropdown && (
-                            <div className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-lg border border-black/10 bg-white text-left shadow-2xl">
+                            <div className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-lg border border-black/10 bg-[#f6f4ef] text-left shadow-2xl">
                                 {suggestions.length > 0 ? (
                                     <ul id="search-suggestions" role="listbox" aria-label="Gợi ý thẻ bài">
                                         {suggestions.map((product, index) => (
@@ -320,7 +320,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                     aria-label={`Tài khoản ${user.username}`}
                                     aria-haspopup="menu"
                                     aria-expanded={accountOpen}
-                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1a1a1a] text-sm font-bold uppercase text-[#f4f4f1] ring-2 ring-transparent transition hover:ring-black/20 focus-visible:ring-black/30"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1a1a1a] text-sm font-bold uppercase text-[#e9e6de] ring-2 ring-transparent transition hover:ring-black/20 focus-visible:ring-black/30"
                                 >
                                     {user.username.charAt(0)}
                                 </button>
@@ -328,7 +328,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                 {accountOpen && (
                                     <div
                                         role="menu"
-                                        className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-black/10 bg-white text-left shadow-2xl"
+                                        className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-black/10 bg-[#f6f4ef] text-left shadow-2xl"
                                     >
                                         <div className="border-b border-black/10 px-4 py-3">
                                             <p className="truncate text-sm font-semibold text-[#1a1a1a]">
@@ -393,7 +393,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                                 type="button"
                                 onClick={onLoginClick}
                                 aria-label="Đăng nhập"
-                                className="rounded bg-[#1a1a1a] text-[#f4f4f1] p-2 hover:bg-black"
+                                className="rounded bg-[#1a1a1a] text-[#e9e6de] p-2 hover:bg-black"
                             >
                                 <User size={18} />
                             </button>
@@ -401,12 +401,12 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
                         <Link
                             to="/cart"
-                            className="relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded bg-[#1a1a1a] text-[#f4f4f1] px-3 py-2 text-sm font-bold uppercase hover:bg-black"
+                            className="relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded bg-[#1a1a1a] text-[#e9e6de] px-3 py-2 text-sm font-bold uppercase hover:bg-black"
                         >
                             <span className="hidden sm:inline">Giỏ hàng</span>
                             <ShoppingCart size={18} />
                             {cartCount > 0 && (
-                                <span className="absolute -right-2 -top-2 rounded-full bg-white px-1.5 text-xs font-bold text-[#1a1a1a]">
+                                <span className="absolute -right-2 -top-2 rounded-full bg-[#f6f4ef] px-1.5 text-xs font-bold text-[#1a1a1a]">
                                     {cartCount}
                                 </span>
                             )}
@@ -416,7 +416,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
             </div>
 
             {/* Menu desktop */}
-            <nav className="hidden bg-[#f4f4f1] md:block">
+            <nav className="hidden bg-[#e9e6de] md:block">
                 <ul className="mx-auto flex max-w-6xl gap-8 px-4">
                     {navItems.map((item) => (
                         <li key={item.label} className="group relative">
@@ -434,7 +434,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
                             </Link>
 
                             {item.children && (
-                                <ul className="invisible absolute left-0 top-full z-50 min-w-48 translate-y-2 rounded-b border-t-2 border-[#1a1a1a] bg-white py-2 text-black opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none">
+                                <ul className="invisible absolute left-0 top-full z-50 min-w-48 translate-y-2 rounded-b border-t-2 border-[#1a1a1a] bg-[#f6f4ef] py-2 text-black opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none">
                                     {item.children.map((child) => (
                                         <li key={child.label}>
                                             <Link
@@ -454,7 +454,7 @@ export default function Header({ cartCount = 0, onLoginClick }: HeaderProps) {
 
             {/* Menu mobile: luôn được render, xổ xuống bằng cách animate chiều cao */}
             <nav
-                className={`grid bg-[#f4f4f1] transition-[grid-template-rows,visibility] duration-300 motion-reduce:transition-none md:hidden ${
+                className={`grid bg-[#e9e6de] transition-[grid-template-rows,visibility] duration-300 motion-reduce:transition-none md:hidden ${
                     menuOpen ? "visible grid-rows-[1fr]" : "invisible grid-rows-[0fr]"
                 }`}
             >

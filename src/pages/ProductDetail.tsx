@@ -59,7 +59,7 @@ function BackInStock({ productId }: { productId: number }) {
     };
 
     return (
-        <form onSubmit={onSubmit} className="mt-5 max-w-md rounded-lg border border-black/10 bg-[#f4f4f1] p-4">
+        <form onSubmit={onSubmit} className="mt-5 max-w-md rounded-lg border border-black/10 bg-[#e9e6de] p-4">
             <p className="text-sm font-semibold">Hết hàng — nhận thông báo khi có lại</p>
             <div className="mt-2 flex gap-2">
                 <input
@@ -67,12 +67,12 @@ function BackInStock({ productId }: { productId: number }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email của bạn"
-                    className="flex-1 rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]"
+                    className="flex-1 rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]"
                 />
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-60"
+                    className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-60"
                 >
                     Báo tôi
                 </button>
@@ -130,7 +130,7 @@ function PurchaseBox({ product }: { product: Product }) {
                     <button
                         type="button"
                         onClick={() => addItem(product, quantity)}
-                        className="flex items-center gap-2 rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black active:scale-95"
+                        className="flex items-center gap-2 rounded-full bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#e9e6de] transition hover:bg-black active:scale-95"
                     >
                         <ShoppingCart size={16} />
                         Thêm vào giỏ hàng
@@ -250,7 +250,7 @@ function ReviewsSection({ productId }: { productId: number }) {
 
             {/* Trạng thái đánh giá của mình */}
             {user && mine && !editing && (
-                <div className="mb-6 rounded-lg border border-black/10 bg-[#f4f4f1] p-4 text-sm">
+                <div className="mb-6 rounded-lg border border-black/10 bg-[#e9e6de] p-4 text-sm">
                     <div className="flex items-center justify-between">
                         <Stars value={mine.rating} />
                         <button type="button" onClick={startEdit} className="text-xs font-semibold text-[#1a1a1a] underline">
@@ -266,7 +266,7 @@ function ReviewsSection({ productId }: { productId: number }) {
 
             {/* Form gửi / sửa */}
             {showForm && (
-                <form onSubmit={onSubmit} className="mb-8 rounded-lg border border-black/10 bg-white p-4">
+                <form onSubmit={onSubmit} className="mb-8 rounded-lg border border-black/10 bg-[#f6f4ef] p-4">
                     <p className="text-sm font-semibold">{mine ? "Sửa đánh giá của bạn" : "Viết đánh giá"}</p>
                     <div className="mt-2 flex gap-1">
                         {[1, 2, 3, 4, 5].map((n) => (
@@ -287,14 +287,14 @@ function ReviewsSection({ productId }: { productId: number }) {
                         rows={3}
                         maxLength={2000}
                         placeholder="Chia sẻ cảm nhận của bạn về thẻ này..."
-                        className="mt-3 w-full rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]"
+                        className="mt-3 w-full rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]"
                     />
                     {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
                     <div className="mt-3 flex gap-2">
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-60"
+                            className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-60"
                         >
                             {submitting ? "Đang gửi..." : "Gửi đánh giá"}
                         </button>
@@ -321,7 +321,7 @@ function ReviewsSection({ productId }: { productId: number }) {
             ) : (
                 <ul className="space-y-4">
                     {reviews.map((r: Review) => (
-                        <li key={r.id} className="rounded-lg border border-black/10 bg-white p-4">
+                        <li key={r.id} className="rounded-lg border border-black/10 bg-[#f6f4ef] p-4">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm font-semibold">{r.user}</span>
                                 <span className="text-xs text-[#6b6b6b]">{formatDate(r.createdAt)}</span>
@@ -364,7 +364,7 @@ export default function ProductDetail() {
                 <button
                     type="button"
                     onClick={() => window.location.reload()}
-                    className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                    className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                 >
                     Thử lại
                 </button>
@@ -378,7 +378,7 @@ export default function ProductDetail() {
                 <h1 className="text-2xl font-extrabold">Không tìm thấy sản phẩm</h1>
                 <Link
                     to="/"
-                    className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                    className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                 >
                     Về trang chủ
                 </Link>
@@ -392,7 +392,7 @@ export default function ProductDetail() {
         <section className="mx-auto max-w-6xl px-4 py-8 text-[#1a1a1a] md:py-10">
             <div className="grid gap-6 md:grid-cols-[minmax(0,340px)_1fr] md:gap-10">
                 <div className="mx-auto w-full max-w-sm md:max-w-none">
-                    <div className="rounded-xl border border-black/10 bg-white p-2">
+                    <div className="rounded-xl border border-black/10 bg-[#f6f4ef] p-2">
                         <img
                             src={product.imageUrl}
                             alt={`${product.code} ${product.name}`}

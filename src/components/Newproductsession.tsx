@@ -31,7 +31,7 @@ export default function NewProductsSection({ products, loading, error, onAddToCa
             <div className="mt-8 text-center md:mt-10">
                 <Link
                     to="/products"
-                    className="inline-flex items-center gap-1 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1] active:scale-95"
+                    className="inline-flex items-center gap-1 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de] active:scale-95"
                 >
                     Xem thêm
                     <ChevronRight size={16} />

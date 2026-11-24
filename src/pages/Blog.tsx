@@ -53,7 +53,7 @@ export default function Blog() {
                     <p className="mt-2 pl-4 text-sm text-[#6b6b6b]">Tin tức và bài viết từ L1ZY CARD SHOP</p>
                 </div>
                 {user?.role === "admin" && (
-                    <Link to="/admin/blog" className="inline-flex items-center gap-2 rounded-lg bg-[#1a1a1a] text-[#f4f4f1] px-4 py-2.5 text-sm font-bold transition hover:bg-black">
+                    <Link to="/admin/blog" className="inline-flex items-center gap-2 rounded-lg bg-[#1a1a1a] text-[#e9e6de] px-4 py-2.5 text-sm font-bold transition hover:bg-black">
                         <PenSquare size={16} /> Viết bài
                     </Link>
                 )}
@@ -66,7 +66,7 @@ export default function Blog() {
             ) : error ? (
                 <p className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-600">{error}</p>
             ) : !data || data.posts.length === 0 ? (
-                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                <div className="rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center">
                     <Newspaper size={48} className="mx-auto text-[#8a8a8a]" />
                     <p className="mt-3 text-sm text-[#6b6b6b]">Chưa có bài viết nào.</p>
                 </div>
@@ -75,7 +75,7 @@ export default function Blog() {
                     <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {data.posts.map((post) => (
                             <li key={post.id}>
-                                <Link to={`/blog/${post.id}`} className="group flex h-full flex-col rounded-xl border border-black/10 bg-white p-5 transition hover:border-black/50">
+                                <Link to={`/blog/${post.id}`} className="group flex h-full flex-col rounded-xl border border-black/10 bg-[#f6f4ef] p-5 transition hover:border-black/50">
                                     <span className="text-xs font-semibold uppercase tracking-wide text-[#8a8a8a]">{blogCategoryLabel(post.category)}</span>
                                     <h2 className="mt-2 line-clamp-2 text-lg font-extrabold group-hover:text-[#1a1a1a]">{post.title}</h2>
                                     <p className="mt-2 line-clamp-4 flex-1 whitespace-pre-line text-sm text-[#6b6b6b]">{post.excerpt}</p>

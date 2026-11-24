@@ -21,7 +21,7 @@ export default function Cart() {
                 <p className="mt-2 text-[#6b6b6b]">Hãy chọn vài lá bài yêu thích rồi quay lại đây nhé.</p>
                 <Link
                     to="/products"
-                    className="mt-8 inline-block rounded-full bg-[#1a1a1a] text-[#f4f4f1] px-8 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black"
+                    className="mt-8 inline-block rounded-full bg-[#1a1a1a] text-[#e9e6de] px-8 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black"
                 >
                     Mua sắm ngay
                 </Link>
@@ -57,7 +57,7 @@ export default function Cart() {
                     {items.map(({ product, quantity }) => (
                         <li
                             key={product.id}
-                            className="flex gap-4 rounded-xl border border-black/10 bg-white p-3 sm:p-4"
+                            className="flex gap-4 rounded-xl border border-black/10 bg-[#f6f4ef] p-3 sm:p-4"
                         >
                             <Link to={`/product/${product.id}`} className="w-20 shrink-0 sm:w-24">
                                 <img
@@ -108,7 +108,7 @@ export default function Cart() {
                 </ul>
 
                 {/* Tóm tắt đơn hàng */}
-                <aside className="h-fit rounded-xl border border-black/10 bg-white p-5 lg:sticky lg:top-4">
+                <aside className="h-fit rounded-xl border border-black/10 bg-[#f6f4ef] p-5 lg:sticky lg:top-4">
                     <h2 className="mb-4 text-lg font-extrabold uppercase">Tóm tắt đơn hàng</h2>
 
                     <div className="mb-5">
@@ -130,7 +130,7 @@ export default function Cart() {
                             className="h-2 overflow-hidden rounded-full bg-black/[0.06]"
                         >
                             <div
-                                className="h-full rounded-full bg-[#1a1a1a] text-[#f4f4f1] transition-[width] duration-300 motion-reduce:transition-none"
+                                className="h-full rounded-full bg-[#1a1a1a] text-[#e9e6de] transition-[width] duration-300 motion-reduce:transition-none"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
@@ -153,7 +153,7 @@ export default function Cart() {
 
                     <Link
                         to="/checkout"
-                        className="mt-5 block rounded-lg bg-[#1a1a1a] text-[#f4f4f1] py-3 text-center text-sm font-bold uppercase tracking-wide transition hover:bg-black active:scale-[0.99]"
+                        className="mt-5 block rounded-lg bg-[#1a1a1a] text-[#e9e6de] py-3 text-center text-sm font-bold uppercase tracking-wide transition hover:bg-black active:scale-[0.99]"
                     >
                         Tiến hành thanh toán
                     </Link>

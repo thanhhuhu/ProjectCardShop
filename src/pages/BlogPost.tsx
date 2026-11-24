@@ -61,7 +61,7 @@ export default function BlogPost() {
             </Link>
 
             {!post ? (
-                <p className="mt-8 rounded-xl border border-black/10 bg-white p-10 text-center text-[#6b6b6b]">{result.error}</p>
+                <p className="mt-8 rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center text-[#6b6b6b]">{result.error}</p>
             ) : (
                 <>
                     <header className="mt-6 border-b border-black/10 pb-6">
@@ -92,7 +92,7 @@ export default function BlogPost() {
                     {deleteError && <p className="mt-3 text-sm text-red-600">{deleteError}</p>}
                     <div className="mt-6 flex justify-end gap-2">
                         <button type="button" onClick={() => setConfirmDelete(false)} className="rounded-lg border border-black/10 px-4 py-2 text-sm font-semibold text-[#3a3a3a] hover:text-black">Không</button>
-                        <button type="button" disabled={deleting} onClick={handleDelete} className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#f4f4f1] hover:bg-black disabled:opacity-50">
+                        <button type="button" disabled={deleting} onClick={handleDelete} className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#e9e6de] hover:bg-black disabled:opacity-50">
                             {deleting ? "Đang xóa..." : "Xóa"}
                         </button>
                     </div>

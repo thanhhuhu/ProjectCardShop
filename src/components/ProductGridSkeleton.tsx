@@ -13,7 +13,7 @@ export default function ProductGridSkeleton({ count = 8, className }: ProductGri
             {Array.from({ length: count }, (_, index) => (
                 <div
                     key={index}
-                    className="animate-pulse overflow-hidden rounded-xl border border-black/10 bg-white"
+                    className="animate-pulse overflow-hidden rounded-xl border border-black/10 bg-[#f6f4ef]"
                 >
                     <div className="m-2 aspect-[63/88] rounded-md bg-black/[0.06]" />
                     <div className="space-y-2 p-3">

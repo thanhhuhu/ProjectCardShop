@@ -8,7 +8,7 @@ import type { BlogCategory } from "../services/blogApi";
 type Field = "title" | "category" | "content";
 
 const inputClass = (error?: string) =>
-    `w-full rounded-lg border bg-white px-4 py-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a] ${error ? "border-red-400" : "border-black/10"}`;
+    `w-full rounded-lg border bg-[#f6f4ef] px-4 py-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a] ${error ? "border-red-400" : "border-black/10"}`;
 
 // Trang viết blog: chỉ admin vào được (được bọc bởi <RequireAdmin> trong App.tsx)
 export default function AdminBlog() {
@@ -54,7 +54,7 @@ export default function AdminBlog() {
                 <Link to="/blog" className="text-sm text-[#6b6b6b] transition hover:text-black">Xem trang blog →</Link>
             </div>
 
-            <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-black/10 bg-white p-6">
+            <form onSubmit={handleSubmit} noValidate className="rounded-xl border border-black/10 bg-[#f6f4ef] p-6">
                 <div className="space-y-5">
                     <div>
                         <label htmlFor="blog-title" className="mb-2 block text-sm font-semibold text-[#2a2a2a]">Tiêu đề</label>
@@ -80,7 +80,7 @@ export default function AdminBlog() {
                     {submitError && <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
 
                     <div className="flex justify-end">
-                        <button type="submit" disabled={submitting} className="rounded-lg bg-[#1a1a1a] px-5 py-3 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60">
+                        <button type="submit" disabled={submitting} className="rounded-lg bg-[#1a1a1a] px-5 py-3 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60">
                             {submitting ? "Đang đăng..." : "Đăng bài"}
                         </button>
                     </div>

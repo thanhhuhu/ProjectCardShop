@@ -110,7 +110,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
                         : "pointer-events-none invisible translate-y-3 opacity-0"
                 }`}
             >
-                <div className="flex items-center gap-3 rounded-xl border border-black/10 bg-white p-3 text-sm text-[#1a1a1a] shadow-2xl">
+                <div className="flex items-center gap-3 rounded-xl border border-black/10 bg-[#f6f4ef] p-3 text-sm text-[#1a1a1a] shadow-2xl">
                     <CheckCircle2 size={20} className="shrink-0 text-green-700" />
                     <span className="flex-1">{toast?.text}</span>
                     <Link
