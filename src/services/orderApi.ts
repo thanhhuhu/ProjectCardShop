@@ -17,6 +17,7 @@ export interface CreateOrderPayload {
     address: string;
     note: string;
     paymentMethod: OrderPaymentMethod;
+    discountCode?: string;
     items: CreateOrderItem[];
 }
 
@@ -24,6 +25,8 @@ export interface OrderCreated {
     id: number;
     code: string;
     subtotal: number;
+    discountCode: string;
+    discountAmount: number;
     shippingFee: number;
     total: number;
     payment: OrderPaymentMethod;
@@ -81,6 +84,8 @@ export interface MyOrder {
     note: string;
     subtotal: number;
     shippingFee: number;
+    discountCode: string;
+    discountAmount: number;
     total: number;
     payment: OrderPaymentMethod;
     paymentStatus: OrderPaymentStatus;
@@ -108,4 +113,13 @@ export interface MyOrdersResponse {
 
 export async function getMyOrders(page = 1, pageSize = 10): Promise<MyOrdersResponse> {
     return request(`/api/orders/mine?page=${page}&pageSize=${pageSize}`);
+}
+
+// Tra cứu đơn cho khách vãng lai (mã đơn + số điện thoại)
+export async function lookupOrder(code: string, phone: string): Promise<MyOrder> {
+    const data = await request<{ order: MyOrder }>("/api/orders/lookup", {
+        method: "POST",
+        body: { code, phone },
+    });
+    return data.order;
 }
