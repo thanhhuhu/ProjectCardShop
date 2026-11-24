@@ -87,7 +87,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                 <div
                     key={toast.id}
                     role="status"
-                    className="fixed right-4 top-4 z-[60] flex max-w-[calc(100vw_-_2rem)] items-center gap-3 rounded-lg border border-green-600/40 bg-white px-4 py-3 text-sm text-[#1a1a1a] shadow-xl"
+                    className="fixed right-4 top-4 z-[60] flex max-w-[calc(100vw_-_2rem)] items-center gap-3 rounded-lg border border-green-600/40 bg-[#f6f4ef] px-4 py-3 text-sm text-[#1a1a1a] shadow-xl"
                 >
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-600">
                         <Check size={14} />

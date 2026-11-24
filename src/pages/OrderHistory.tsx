@@ -64,7 +64,7 @@ export default function OrderHistory() {
                 <PackageOpen size={56} className="mx-auto text-[#8a8a8a]" />
                 <h1 className="mt-4 text-2xl font-extrabold">Lịch sử đặt hàng</h1>
                 <p className="mt-2 text-sm text-[#6b6b6b]">Vui lòng đăng nhập để xem các đơn hàng bạn đã đặt.</p>
-                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] text-[#f4f4f1] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">
+                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] text-[#e9e6de] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">
                     Đăng nhập
                 </Link>
             </section>
@@ -88,11 +88,11 @@ export default function OrderHistory() {
                     </button>
                 </div>
             ) : data && data.orders.length === 0 ? (
-                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                <div className="rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center">
                     <PackageOpen size={56} className="mx-auto text-[#8a8a8a]" />
                     <p className="mt-4 font-semibold">Bạn chưa có đơn hàng nào</p>
                     <p className="mt-1 text-sm text-[#6b6b6b]">Các đơn đặt khi đã đăng nhập sẽ hiện ở đây.</p>
-                    <Link to="/products" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] text-[#f4f4f1] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">
+                    <Link to="/products" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] text-[#e9e6de] px-6 py-3 text-sm font-bold uppercase tracking-wide transition hover:bg-black">
                         Mua sắm ngay
                     </Link>
                 </div>
@@ -128,7 +128,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
     };
 
     return (
-        <button type="button" onClick={copy} aria-label={label} title={label} className="rounded p-1 text-[#6b6b6b] transition hover:bg-black/[0.06] hover:text-[#f4f4f1]">
+        <button type="button" onClick={copy} aria-label={label} title={label} className="rounded p-1 text-[#6b6b6b] transition hover:bg-black/[0.06] hover:text-[#e9e6de]">
             {copied ? <Check size={15} className="text-green-700" /> : <Copy size={15} />}
         </button>
     );
@@ -142,7 +142,7 @@ function OrderCard({ order }: { order: MyOrder }) {
     const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <article className="overflow-hidden rounded-xl border border-black/10 bg-white">
+        <article className="overflow-hidden rounded-xl border border-black/10 bg-[#f6f4ef]">
             {/* Đầu thẻ: mã đơn, ngày đặt, trạng thái */}
             <header className="flex flex-wrap items-center justify-between gap-3 border-b border-black/10 px-4 py-3 sm:px-5">
                 <div>
@@ -194,7 +194,7 @@ function OrderCard({ order }: { order: MyOrder }) {
             </div>
 
             <div className="flex flex-wrap gap-2 border-t border-black/10 px-4 py-2 sm:px-5">
-                <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-[#3a3a3a] transition hover:bg-black/[0.06] hover:text-[#f4f4f1]">
+                <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold text-[#3a3a3a] transition hover:bg-black/[0.06] hover:text-[#e9e6de]">
                     <ChevronDown size={15} className={`transition-transform ${open ? "rotate-180" : ""}`} />
                     {open ? "Ẩn chi tiết" : "Xem chi tiết"}
                 </button>

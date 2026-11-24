@@ -7,7 +7,7 @@ export default function NotFound() {
             <h1 className="mt-4 text-2xl font-extrabold">Không tìm thấy trang</h1>
             <Link
                 to="/"
-                className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
             >
                 Về trang chủ
             </Link>

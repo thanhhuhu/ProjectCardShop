@@ -28,7 +28,7 @@ export default function Wishlist() {
                 <Heart size={56} className="mx-auto text-[#c0bdb4]" />
                 <h1 className="mt-4 text-2xl font-extrabold">Yêu thích</h1>
                 <p className="mt-2 text-sm text-[#6b6b6b]">Đăng nhập để lưu và xem các thẻ bạn thích.</p>
-                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black">
+                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#e9e6de] transition hover:bg-black">
                     Đăng nhập
                 </Link>
             </section>
@@ -46,10 +46,10 @@ export default function Wishlist() {
             {loading ? (
                 <ProductGridSkeleton count={6} />
             ) : products.length === 0 ? (
-                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                <div className="rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center">
                     <Heart size={48} className="mx-auto text-[#c0bdb4]" />
                     <p className="mt-3 text-sm text-[#6b6b6b]">Bạn chưa thích thẻ nào. Bấm biểu tượng trái tim trên mỗi thẻ để lưu lại.</p>
-                    <Link to="/products" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black">
+                    <Link to="/products" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#e9e6de] transition hover:bg-black">
                         Khám phá sản phẩm
                     </Link>
                 </div>

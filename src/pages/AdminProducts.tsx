@@ -60,7 +60,7 @@ function Field({ id, label, children, error, hint }: FieldProps) {
 }
 
 const inputClass = (error?: string) =>
-    `w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
+    `w-full rounded-lg border bg-[#f6f4ef] px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
         error ? "border-red-400" : "border-black/10"
     }`;
 
@@ -170,7 +170,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
                 {/* Ảnh */}
                 <div className="flex gap-4">
-                    <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-[#f4f4f1]">
+                    <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-[#e9e6de]">
                         {imageUrl ? (
                             <img src={imageUrl} alt="Ảnh thẻ" className="h-full w-full object-cover" />
                         ) : (
@@ -325,7 +325,7 @@ function ProductFormDialog({ product, onClose, onSaved }: ProductFormDialogProps
                     <button
                         type="submit"
                         disabled={saving || uploading}
-                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
+                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                     >
                         {saving ? "Đang lưu..." : product ? "Lưu thay đổi" : "Thêm thẻ"}
                     </button>
@@ -387,7 +387,7 @@ function DeleteProductDialog({ product, onClose, onDeleted }: DeleteProductDialo
                     type="button"
                     onClick={handleDelete}
                     disabled={deleting}
-                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
+                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                 >
                     {deleting ? "Đang xóa..." : "Xóa"}
                 </button>
@@ -478,13 +478,13 @@ export default function AdminProducts() {
                             onChange={(e) => setSearchInput(e.target.value)}
                             placeholder="Tìm theo tên hoặc mã..."
                             autoComplete="off"
-                            className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
+                            className="w-full rounded-lg border border-black/10 bg-[#f6f4ef] py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
                         />
                     </div>
                     <button
                         type="button"
                         onClick={() => setForm({ product: null })}
-                        className="flex items-center gap-2 rounded-lg bg-[#1a1a1a] px-4 py-2.5 text-sm font-bold text-[#f4f4f1] transition hover:bg-black"
+                        className="flex items-center gap-2 rounded-lg bg-[#1a1a1a] px-4 py-2.5 text-sm font-bold text-[#e9e6de] transition hover:bg-black"
                     >
                         <Plus size={16} />
                         Thêm thẻ
@@ -508,7 +508,7 @@ export default function AdminProducts() {
                         <button
                             type="button"
                             onClick={reload}
-                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                         >
                             Thử lại
                         </button>
@@ -518,7 +518,7 @@ export default function AdminProducts() {
 
             {/* Bảng luôn cao đúng 10 dòng, mỗi dòng cao cố định, nên chiều cao trang không đổi và footer đứng yên */}
             <div
-                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-white transition-opacity ${
+                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-[#f6f4ef] transition-opacity ${
                     loading ? "opacity-60" : ""
                 }`}
             >

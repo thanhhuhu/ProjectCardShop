@@ -5,7 +5,7 @@ import { useAuth } from "../context/useAuth";
 import { useFetch } from "../hooks/useFetch";
 import { ApiError, changePassword, getProfile, updateProfile } from "../services/authApi";
 
-const inputClass = "w-full rounded-lg border border-black/15 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#1a1a1a]";
+const inputClass = "w-full rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2.5 text-sm outline-none focus:border-[#1a1a1a]";
 
 export default function Profile() {
     const { user, loading: authLoading } = useAuth();
@@ -26,7 +26,7 @@ export default function Profile() {
             <section className="mx-auto max-w-lg px-4 py-16 text-center text-[#1a1a1a]">
                 <h1 className="text-2xl font-extrabold">Hồ sơ</h1>
                 <p className="mt-2 text-sm text-[#6b6b6b]">Vui lòng đăng nhập để xem hồ sơ.</p>
-                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase text-[#f4f4f1] transition hover:bg-black">Đăng nhập</Link>
+                <Link to="/login" className="mt-6 inline-block rounded-lg bg-[#1a1a1a] px-6 py-3 text-sm font-bold uppercase text-[#e9e6de] transition hover:bg-black">Đăng nhập</Link>
             </section>
         );
     }
@@ -45,7 +45,7 @@ export default function Profile() {
 
 function AccountInfo({ username, email }: { username: string; email: string }) {
     return (
-        <div className="rounded-xl border border-black/10 bg-[#f4f4f1] p-5 text-sm">
+        <div className="rounded-xl border border-black/10 bg-[#e9e6de] p-5 text-sm">
             <p><span className="text-[#6b6b6b]">Tài khoản:</span> <strong>{username}</strong></p>
             <p className="mt-1"><span className="text-[#6b6b6b]">Email:</span> {email}</p>
         </div>
@@ -77,7 +77,7 @@ function ProfileForm({ initial }: { initial: { fullName: string; phone: string; 
     };
 
     return (
-        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-white p-5">
+        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-[#f6f4ef] p-5">
             <h2 className="text-base font-bold">Thông tin giao hàng</h2>
             <p className="mb-4 text-xs text-[#6b6b6b]">Lưu sẵn để lần sau thanh toán nhanh hơn.</p>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -96,7 +96,7 @@ function ProfileForm({ initial }: { initial: { fullName: string; phone: string; 
             </div>
             {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
             {done && <p className="mt-3 text-sm text-green-700">Đã lưu thông tin.</p>}
-            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-60">
+            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-60">
                 {saving ? "Đang lưu..." : "Lưu thay đổi"}
             </button>
         </form>
@@ -135,7 +135,7 @@ function PasswordForm() {
     };
 
     return (
-        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-white p-5">
+        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-[#f6f4ef] p-5">
             <h2 className="mb-4 text-base font-bold">Đổi mật khẩu</h2>
             <div className="space-y-3">
                 <label className="block text-sm">Mật khẩu hiện tại
@@ -152,7 +152,7 @@ function PasswordForm() {
                 </label>
             </div>
             {done && <p className="mt-3 text-sm text-green-700">Đổi mật khẩu thành công.</p>}
-            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-60">
+            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-60">
                 {saving ? "Đang đổi..." : "Đổi mật khẩu"}
             </button>
         </form>

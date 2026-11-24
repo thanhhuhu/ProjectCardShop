@@ -30,7 +30,7 @@ export default function Preloader() {
         <div
             role="status"
             aria-live="polite"
-            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-[#f4f4f1] transition-opacity ${
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-[#e9e6de] transition-opacity ${
                 phase === "fade" ? "pointer-events-none opacity-0" : "opacity-100"
             }`}
             style={{ transitionDuration: `${FADE_MS}ms` }}

@@ -31,7 +31,7 @@ export default function Modal({ title, onClose, children, wide = false }: ModalP
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className={`m-auto w-full rounded-2xl border border-black/10 bg-white p-6 shadow-2xl ${
+                className={`m-auto w-full rounded-2xl border border-black/10 bg-[#f6f4ef] p-6 shadow-2xl ${
                     wide ? "max-w-xl" : "max-w-md"
                 }`}
             >

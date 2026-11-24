@@ -40,25 +40,25 @@ export default function OrderLookup() {
             <h1 className="mb-2 border-l-4 border-[#1a1a1a] pl-3 text-xl font-extrabold uppercase md:text-2xl">Tra cứu đơn hàng</h1>
             <p className="mb-6 pl-4 text-sm text-[#6b6b6b]">Nhập mã đơn và số điện thoại đã dùng khi đặt.</p>
 
-            <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-white p-5">
+            <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-[#f6f4ef] p-5">
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                         <label htmlFor="lk-code" className="mb-1 block text-sm font-semibold">Mã đơn</label>
-                        <input id="lk-code" value={code} onChange={(e) => setCode(e.target.value)} placeholder="VD: CS1A2B3C..." className="w-full rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]" />
+                        <input id="lk-code" value={code} onChange={(e) => setCode(e.target.value)} placeholder="VD: CS1A2B3C..." className="w-full rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]" />
                     </div>
                     <div>
                         <label htmlFor="lk-phone" className="mb-1 block text-sm font-semibold">Số điện thoại</label>
-                        <input id="lk-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="VD: 0905123456" className="w-full rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]" />
+                        <input id="lk-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="VD: 0905123456" className="w-full rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]" />
                     </div>
                 </div>
                 {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-                <button type="submit" disabled={loading} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black disabled:opacity-60">
+                <button type="submit" disabled={loading} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-[#e9e6de] transition hover:bg-black disabled:opacity-60">
                     {loading ? "Đang tìm..." : "Tra cứu"}
                 </button>
             </form>
 
             {order && status && paymentStatus && (
-                <article className="mt-6 overflow-hidden rounded-xl border border-black/10 bg-white">
+                <article className="mt-6 overflow-hidden rounded-xl border border-black/10 bg-[#f6f4ef]">
                     <header className="flex flex-wrap items-center justify-between gap-3 border-b border-black/10 px-5 py-3">
                         <div>
                             <span className="text-xs text-[#8a8a8a]">Mã đơn </span>
@@ -86,7 +86,7 @@ export default function OrderLookup() {
                         <span className="text-lg font-extrabold">{formatPrice(order.total)}</span>
                     </div>
                     {order.paymentInfo?.qrUrl && (
-                        <div className="border-t border-black/10 bg-[#f4f4f1] px-5 py-5 text-center">
+                        <div className="border-t border-black/10 bg-[#e9e6de] px-5 py-5 text-center">
                             <img src={order.paymentInfo.qrUrl} alt="Mã QR thanh toán" className="mx-auto h-52 w-52 rounded-lg bg-white object-contain p-2" />
                             <p className="mt-2 text-sm text-[#6b6b6b]">Nội dung CK: <strong className="text-[#1a1a1a]">{order.paymentInfo.transferContent}</strong></p>
                         </div>

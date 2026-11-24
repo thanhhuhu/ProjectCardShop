@@ -51,7 +51,7 @@ export default function Pagination({ page, totalPages, onChange }: PaginationPro
                         onClick={() => onChange(item)}
                         className={`${baseButton} ${
                             item === page
-                                ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#f4f4f1]"
+                                ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#e9e6de]"
                                 : "border-black/10 text-[#3a3a3a] hover:border-[#1a1a1a] hover:text-black"
                         }`}
                     >

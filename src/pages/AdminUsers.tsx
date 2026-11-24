@@ -53,7 +53,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-6 shadow-2xl"
+                className="w-full max-w-md rounded-2xl border border-black/10 bg-[#f6f4ef] p-6 shadow-2xl"
             >
                 <div className="mb-4 flex items-center justify-between gap-3">
                     <h2 className="text-lg font-extrabold text-[#1a1a1a]">{title}</h2>
@@ -98,7 +98,7 @@ function DialogField({ id, label, value, onChange, type = "text", error, hint, a
                 autoFocus={autoFocus}
                 autoComplete={autoComplete}
                 aria-invalid={error ? true : undefined}
-                className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
+                className={`w-full rounded-lg border bg-[#f6f4ef] px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
                     error ? "border-red-400" : "border-black/10"
                 }`}
             />
@@ -192,7 +192,7 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                         value={role}
                         onChange={(e) => setRole(e.target.value as UserRole)}
                         disabled={isSelf}
-                        className="w-full rounded-lg border border-black/10 bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded-lg border border-black/10 bg-[#f6f4ef] px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         <option value="user">{roleLabel.user}</option>
                         <option value="admin">{roleLabel.admin}</option>
@@ -231,7 +231,7 @@ function EditUserDialog({ user, isSelf, onClose, onSaved }: EditUserDialogProps)
                     <button
                         type="submit"
                         disabled={saving}
-                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
+                        className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                     >
                         {saving ? "Đang lưu..." : "Lưu thay đổi"}
                     </button>
@@ -290,7 +290,7 @@ function DeleteUserDialog({ user, onClose, onDeleted }: DeleteUserDialogProps) {
                     type="button"
                     onClick={handleDelete}
                     disabled={deleting}
-                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
+                    className="rounded-lg bg-[#1a1a1a] px-5 py-2 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b]"
                 >
                     {deleting ? "Đang xóa..." : "Xóa"}
                 </button>
@@ -399,7 +399,7 @@ export default function AdminUsers() {
                         onChange={(e) => setSearchInput(e.target.value)}
                         placeholder="Tìm theo tên hoặc email..."
                         autoComplete="off"
-                        className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
+                        className="w-full rounded-lg border border-black/10 bg-[#f6f4ef] py-2.5 pl-9 pr-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a]"
                     />
                 </div>
             </div>
@@ -420,7 +420,7 @@ export default function AdminUsers() {
                         <button
                             type="button"
                             onClick={() => setReloadKey((key) => key + 1)}
-                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                            className="rounded-full border border-[#1a1a1a] px-3 py-1 font-semibold transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                         >
                             Thử lại
                         </button>
@@ -431,7 +431,7 @@ export default function AdminUsers() {
             {/* Bảng luôn cao đúng chừng ấy dòng (dòng còn thiếu được thêm dòng trống cho đủ),
                 mỗi dòng cao cố định, nên chiều cao trang không đổi và footer đứng yên */}
             <div
-                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-white transition-opacity ${
+                className={`relative overflow-x-auto rounded-xl border border-black/10 bg-[#f6f4ef] transition-opacity ${
                     loading ? "opacity-60" : ""
                 }`}
             >

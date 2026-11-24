@@ -20,7 +20,7 @@ const TABS: { value: OrderStatus | ""; label: string }[] = [
 // Nút hành động ứng với trạng thái đích
 const ACTION: Record<OrderStatus, { text: string; className: string }> = {
     pending: { text: "", className: "" },
-    confirmed: { text: "Xác nhận đơn", className: "bg-[#1a1a1a] hover:bg-black text-[#f4f4f1]" },
+    confirmed: { text: "Xác nhận đơn", className: "bg-[#1a1a1a] hover:bg-black text-[#e9e6de]" },
     shipping: { text: "Bắt đầu giao", className: "bg-purple-600 hover:bg-purple-700 text-[#1a1a1a]" },
     completed: { text: "Đã giao xong", className: "bg-green-600 hover:bg-green-700 text-[#1a1a1a]" },
     cancelled: { text: "Hủy đơn", className: "border border-black/10 text-[#3a3a3a] hover:border-red-400 hover:text-red-700" },
@@ -101,7 +101,7 @@ export default function AdminOrders() {
                                 setStatus(tab.value);
                                 setPage(1);
                             }}
-                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-[#1a1a1a] text-[#f4f4f1]" : "bg-black/[0.04] text-[#3a3a3a] hover:bg-black/[0.06]"}`}
+                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-[#1a1a1a] text-[#e9e6de]" : "bg-black/[0.04] text-[#3a3a3a] hover:bg-black/[0.06]"}`}
                         >
                             {tab.label}
                             {data && <span className={`ml-2 rounded-full px-1.5 text-xs ${active ? "bg-black/10" : "bg-black/[0.06]"}`}>{count}</span>}
@@ -119,7 +119,7 @@ export default function AdminOrders() {
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Tìm theo mã đơn, tên, số điện thoại hoặc tài khoản..."
-                    className="w-full rounded-lg border border-black/10 bg-white py-2.5 pl-10 pr-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a]"
+                    className="w-full rounded-lg border border-black/10 bg-[#f6f4ef] py-2.5 pl-10 pr-3 text-sm text-[#1a1a1a] outline-none placeholder:text-[#8a8a8a] focus:border-[#1a1a1a]"
                 />
             </div>
 
@@ -130,7 +130,7 @@ export default function AdminOrders() {
                     <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-black/15 border-t-red-600" />
                 </div>
             ) : data.orders.length === 0 ? (
-                <div className="rounded-xl border border-black/10 bg-white p-10 text-center">
+                <div className="rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center">
                     <PackageOpen size={48} className="mx-auto text-[#8a8a8a]" />
                     <p className="mt-3 text-sm text-[#6b6b6b]">Không có đơn hàng nào.</p>
                 </div>
@@ -174,7 +174,7 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
     };
 
     return (
-        <article className="overflow-hidden rounded-xl border border-black/10 bg-white">
+        <article className="overflow-hidden rounded-xl border border-black/10 bg-[#f6f4ef]">
             <header className="flex flex-wrap items-start justify-between gap-3 border-b border-black/10 px-4 py-3 sm:px-5">
                 <div className="min-w-0">
                     <p>
@@ -260,7 +260,7 @@ function AdminOrderCard({ order, onUpdated, onChanged }: { order: AdminOrder; on
                     </p>
                     <div className="mt-6 flex justify-end gap-2">
                         <button type="button" onClick={() => setConfirmCancel(false)} className="rounded-lg border border-black/10 px-4 py-2 text-sm font-semibold text-[#3a3a3a] hover:text-black">Không</button>
-                        <button type="button" disabled={busy !== null} onClick={() => changeStatus("cancelled")} className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#f4f4f1] hover:bg-black disabled:opacity-50">
+                        <button type="button" disabled={busy !== null} onClick={() => changeStatus("cancelled")} className="rounded-lg bg-[#1a1a1a] px-4 py-2 text-sm font-bold text-[#e9e6de] hover:bg-black disabled:opacity-50">
                             {busy === "cancelled" ? "Đang hủy..." : "Hủy đơn"}
                         </button>
                     </div>

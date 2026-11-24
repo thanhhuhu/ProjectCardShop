@@ -40,7 +40,7 @@ export default function AdminReviews() {
                         key={t.value || "all"}
                         type="button"
                         onClick={() => setTab(t.value)}
-                        className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${tab === t.value ? "bg-[#1a1a1a] text-[#f4f4f1]" : "bg-black/[0.04] text-[#3a3a3a] hover:bg-black/[0.06]"}`}
+                        className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${tab === t.value ? "bg-[#1a1a1a] text-[#e9e6de]" : "bg-black/[0.04] text-[#3a3a3a] hover:bg-black/[0.06]"}`}
                     >
                         {t.label}
                     </button>
@@ -52,11 +52,11 @@ export default function AdminReviews() {
                     <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-black/10 border-t-[#1a1a1a]" />
                 </div>
             ) : reviews.length === 0 ? (
-                <p className="rounded-xl border border-black/10 bg-white p-10 text-center text-sm text-[#6b6b6b]">Không có đánh giá nào.</p>
+                <p className="rounded-xl border border-black/10 bg-[#f6f4ef] p-10 text-center text-sm text-[#6b6b6b]">Không có đánh giá nào.</p>
             ) : (
                 <ul className="space-y-3">
                     {reviews.map((r) => (
-                        <li key={r.id} className="rounded-xl border border-black/10 bg-white p-4">
+                        <li key={r.id} className="rounded-xl border border-black/10 bg-[#f6f4ef] p-4">
                             <div className="flex flex-wrap items-center justify-between gap-2">
                                 <div>
                                     <p className="text-sm font-semibold">{r.productName}</p>
@@ -71,7 +71,7 @@ export default function AdminReviews() {
                             {r.comment && <p className="mt-2 text-sm text-[#2a2a2a]">{r.comment}</p>}
                             <div className="mt-3 flex flex-wrap gap-2">
                                 {r.status !== "approved" && (
-                                    <button type="button" disabled={busy === r.id} onClick={() => act(() => setReviewStatus(r.id, "approved"), r.id)} className="inline-flex items-center gap-1 rounded-lg bg-[#1a1a1a] px-3 py-1.5 text-xs font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-50">
+                                    <button type="button" disabled={busy === r.id} onClick={() => act(() => setReviewStatus(r.id, "approved"), r.id)} className="inline-flex items-center gap-1 rounded-lg bg-[#1a1a1a] px-3 py-1.5 text-xs font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-50">
                                         <Check size={14} /> Duyệt
                                     </button>
                                 )}

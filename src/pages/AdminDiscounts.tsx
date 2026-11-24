@@ -7,7 +7,7 @@ import { ApiError } from "../services/authApi";
 import type { DiscountType } from "../services/discountApi";
 import { formatPrice } from "../utils/cart";
 
-const inputClass = "w-full rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]";
+const inputClass = "w-full rounded-lg border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm outline-none focus:border-[#1a1a1a]";
 
 export default function AdminDiscounts() {
     const [reloadKey, setReloadKey] = useState(0);
@@ -26,11 +26,11 @@ export default function AdminDiscounts() {
                     <div role="status" aria-label="Đang tải" className="h-9 w-9 animate-spin rounded-full border-4 border-black/10 border-t-[#1a1a1a]" />
                 </div>
             ) : discounts.length === 0 ? (
-                <p className="mt-6 rounded-xl border border-black/10 bg-white p-8 text-center text-sm text-[#6b6b6b]">Chưa có mã nào.</p>
+                <p className="mt-6 rounded-xl border border-black/10 bg-[#f6f4ef] p-8 text-center text-sm text-[#6b6b6b]">Chưa có mã nào.</p>
             ) : (
                 <ul className="mt-6 space-y-2">
                     {discounts.map((d) => (
-                        <li key={d.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-white p-4">
+                        <li key={d.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-[#f6f4ef] p-4">
                             <div>
                                 <p className="font-mono text-base font-bold">{d.code}</p>
                                 <p className="text-xs text-[#6b6b6b]">
@@ -88,7 +88,7 @@ function CreateForm({ onCreated }: { onCreated: () => void }) {
     };
 
     return (
-        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-white p-5">
+        <form onSubmit={onSubmit} className="rounded-xl border border-black/10 bg-[#f6f4ef] p-5">
             <h2 className="mb-4 text-base font-bold">Tạo mã mới</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <label className="text-sm">Mã code
@@ -112,7 +112,7 @@ function CreateForm({ onCreated }: { onCreated: () => void }) {
                     <input type="number" value={maxUses} onChange={(e) => setMaxUses(e.target.value)} placeholder="Không giới hạn" className={`mt-1 ${inputClass}`} />
                 </label>
             </div>
-            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#f4f4f1] transition hover:bg-black disabled:opacity-60">
+            <button type="submit" disabled={saving} className="mt-4 rounded-lg bg-[#1a1a1a] px-5 py-2.5 text-sm font-bold text-[#e9e6de] transition hover:bg-black disabled:opacity-60">
                 {saving ? "Đang tạo..." : "Tạo mã"}
             </button>
         </form>

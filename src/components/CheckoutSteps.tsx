@@ -21,7 +21,7 @@ export default function CheckoutSteps({ current }: { current: number }) {
                             <span
                                 className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs ${
                                     active
-                                        ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#f4f4f1]"
+                                        ? "border-[#1a1a1a] bg-[#1a1a1a] text-[#e9e6de]"
                                         : done
                                             ? "border-[#1a1a1a] text-[#1a1a1a]"
                                             : "border-black/15"
@@ -34,7 +34,7 @@ export default function CheckoutSteps({ current }: { current: number }) {
                         {index < steps.length - 1 && (
                             <span
                                 aria-hidden="true"
-                                className={`h-px w-6 sm:w-12 ${done ? "bg-[#1a1a1a] text-[#f4f4f1]" : "bg-black/[0.08]"}`}
+                                className={`h-px w-6 sm:w-12 ${done ? "bg-[#1a1a1a] text-[#e9e6de]" : "bg-black/[0.08]"}`}
                             />
                         )}
                     </li>

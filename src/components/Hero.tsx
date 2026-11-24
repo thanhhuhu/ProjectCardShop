@@ -2,7 +2,7 @@ import { games } from "../data/game";
 import cover from "../images/cover_page.png";
 const heroBackground = [
     "repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 3px, transparent 3px 72px)",
-    "radial-gradient(ellipse at 50% 65%, #ffffff 0%, #f4f4f1 38%, #e4e2dc 72%, #d2d0c9 100%)",
+    "radial-gradient(ellipse at 50% 65%, #f6f4ef 0%, #e9e6de 38%, #e4e2dc 72%, #d2d0c9 100%)",
 ].join(", ");
 
 export default function Hero() {
@@ -34,7 +34,7 @@ export default function Hero() {
                         <li key={game.slug}>
                             <a
                                 href={`/products?game=${game.slug}`}
-                                className="block rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#8a8a8a] shadow-md transition duration-200 hover:bg-[#1a1a1a] hover:text-[#f4f4f1] hover:shadow-xl focus-visible:bg-[#1a1a1a] focus-visible:text-[#f4f4f1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40 active:scale-95 motion-safe:hover:-translate-y-1 sm:px-5 sm:text-sm md:px-7 md:py-3 md:text-base"
+                                className="block rounded-full bg-[#f6f4ef] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#8a8a8a] shadow-md transition duration-200 hover:bg-[#1a1a1a] hover:text-[#e9e6de] hover:shadow-xl focus-visible:bg-[#1a1a1a] focus-visible:text-[#e9e6de] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40 active:scale-95 motion-safe:hover:-translate-y-1 sm:px-5 sm:text-sm md:px-7 md:py-3 md:text-base"
                             >
                                 {game.label}
                             </a>

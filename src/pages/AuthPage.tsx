@@ -61,7 +61,7 @@ function Field({ id, label, value, onChange, type = "text", autoComplete, error 
                     autoComplete={autoComplete}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? `${id}-error` : undefined}
-                    className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
+                    className={`w-full rounded-lg border bg-[#f6f4ef] px-3 py-2.5 text-sm text-[#1a1a1a] outline-none transition focus:border-[#1a1a1a] ${
                         isPassword ? "pr-11" : ""
                     } ${error ? "border-red-400" : "border-black/10"}`}
                 />
@@ -90,7 +90,7 @@ function SubmitButton({ children, disabled = false }: { children: string; disabl
             <button
                 type="submit"
                 disabled={disabled}
-                className="w-full rounded-lg bg-[#1a1a1a] py-3 text-sm font-bold uppercase tracking-wide text-[#f4f4f1] transition hover:bg-black active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b] disabled:active:scale-100"
+                className="w-full rounded-lg bg-[#1a1a1a] py-3 text-sm font-bold uppercase tracking-wide text-[#e9e6de] transition hover:bg-black active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-[#eceae5] disabled:text-[#6b6b6b] disabled:active:scale-100"
             >
                 {children}
             </button>
@@ -364,23 +364,23 @@ export default function AuthPage() {
 
     const tabClass = (active: boolean) =>
         `relative z-10 rounded-md py-2 text-center transition-colors duration-300 ${
-            active ? "text-[#f4f4f1]" : "text-[#6b6b6b] hover:text-black"
+            active ? "text-[#e9e6de]" : "text-[#6b6b6b] hover:text-black"
         }`;
 
     if (user) return <Navigate to="/" replace />;
 
     return (
-        <section className="grid min-h-[70vh] bg-[#f4f4f1] text-[#1a1a1a] lg:grid-cols-[1fr_minmax(0,30rem)_1fr]">
+        <section className="grid min-h-[70vh] bg-[#e9e6de] text-[#1a1a1a] lg:grid-cols-[1fr_minmax(0,30rem)_1fr]">
             <SidePanel src={leftCover} side="left" />
 
             {/* Form ở giữa: căn sát phía trên để khung chỉ giãn xuống dưới, không nhảy hai đầu */}
             <div className="flex items-start justify-center px-4 py-10 sm:py-14">
-                <div className="w-full max-w-md rounded-2xl border border-black/10 bg-white/95 p-6 shadow-2xl sm:p-8">
+                <div className="w-full max-w-md rounded-2xl border border-black/10 bg-[#f6f4ef]/95 p-6 shadow-2xl sm:p-8">
                     {/* Thanh chuyển tab, có thanh đỏ trượt qua lại */}
-                    <div className="relative mb-6 grid grid-cols-2 rounded-lg bg-white p-1 text-sm font-bold uppercase tracking-wide">
+                    <div className="relative mb-6 grid grid-cols-2 rounded-lg bg-[#f6f4ef] p-1 text-sm font-bold uppercase tracking-wide">
                         <span
                             aria-hidden="true"
-                            className={`absolute inset-y-1 left-1 w-[calc(50%_-_0.25rem)] rounded-md bg-[#1a1a1a] text-[#f4f4f1] transition-transform duration-300 ease-out motion-reduce:transition-none ${
+                            className={`absolute inset-y-1 left-1 w-[calc(50%_-_0.25rem)] rounded-md bg-[#1a1a1a] text-[#e9e6de] transition-transform duration-300 ease-out motion-reduce:transition-none ${
                                 isLogin ? "translate-x-0" : "translate-x-full"
                             }`}
                         />

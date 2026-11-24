@@ -10,7 +10,7 @@ import { getProductFilters, listProducts } from "../services/productApi";
 import type { SortKey } from "../services/productApi";
 
 const selectClass =
-    "rounded-md border border-black/15 bg-white px-3 py-2 text-sm text-[#1a1a1a] outline-none transition hover:border-[#1a1a1a] focus:border-[#1a1a1a]";
+    "rounded-md border border-black/15 bg-[#f6f4ef] px-3 py-2 text-sm text-[#1a1a1a] outline-none transition hover:border-[#1a1a1a] focus:border-[#1a1a1a]";
 
 const PAGE_SIZE = 20; // 5 thẻ mỗi hàng x 4 hàng
 const GRID_CLASS = "grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4";
@@ -117,7 +117,7 @@ export default function ProductList() {
     return (
         <div className="text-[#1a1a1a]">
             {/* Thanh breadcrumb, số kết quả và sắp xếp */}
-            <div className="bg-white">
+            <div className="bg-[#f6f4ef]">
                 <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 md:flex-row md:items-center md:justify-between">
                     <nav aria-label="Breadcrumb" className="text-sm uppercase text-[#6b6b6b]">
                         <Link to="/" className="transition hover:text-black">
@@ -251,7 +251,7 @@ export default function ProductList() {
                         <button
                             type="button"
                             onClick={() => window.location.reload()}
-                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                         >
                             Thử lại
                         </button>
@@ -267,7 +267,7 @@ export default function ProductList() {
                         </p>
                         <Link
                             to="/products"
-                            className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                            className="mt-6 inline-block rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                         >
                             Xem tất cả sản phẩm
                         </Link>
@@ -278,7 +278,7 @@ export default function ProductList() {
                         <button
                             type="button"
                             onClick={() => handlePageChange(1)}
-                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#f4f4f1]"
+                            className="mt-6 rounded-full border border-[#1a1a1a] px-6 py-2 text-sm font-bold uppercase text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-[#e9e6de]"
                         >
                             Về trang đầu
                         </button>
